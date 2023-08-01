@@ -47,6 +47,11 @@ dependencies:
     specifier: ^4.4.0
     version: 4.4.0(@types/react@18.2.18)(react@18.2.0)
 
+devDependencies:
+  '@tanstack/eslint-plugin-query':
+    specifier: ^4.32.1
+    version: 4.32.1
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
@@ -294,6 +299,10 @@ packages:
     dependencies:
       tslib: 2.6.1
     dev: false
+
+  /@tanstack/eslint-plugin-query@4.32.1:
+    resolution: {integrity: sha512-29oveq5n7momN+/d0SheNccnp1qws4JRG/PdeiPHwWAVQ9HxwtZTFxhFJxvMzVk7UsY3LsQB0keIajC+K9ZJ7w==}
+    dev: true
 
   /@tanstack/query-core@4.32.1:
     resolution: {integrity: sha512-VEAGHboOFWN/bvf/7cCoeLQfld0AA8n0V/kfc77W+FvxnnSwJufEh6gfjqpX5bRE/DEYfYDYdNtuL3KM+lIs8Q==}
