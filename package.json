@@ -20,6 +20,7 @@
     "next": "13.4.12",
     "next-auth": "^4.22.3",
     "postcss": "8.4.27",
+    "prisma-client": "^0.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^1.14.0",
@@ -29,6 +30,7 @@
     "zustand": "^4.4.0"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.32.1"
+    "@tanstack/eslint-plugin-query": "^4.32.1",
+    "prisma": "^5.1.0"
   }
 }
