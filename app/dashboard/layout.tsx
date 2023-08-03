@@ -1,7 +1,6 @@
 import React from "react";
-import NewJob from "./page";
 
-export default function Registration ({
+export default function DashboardLayout ({
     children,
 }:{
     children: React.ReactNode
