@@ -1,7 +1,7 @@
 export default function Loading() {
     return (
         <>
-            <div>Loding Profile Page ...</div>
+            <div>Loading Profile Page ...</div>
         </>
     )
 }
