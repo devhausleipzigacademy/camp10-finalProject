@@ -1,14 +1,17 @@
-import React from "react";
+import { Footer } from '@/components/shared/Footer';
+import React from 'react';
 
-export default function DashboardLayout ({
+export default function DashboardLayout({
     children,
-}:{
-    children: React.ReactNode
+}: {
+    children: React.ReactNode;
 }) {
     return (
         <>
-            <p>Dashboard Layout</p>
-            {children}
+            <div className="flex-grow">
+                Dashboard Layout
+                {children}
+            </div>
         </>
-    )
+    );
 }
