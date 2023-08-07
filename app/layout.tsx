@@ -17,8 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <p>This is the root layout</p>
+      <body className={`cloud-background text-white ${inter.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>
