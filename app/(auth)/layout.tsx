@@ -9,7 +9,7 @@ export default function AuthLayout({
   return (
     <main className="flex flex-col items-center">
       <div className="border-x-0 border-b border-basicColors-light w-full"></div>
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full mb-xxl">
         <div className="w-full mt-m">
           <div className="flex justify-between">
             <h1 className="mainHeader">Streamline</h1>
