@@ -34,6 +34,7 @@ module.exports = {
       Default: ['Plus Jakarta Sans', 'sans-serif'],
     },
     fontSize: {
+      'headerOne': '8rem',
       xxxl: '3rem',
       xxl: '2.5rem',
       xl: '2.25rem',
@@ -45,6 +46,7 @@ module.exports = {
       xxxs: '0.75rem',
     },
     fontWeight: {
+      800: '800',
       600: '600',
       500: '500',
       400: '400',

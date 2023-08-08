@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Providers from './utils/provider';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'there will be a name',
@@ -15,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="text-white bg-basicColors-dark">
+      <body className="text-white bg-basicColors-dark font-Default">
         <Providers>{children}</Providers>
       </body>
     </html>

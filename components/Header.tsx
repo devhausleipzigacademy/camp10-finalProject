@@ -9,7 +9,7 @@ type HeaderProps = {
 export function Header({ underline }: HeaderProps) {
   return (
     <header
-      className={`flex justify-between w-[1300px] 2xl:max-w-7xl py-m ${
+      className={`flex justify-between w-full 2xl:max-w-7xl py-m ${
         underline ? 'border-x-0 border-b border-basicColors-light' : ''
       }`}
     >

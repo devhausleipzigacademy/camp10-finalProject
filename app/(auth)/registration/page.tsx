@@ -1,7 +1,7 @@
 export default function RegistrationForm() {
   return (
     <>
-      <p>Registration</p>
+      <p>Registration Page</p>
     </>
   );
 }
