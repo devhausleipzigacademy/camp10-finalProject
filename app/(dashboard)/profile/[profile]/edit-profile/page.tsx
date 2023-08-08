@@ -1,7 +1,7 @@
 export default function EditProfile () {
     return (
         <>
-            <div>Edit Profile</div>
+            <div className="font-Default italic text-xxl bg-cardColors-black text-textColors-textBody">Edit Profile</div>
         </>
     )
 }
