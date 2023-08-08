@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: white;  
+}
+
 @layer base {
   .cloud-background {
     background-image: url('/cloud-background.svg');
