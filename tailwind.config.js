@@ -68,6 +68,9 @@ module.exports = {
       xs: '0.5rem',
       xxs: '0.25rem',
     },
+    gridTemplateColumns: {
+      'headline': '1fr 50% 1fr',
+    },
     extend: {},
   },
   plugins: [],

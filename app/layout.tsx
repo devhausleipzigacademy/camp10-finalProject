@@ -19,6 +19,7 @@ export default function RootLayout({
       <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
         <MainHeader />
         <Providers>{children}</Providers>
+        <footer className="flex justify-center py-m w-screen"> Footer Placeholder </footer>
       </div>
       </body>
     </html>
