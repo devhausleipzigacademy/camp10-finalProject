@@ -5,10 +5,15 @@
 
 :root {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  color: white;  
+  color: white;
 }
 
 @layer base {
+  
+  .mainHeader {
+    @apply sm:text-headerOne text-xxxl flex uppercase text-justify leading-[0.95] font-800;
+  }
+
   .cloud-background {
     background-image: url('/cloud-background.svg');
     background-size: cover;
