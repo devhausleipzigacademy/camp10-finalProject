@@ -22,7 +22,7 @@ export default function AuthLayout({
             <h1 className="mainHeader">with</h1>
             {/* TODO: replace this with clerk ui */}
             {children}
-            <h1 className="mainHeader">us.</h1>
+            <h1 className="mainHeader flex justify-end">us.</h1>
           </div>
         </div>
       </div>
