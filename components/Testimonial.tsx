@@ -9,14 +9,13 @@ function Testimonial() {
           alt="profile picture"
         />
       </div>
-      <div className='text-basicColors-light flex-1'>
+      <div className="text-basicColors-light flex-1">
         <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium
-          est numquam vitae itaque nobis consequatur doloribus adipisci
-          similique, veritatis sed voluptates illum vero pariatur ratione, animi
-          tempore accusantium debitis totam molestiae natus.
+          I used to be a rich kid computer freak. Then I founded a company and
+          screwed over my partner while he was sick and now I’m a billionaire. I
+          have no clue what EMPLEO is though.
         </p>
-        <p className='text-right'>- John Doe</p>
+        <p className="text-right"> - Billy</p>
       </div>
     </div>
   );
