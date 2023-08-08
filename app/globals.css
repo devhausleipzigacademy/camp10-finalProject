@@ -9,7 +9,6 @@
 }
 
 @layer base {
-  
   .mainHeader {
     @apply sm:text-headerOne text-xxxl flex uppercase text-justify leading-[0.95] font-800;
   }
