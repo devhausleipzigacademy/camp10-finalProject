@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { HiArrowNarrowRight } from 'react-icons/hi';
 
 export default function AuthLayout({
   children,
@@ -13,7 +14,7 @@ export default function AuthLayout({
             EMPLEO.
           </Link>
           <nav className="space-x-s flex items-center">
-            {/* TODO: add arrow */}
+            <HiArrowNarrowRight className="text-xl" />
             <Link href="/login">
               <button className="border border-basicColors-light rounded-full px-s py-xxs hover:cursor-pointer">
                 Login
