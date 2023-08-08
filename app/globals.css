@@ -3,11 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: white;
-}
-
 @layer base {
   .mainHeader {
     @apply sm:text-headerOne text-xxxl flex uppercase text-justify leading-[0.95] font-800;

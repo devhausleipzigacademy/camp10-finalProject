@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="text-white cloud-background font-Default">
+      <body className="cloud-background font-Default text-basicColors-light">
       <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
         <MainHeader />
         <Providers>{children}</Providers>
