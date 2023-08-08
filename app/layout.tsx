@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Providers from './utils/provider';
-import Header from '@/components/Header';
+import MainHeader from '@/components/MainHeader';
 
 export const metadata: Metadata = {
   title: 'there will be a name',
@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="text-white cloud-background font-Default">
       <div className="max-w-[1300px] mx-auto">
-        <Header underline={true} />
+        <MainHeader />
         <Providers>{children}</Providers>
       </div>
       </body>

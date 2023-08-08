@@ -2,16 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 
-type HeaderProps = {
-  underline: boolean;
-};
+// type HeaderProps = {
+//   underline: boolean;
+// };
 
-export function Header({ underline }: HeaderProps) {
+export function MainHeader() {
   return (
     <header
-      className={`flex justify-between w-full 2xl:max-w-7xl py-m ${
-        underline ? 'border-x-0 border-b border-basicColors-light' : ''
-      }`}
+      className={`flex justify-between w-full 2xl:max-w-7xl py-m`}
     >
       <Link href="/" className="font-500 text-xxl">
         EMPLEO.
@@ -28,9 +26,12 @@ export function Header({ underline }: HeaderProps) {
             Register
           </button>
         </Link>
+        <button className="border border-basicColors-light rounded-full px-s py-xxs hover:cursor-pointer">
+          Logout
+        </button>
       </nav>
     </header>
   );
 }
 
-export default Header;
+export default MainHeader;

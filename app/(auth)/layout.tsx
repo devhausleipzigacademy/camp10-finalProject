@@ -7,6 +7,7 @@ export default function AuthLayout({
 }) {
   return (
     <main className="h-full flex flex-col">
+      <div className='border-x-0 border-b border-basicColors-light'></div>
       <h1 className="text-headerOne flex uppercase text-justify leading-[1] font-800 py-s">
         Streamline your job hunt with us.
       </h1>
