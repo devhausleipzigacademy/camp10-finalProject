@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import Providers from '../utils/provider';
 import { Footer } from '@/components/shared/Footer';
 import { cn } from '@/utils/cn';
+import MainHeader from '@/components/MainHeader';
 
 export const metadata: Metadata = {
     title: 'there will be a name',
@@ -17,12 +18,12 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className="flex flex-col bg-basicColors-dark font-Default min-h-screen">
-                <nav className="bg-slate-500 py-4">This is the nav </nav>
-                <main className="flex-grow">
+            <body className="cloud-background font-Default text-basicColors-light">
+                <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
+                    <MainHeader />
                     <Providers>{children}</Providers>
-                </main>
-                <Footer />
+                    <Footer />
+                </div>
             </body>
         </html>
     );

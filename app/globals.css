@@ -2,3 +2,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .mainHeader {
+    @apply sm:text-headerOne text-xxxl flex uppercase text-justify leading-[0.95] font-800;
+  }
+
+  .cloud-background {
+    background-image: url('/cloud-background.svg');
+    background-size: cover;
+  }
+
+  .ui-background {
+    background-color: rgba(200, 200, 200, 0.2);
+    backdrop-filter: blur(20px);
+  }
+}

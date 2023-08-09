@@ -34,7 +34,9 @@ module.exports = {
             Default: ['Plus Jakarta Sans', 'sans-serif'],
         },
         fontSize: {
-            xxl: '3rem',
+            headerOne: '7.5rem',
+            xxxl: '3rem',
+            xxl: '2.5rem',
             xl: '2.25rem',
             l: '1.875rem',
             m: '1.5rem',
@@ -44,6 +46,7 @@ module.exports = {
             xxxs: '0.75rem',
         },
         fontWeight: {
+            800: '800',
             600: '600',
             500: '500',
             400: '400',
@@ -66,8 +69,10 @@ module.exports = {
             xs: '0.5rem',
             xxs: '0.25rem',
         },
+        gridTemplateColumns: {
+            headline: '15% 70% 15%',
+        },
         extend: {},
     },
-
     plugins: [],
 };

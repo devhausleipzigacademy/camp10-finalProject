@@ -1,4 +1,3 @@
-import { Footer } from '@/components/shared/Footer';
 import React from 'react';
 
 export default function DashboardLayout({
@@ -8,10 +7,8 @@ export default function DashboardLayout({
 }) {
     return (
         <>
-            <div className="flex-grow">
-                Dashboard Layout
-                {children}
-            </div>
+            <p>Dashboard Layout</p>
+            {children}
         </>
     );
 }
