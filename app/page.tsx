@@ -1,3 +1,3 @@
 export default function Home() {
-    return <div className="">Hello world! Dashboard</div>;
+    return <p> Home</p>;
 }
