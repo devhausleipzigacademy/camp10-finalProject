@@ -1,7 +1,9 @@
-export default function NewJob () {
-    return (
-        <>
-            <div>New Job</div>
-        </>
-    )
+import Form from '@/components/Form';
+
+export default function NewJob() {
+  return (
+    <>
+      <Form />
+    </>
+  );
 }
