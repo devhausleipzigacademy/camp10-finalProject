@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-export default function DashboardLayout ({
-    children,
-}:{
-    children: React.ReactNode
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
 }) {
-    return (
-        <>
-            <p>Dashboard Layout</p>
-            {children}
-        </>
-    )
+  return (
+    <main className="h-full flex flex-col">
+      <p>Dashboard Layout</p>
+      {children}
+    </main>
+  );
 }

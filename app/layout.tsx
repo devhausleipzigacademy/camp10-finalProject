@@ -1,9 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Providers from './utils/provider';
-
-const inter = Inter({ subsets: ['latin'] });
+import MainHeader from '@/components/MainHeader';
 
 export const metadata: Metadata = {
   title: 'there will be a name',
@@ -17,9 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <p>This is the root layout</p>
+      <body className="cloud-background font-Default text-basicColors-light">
+      <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
+        <MainHeader />
         <Providers>{children}</Providers>
+        <footer className="flex justify-center py-m w-screen"> Footer Placeholder </footer>
+      </div>
       </body>
     </html>
   );
