@@ -10,7 +10,7 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { Column, Id, Job } from '../types/boardMocks';
@@ -37,7 +37,6 @@ export default function Board() {
 
     return (
         <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-auto px-[40px]">
-            {typeof window === 'object' && (
                 <DndContext
                     onDragStart={onDragStart}
                     onDragEnd={onDragEnd}
@@ -97,7 +96,6 @@ export default function Board() {
                         document.body // <-- container for createPortal(children,container)
                     )}
                 </DndContext>
-            )}
         </div>
     );
 
