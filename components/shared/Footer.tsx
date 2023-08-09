@@ -4,8 +4,8 @@ import React from 'react';
 export function Footer() {
     return (
         <>
-            <footer className="flex flex-col text-xxxs mx-xl leading-xxs text-basicColors-light bg-basicColors-dark">
-                <hr className="h-[1px] my-m  bg-basicColors-light border-hidden "></hr>
+            <footer className="flex flex-col text-xxxs leading-xxs text-basicColors-light">
+                <hr className="h-[1px] my-m bg-basicColors-light border-hidden "></hr>
                 <div className="flex items-start justify-between w-full gap-m">
                     <div className="flex flex-col gap-s">
                         <h1 className="text-xl leading-m">EMPLEO.</h1>
