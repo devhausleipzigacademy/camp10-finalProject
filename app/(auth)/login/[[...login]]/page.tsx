@@ -9,6 +9,17 @@ export default function LoginForm() {
     <SignIn
       appearance={{
         elements: {
+          card: 'bg-basicColors-dark',
+          headerTitle: '',
+          headerSubtitle: '',
+          main: '',
+          socialButtons: '',
+          socialButtonsBlockButton: '',
+          //How should we decide between git/ gmail
+          dividerRow: '',
+          dividerText: '',
+          formFieldLabelRow: '',
+
           formButtonPrimary: 'bg-[#e74c3c]',
         },
       }}
