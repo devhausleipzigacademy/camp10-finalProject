@@ -1,9 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+// using useState Hook for now. Should probably be written into API endpoints later.
 
 function TagsInput() {
-  const [tags, setTags] = useState(['Part-time', 'Freelance']);
+  const [tags, setTags] = useState<string[]>([]);
+
+  function keyHandler(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+
+    const newTag = e.currentTarget.value.trim();
+    if (!newTag) return;
+    setTags([...tags, newTag]);
+    e.currentTarget.value = '';
+  }
+
   return (
     <>
       <label htmlFor="tags">Tags</label>
@@ -20,6 +33,7 @@ function TagsInput() {
           </div>
         ))}
         <input
+          onKeyDown={keyHandler}
           type="text"
           id="tags"
           name="tags"
