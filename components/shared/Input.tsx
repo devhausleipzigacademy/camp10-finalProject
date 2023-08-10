@@ -12,7 +12,7 @@ function Input({ label, name, type, isRequired }: InputProps) {
     <>
       <label htmlFor={name}>{`${label} ${isRequired ? '*' : ''}`}</label>
       <input
-        className="bg-basicColors-dark bg-opacity-0 border rounded-md border-borderColors-borderLight "
+        className="bg-basicColors-dark bg-opacity-0 border h-xl p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight  "
         type={type}
         name={name}
         id={name}
