@@ -1,9 +1,11 @@
-import { type } from 'os';
+"use client"
+
 import React from 'react';
 import Input from './shared/Input';
 import Select from './shared/Select';
 import Button from './shared/Button';
 import TagsInput from './TagsInput';
+import { useState } from 'react';
 
 type Form = {
   title: string;
@@ -20,39 +22,67 @@ type Form = {
 };
 
 function Form() {
+  const initalFormState = {
+    title: "",
+    companyName: "",
+    url: "",
+    location: "",
+    companyWebsite: "",
+    deadline: "",
+    remoteType: "Hybrid",
+    priority: "low",
+    currentStage: "Applied",
+    description: "",
+    labels: []
+  }
+  const [formState, setFormState] = useState(initalFormState)
+
   return (
     <>
-      <form className="flex gap-l">
+      <form className="flex gap-l" onSubmit={(e) => {
+        e.preventDefault()
+        console.log(formState)
+        }}>
         <div className="flex flex-col w-1/2 gap-xs text-s">
           <Input
             label="Job Title"
             name="jobTitle"
             type="string"
             isRequired={true}
+            value={formState.title}
+            onChange={(e) => setFormState({...formState, title: e.target.value})}
           ></Input>
           <Input
             label="Job URL"
             name="jobURL"
             type="string"
+            value={formState.url}
             isRequired={true}
+            onChange={(e) => setFormState({...formState, url: e.target.value})}
           ></Input>
           <Input
             label="Company"
             name="company"
             type="string"
             isRequired={true}
+            value={formState.companyName}
+            onChange={(e) => setFormState({...formState, companyName: e.target.value})}
           ></Input>
           <Input
             label="Location"
             name="location"
             type="string"
             isRequired={false}
+            value={formState.location}
+            onChange={(e) => setFormState({...formState, location: e.target.value})}
           ></Input>
           <Input
             label="Deadline"
             name="deadline"
-            type="Date"
+            type="date"
+            value={formState.deadline}
             isRequired={false}
+            onChange={(e) => setFormState({...formState, deadline: e.target.value})}
           ></Input>
           <label htmlFor="description">Description</label>
           <textarea
@@ -60,6 +90,8 @@ function Form() {
             name="Description"
             id="description"
             rows={8}
+            value={formState.description}
+            onChange={(e) => setFormState({...formState, description: e.target.value})}
           ></textarea>
         </div>
         <div className="flex flex-col w-1/2 gap-xs text-s">
@@ -68,28 +100,36 @@ function Form() {
             name="companyWebsite"
             type="string"
             isRequired={false}
+            value={formState.companyWebsite}
+            onChange={(e) => setFormState({...formState, companyWebsite: e.target.value})}
           ></Input>
           <Select
             label="Type"
             name="remoteType"
             isRequired={false}
-            options={['on site', 'remote', 'hybrid']}
+            options={['Onsite', 'Remote', 'Hybrid']}
+            value={formState.remoteType}
+            onChange={(e) => setFormState({...formState, remoteType: e.target.value})}
           ></Select>
           <Select
             label="Current Stage"
             name="currentStage"
             isRequired={false}
             options={['Scouted', 'Applied', 'Interview', 'Offer', 'Rejected']}
+            value={formState.currentStage}
+            onChange={(e) => setFormState({...formState, currentStage: e.target.value})}
           ></Select>
           <Select
             label="Priority"
             name="priority"
             isRequired={false}
             options={['low', 'medium', 'high']}
+            value={formState.priority}
+            onChange={(e) => setFormState({...formState, priority: e.target.value})}
           ></Select>
           <TagsInput />
           <Button className="m-auto" variant="hover">
-            Add
+            Create
           </Button>
         </div>
       </form>

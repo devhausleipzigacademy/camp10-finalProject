@@ -1,13 +1,15 @@
 import React from 'react';
 
-type SelectProps = {
+type Select = React.SelectHTMLAttributes<HTMLSelectElement>
+
+interface SelectProps extends Select {
   label: string;
   name: string;
   options: string[];
   isRequired: boolean;
 };
 
-function Select({ label, name, isRequired, options }: SelectProps) {
+function Select({ label, name, isRequired, options, ...props }: SelectProps) {
   return (
     <>
       <label htmlFor={name}>{`${label} ${isRequired ? '*' : ''}`}</label>
@@ -15,6 +17,7 @@ function Select({ label, name, isRequired, options }: SelectProps) {
         className="bg-basicColors-dark bg-opacity-0 h-xl p-xs border rounded-[0.3125rem] border-borderColors-borderLight focus:outline focus:outline-2 focus:outline-basicColors-light"
         id={name}
         name={name}
+        {...props}
       >
         {options.map(opt => (
           <option
