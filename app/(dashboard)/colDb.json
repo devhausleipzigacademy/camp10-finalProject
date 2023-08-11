@@ -1,0 +1,6 @@
+[
+    { "id": 1, "title": "Scouted", "colour": "#B4A0D1" },
+    { "id": 2, "title": "Applied", "colour": "#CBD87E" },
+    { "id": 3, "title": "Interview", "colour": "#FDC959" },
+    { "id": 4, "title": "Offer", "colour": "#FE5A35" }
+]
