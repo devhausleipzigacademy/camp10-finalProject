@@ -5,8 +5,9 @@ import Input from './shared/Input';
 import Select from './shared/Select';
 import Button from './shared/Button';
 import TagsInput from './TagsInput';
-// import { useState } from 'react';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { JobSchema } from '@/schema/job';
 
 type Form = {
   title: string;
@@ -23,8 +24,9 @@ type Form = {
 };
 
 function Form() {
-  const { register, handleSubmit } = useForm<Form>({
-    mode: "onChange",
+  const { register, handleSubmit, formState: { errors } } = useForm<Form>({
+    mode: "onSubmit",
+    resolver: zodResolver(JobSchema)
   });
   const onSubmitHandler = (data:Form) => {
     console.log(data)
@@ -55,8 +57,7 @@ function Form() {
             id="title"
             type="string"
             isRequired={true}
-            // value={formState.title}
-            // onChange={(e) => setFormState({...formState, title: e.target.value})}
+            error={errors.title}
             {...register("title")}
           ></Input>
           <Input
@@ -64,8 +65,7 @@ function Form() {
             type="string"
             id="url"
             isRequired={true}
-            // value={formState.url}
-            // onChange={(e) => setFormState({...formState, url: e.target.value})}
+            error={errors.url}
             {...register("url")}
           ></Input>
           <Input
@@ -73,8 +73,7 @@ function Form() {
             id='companyName'
             type="string"
             isRequired={true}
-            // value={formState.companyName}
-            // onChange={(e) => setFormState({...formState, companyName: e.target.value})}
+            error={errors.companyName}
             {...register("companyName")}
           ></Input>
           <Input
@@ -82,8 +81,7 @@ function Form() {
             id="location"
             type="string"
             isRequired={false}
-            // value={formState.location}
-            // onChange={(e) => setFormState({...formState, location: e.target.value})}
+            error={errors.location}
             {...register("location")}
           ></Input>
           <Input
@@ -91,8 +89,7 @@ function Form() {
             id="deadline"
             type="date"
             isRequired={false}
-            // value={formState.deadline}
-            // onChange={(e) => setFormState({...formState, deadline: e.target.value})}
+            error={errors.deadline}
             {...register("deadline")}
           ></Input>
           <label htmlFor="description">Description</label>
@@ -100,8 +97,6 @@ function Form() {
             className="bg-basicColors-dark bg-opacity-0 border p-xs rounded-[0.3125rem] border-borderColors-borderLight focus:outline focus:outline-2 focus:outline-basicColors-light"
             id="description"
             rows={8}
-            // value={formState.description}
-            // onChange={(e) => setFormState({...formState, description: e.target.value})}
             {...register("description")}
           ></textarea>
         </div>
@@ -111,8 +106,7 @@ function Form() {
             id="companyWebsite"
             type="string"
             isRequired={false}
-            // value={formState.companyWebsite}
-            // onChange={(e) => setFormState({...formState, companyWebsite: e.target.value})}
+            error={errors.companyWebsite}
             {...register("companyWebsite")}
           ></Input>
           <Select
@@ -120,26 +114,23 @@ function Form() {
             id="remoteType"
             isRequired={false}
             options={['Onsite', 'Remote', 'Hybrid']}
-            // value={formState.remoteType}
-            // onChange={(e) => setFormState({...formState, remoteType: e.target.value})}
             {...register("remoteType")}
+            error={errors.remoteType}
           ></Select>
           <Select
             label="Current Stage"
             id="currentStage"
             isRequired={false}
             options={['Scouted', 'Applied', 'Interview', 'Offer', 'Rejected']}
-            // value={formState.currentStage}
-            // onChange={(e) => setFormState({...formState, currentStage: e.target.value})}
             {...register("currentStage")}
+            error={errors.currentStage}
           ></Select>
           <Select
             label="Priority"
             id="priority"
             isRequired={false}
             options={['Low', 'Medium', 'High']}
-            // value={formState.priority}
-            // onChange={(e) => setFormState({...formState, priority: e.target.value})}
+            error={errors.priority}
             {...register("priority")}
           ></Select>
           <TagsInput />

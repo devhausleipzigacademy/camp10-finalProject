@@ -1,4 +1,5 @@
 import React from 'react';
+import { FieldError, Merge } from 'react-hook-form';
 
 type Select = React.SelectHTMLAttributes<HTMLSelectElement>
 
@@ -7,9 +8,10 @@ interface SelectProps extends Select {
   label: string;
   options: string[];
   isRequired: boolean;
+  error: Merge<FieldError, (FieldError | undefined)[]> | undefined;
 };
 
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, isRequired, options, ...props }, ref) => {
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, isRequired, options, error, ...props }, ref) => {
   return (
     <>
       <label htmlFor={id}>{`${label} ${isRequired ? '*' : ''}`}</label>
@@ -18,7 +20,9 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, is
         id={id}
         {...props}
         ref={ref}
+        defaultValue={''}
       >
+        <option disabled value={''}></option>
         {options.map(opt => (
           <option
             className="text-textColors-textBody bg-opacity-5 p-xs"
@@ -29,6 +33,9 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, is
           </option>
         ))}
       </select>
+      {error && (
+        <small className="text-cardColors-red text-xxxs">{error.message}</small>
+      )}
     </>
   );
 })

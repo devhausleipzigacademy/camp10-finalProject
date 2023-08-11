@@ -6,7 +6,7 @@ export const JobSchema = z.object({
   url: z.string().url(),
   location: z.string().optional(),
   companyWebsite: z.string().url().optional(),
-  deadline: z.date().optional(),
+  deadline: z.coerce.date().optional(),
   remoteType: z.enum(["Remote", "Hybrid", "Onsite"]).default("Onsite"),
   priority: z.enum(["High", "Medium", "Low"]).optional(),
   currentStage: z.string(), //TODO: default first stage from db
