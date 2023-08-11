@@ -3,21 +3,21 @@ import React from 'react';
 type Select = React.SelectHTMLAttributes<HTMLSelectElement>
 
 interface SelectProps extends Select {
+  id: string
   label: string;
-  name: string;
   options: string[];
   isRequired: boolean;
 };
 
-function Select({ label, name, isRequired, options, ...props }: SelectProps) {
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, isRequired, options, ...props }, ref) => {
   return (
     <>
-      <label htmlFor={name}>{`${label} ${isRequired ? '*' : ''}`}</label>
+      <label htmlFor={id}>{`${label} ${isRequired ? '*' : ''}`}</label>
       <select
         className="bg-basicColors-dark bg-opacity-0 h-xl p-xs border rounded-[0.3125rem] border-borderColors-borderLight focus:outline focus:outline-2 focus:outline-basicColors-light"
-        id={name}
-        name={name}
+        id={id}
         {...props}
+        ref={ref}
       >
         {options.map(opt => (
           <option
@@ -31,6 +31,6 @@ function Select({ label, name, isRequired, options, ...props }: SelectProps) {
       </select>
     </>
   );
-}
+})
 
 export default Select;
