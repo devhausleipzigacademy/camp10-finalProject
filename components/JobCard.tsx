@@ -1,14 +1,16 @@
-import { HiDotsHorizontal, HiOutlineTrash } from 'react-icons/hi';
-import { Id, Job } from '../types/boardMocks';
+import { HiDotsHorizontal } from 'react-icons/hi';
 import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { cn } from '@/utils/cn';
+import { Job } from './Board';
 
 type JobCardProps = {
     job: Job;
-    editJob: (id: Id) => void;
-    updateJob: (id: Id, content: string) => void;
+    editJob?: (id: string) => void;
+    updateJob?: (id: string, content: string) => void;
     colColor?: string;
+    parent?: string;
 };
 
 export default function JobCard({
@@ -16,9 +18,11 @@ export default function JobCard({
     editJob,
     updateJob,
     colColor,
+    parent,
 }: JobCardProps) {
     const [mouseHover, setMouseHover] = useState<boolean>(false);
     const [cardSize, setCardSize] = useState<boolean>(false);
+
     // console.log(colColor);
 
     const toggleCardSize = () => {
@@ -37,6 +41,7 @@ export default function JobCard({
         data: {
             type: 'Job',
             job,
+            parent,
         },
         disabled: cardSize,
     });
@@ -46,22 +51,6 @@ export default function JobCard({
         transform: CSS.Transform.toString(transform),
         backgroundColor: colColor,
     };
-
-    if (isDragging) {
-        // console.log("DRAGGING:", colColor);
-        return (
-            <div
-                ref={setNodeRef}
-                style={style}
-                className="opacity-60 p-2.5 h-[110px] min-h-[110px] items-center flex text-left rounded-md rounded-tr-none cursor-grab relative "
-            >
-                <button
-                    style={{ backgroundColor: colColor }}
-                    className="absolute right-0 flex justify-center w-16 h-6 -translate-y-1/2 rounded-lg rounded-bl-none top-[5px] "
-                />
-            </div>
-        );
-    }
 
     // if (cardSize) {
     //     return (
@@ -106,25 +95,26 @@ export default function JobCard({
             ref={setNodeRef}
             {...attributes}
             {...listeners}
-            onClick={() => toggleCardSize()}
+            // onClick={() => toggleCardSize()}
             style={style}
-            onMouseEnter={() => setMouseHover(true)}
-            onMouseLeave={() => setMouseHover(false)}
-            className="py-3 px-2 h-[110px] items-center flex text-left cursor-grab rounded-md rounded-tr-none relative"
+            className={cn(
+                'py-3 px-2 h-[110px] items-center flex text-left cursor-grab rounded-md rounded-tr-none relative',
+                isDragging && 'opacity-25'
+            )}
         >
             <button
                 style={{ backgroundColor: colColor }}
                 className="absolute right-0 flex justify-center w-16 h-6 rounded-lg rounded-bl-none top-[-7px] text-mainBG"
                 // onClick={() => editJob(job.id)}
             >
-                {mouseHover && (
-                    <HiDotsHorizontal
-                        size={15}
-                        className=" hover:opacity-100 opacity-80"
-                    />
-                )}
+                {/* {mouseHover && ( */}
+                <HiDotsHorizontal
+                    size={15}
+                    className=" hover:opacity-100 opacity-80"
+                />
+                {/* )} */}
             </button>
-            <div className="flex flex-col w-full h-full ">
+            <div className="flex flex-col w-full h-full text-white">
                 <p className="text-xl font-semibold truncate">
                     {job.job_title}
                 </p>
