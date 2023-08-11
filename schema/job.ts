@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const JobSchema = z.object({
   title: z.string().min(2).max(30),
-  companyName: z.string(),
+  companyName: z.string().min(2).max(35),
   url: z.string().url(),
   location: z.string().optional(),
   companyWebsite: z.string().url().optional(),
