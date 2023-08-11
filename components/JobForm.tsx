@@ -23,7 +23,7 @@ type Form = {
   labels: string[];
 };
 
-function Form() {
+function JobForm() {
   const { register, handleSubmit, formState: { errors } } = useForm<Form>({
     mode: "onSubmit",
     resolver: zodResolver(JobSchema)
@@ -31,22 +31,6 @@ function Form() {
   const onSubmitHandler = (data:Form) => {
     console.log(data)
   }
-  
-
-  // const initalFormState = {
-  //   title: "",
-  //   companyName: "",
-  //   url: "",
-  //   location: "",
-  //   companyWebsite: "",
-  //   deadline: "",
-  //   remoteType: "Hybrid",
-  //   priority: "Low",
-  //   currentStage: "Applied",
-  //   description: "",
-  //   labels: []
-  // }
-  // const [formState, setFormState] = useState(initalFormState)
 
   return (
     <>
@@ -143,4 +127,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default JobForm;

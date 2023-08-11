@@ -1,9 +1,9 @@
-import Form from '@/components/Form';
+import JobForm from "@/components/JobForm";
 
 export default function NewJob() {
   return (
     <>
-      <Form />
+      <JobForm />
     </>
   );
 }
