@@ -7,7 +7,7 @@ export function MainHeader() {
   // TODO: replace with Button component
   const isAuth = false;
   return (
-    <header className={`flex justify-between w-full 2xl:max-w-7xl py-m`}>
+    <header className={`flex justify-between 2xl:max-w-7xl py-m`}>
       <Link href="/" className="font-500 text-xxl">
         EMPLEO.
       </Link>
