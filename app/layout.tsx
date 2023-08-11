@@ -5,6 +5,7 @@ import Providers from '../utils/provider';
 import { Footer } from '@/components/shared/Footer';
 import { cn } from '@/utils/cn';
 import MainHeader from '@/components/MainHeader';
+import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
     title: 'there will be a name',
@@ -17,14 +18,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body className="cloud-background font-Default text-basicColors-light">
-                <div className="max-w-[1280px] flex flex-col justify-between mx-xl xl:mx-xxl 2xl:mx-auto">
-                    <MainHeader />
-                    <Providers>{children}</Providers>
-                    <Footer />
-                </div>
-            </body>
-        </html>
+        <ClerkProvider>
+            <html lang="en">
+                <body className="cloud-background font-Default text-basicColors-light">
+                    <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
+                        <MainHeader />
+                        {children}
+                        <footer className="flex justify-center py-m w-screen">
+                            {' '}
+                            Footer Placeholder{' '}
+                        </footer>
+                    </div>
+                </body>
+            </html>
+        </ClerkProvider>
     );
 }
