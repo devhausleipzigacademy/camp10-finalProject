@@ -5,8 +5,6 @@ import { auth, UserButton, SignOutButton } from '@clerk/nextjs';
 import Button from './shared/Button';
 
 export function MainHeader() {
-    // TODO: replace with clerk auth
-    // TODO: replace with Button component
 
     const { userId } = auth();
     return (
