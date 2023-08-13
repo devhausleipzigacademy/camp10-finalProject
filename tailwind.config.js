@@ -61,6 +61,7 @@ module.exports = {
             xxs: '0.900rem',
         },
         spacing: {
+            xxxl: '5rem',
             xxl: '4rem',
             xl: '2.5rem',
             l: '2rem',

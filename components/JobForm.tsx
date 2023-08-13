@@ -37,11 +37,11 @@ function JobForm() {
     };
 
     return (
-        <>
-            <form
-                className="flex gap-l"
-                onSubmit={handleSubmit(onSubmitHandler)}
-            >
+        <form
+            className="flex flex-col gap-xl border px-xxxl py-xxl ui-background"
+            onSubmit={handleSubmit(onSubmitHandler)}
+        >
+            <div className='flex gap-xxl'>
                 <div className="flex flex-col w-1/2 gap-xs text-s">
                     <Input
                         label="Job Title"
@@ -131,12 +131,17 @@ function JobForm() {
                         {...register('priority')}
                     ></Select>
                     <TagsInput />
-                    <Button className="m-auto" variant="hover" type="submit">
-                        Create
-                    </Button>
                 </div>
-            </form>
-        </>
+            </div>
+            <Button
+                className="ml-auto"
+                variant="hover"
+                type="submit"
+                size="small"
+            >
+                Create
+            </Button>
+        </form>
     );
 }
 
