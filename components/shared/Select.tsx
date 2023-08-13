@@ -20,7 +20,6 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, is
         id={id}
         {...props}
         ref={ref}
-        defaultValue={''}
       >
         <option disabled value={''}></option>
         {options.map(opt => (

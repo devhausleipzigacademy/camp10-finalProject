@@ -105,6 +105,7 @@ function JobForm() {
                         id="remoteType"
                         isRequired={false}
                         options={['Onsite', 'Remote', 'Hybrid']}
+                        defaultValue={''}
                         {...register('remoteType')}
                         error={errors.remoteType}
                     ></Select>
@@ -112,6 +113,7 @@ function JobForm() {
                         label="Current Stage"
                         id="currentStage"
                         isRequired={true}
+                        defaultValue={'Scouted'}
                         options={[
                             'Scouted',
                             'Applied',
@@ -127,6 +129,7 @@ function JobForm() {
                         id="priority"
                         isRequired={false}
                         options={['Low', 'Medium', 'High']}
+                        defaultValue={''}
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
