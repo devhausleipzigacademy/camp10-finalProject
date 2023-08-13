@@ -13,8 +13,8 @@ interface SelectProps extends Select {
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, isRequired, options, error, ...props }, ref) => {
   return (
-    <>
-      <label htmlFor={id}>{`${label} ${isRequired ? '*' : ''}`}</label>
+    <div className='flex flex-col gap-xs'>
+      <label htmlFor={id} className='text-s font-600'>{`${label} ${isRequired ? '*' : ''}`}</label>
       <select
         className="bg-basicColors-dark bg-opacity-0 h-xl p-xs border rounded-[0.3125rem] border-borderColors-borderLight focus:outline focus:outline-2 focus:outline-basicColors-light"
         id={id}
@@ -36,7 +36,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, is
       {error && (
         <small className="text-cardColors-red text-xxxs">{error.message}</small>
       )}
-    </>
+    </div>
   );
 })
 

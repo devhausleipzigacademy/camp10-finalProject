@@ -13,10 +13,10 @@ interface InputProps extends Input {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, isRequired, id, error, ...props }, ref) => {
   return (
-    <>
-      <label htmlFor={id}>{`${label} ${isRequired ? '*' : ''}`}</label>
+    <div className='flex flex-col gap-xs'>
+      <label htmlFor={id} className='text-s font-600'>{`${label} ${isRequired ? '*' : ''}`}</label>
       <input
-        className="bg-basicColors-dark bg-opacity-0 border h-xl p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight"
+        className="bg-basicColors-dark bg-opacity-0 border h-xl text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight"
         id={id}
         {...props}
         ref={ref}
@@ -24,7 +24,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, isRequire
       {error && (
         <small className="text-cardColors-red text-xxxs">{error.message}</small>
       )}
-    </>
+    </div>
   );
 })
 

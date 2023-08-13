@@ -38,11 +38,11 @@ function JobForm() {
 
     return (
         <form
-            className="flex flex-col gap-xl border px-xxxl py-xxl ui-background"
+            className="flex flex-col gap-xl border px-xxxl py-xl ui-background"
             onSubmit={handleSubmit(onSubmitHandler)}
         >
             <div className='flex gap-xxl'>
-                <div className="flex flex-col w-1/2 gap-xs text-s">
+                <div className="flex flex-col w-1/2 gap-s text-s">
                     <Input
                         label="Job Title"
                         id="title"
@@ -87,11 +87,11 @@ function JobForm() {
                     <textarea
                         className="bg-basicColors-dark bg-opacity-0 border p-xs rounded-[0.3125rem] border-borderColors-borderLight focus:outline focus:outline-2 focus:outline-basicColors-light"
                         id="description"
-                        rows={8}
+                        rows={5}
                         {...register('description')}
                     ></textarea>
                 </div>
-                <div className="flex flex-col w-1/2 gap-xs text-s">
+                <div className="flex flex-col w-1/2 gap-s text-s">
                     <Input
                         label="Company Website"
                         id="companyWebsite"
