@@ -19,12 +19,12 @@ export function MainHeader() {
                 {!userId && (
                     <>
                         <Link href="/login">
-                            <Button variant='primary' size='tiny'>
+                            <Button variant="primary" size="tiny">
                                 Login
                             </Button>
                         </Link>
                         <Link href="/registration">
-                            <Button variant='active' size='tiny'>
+                            <Button variant="active" size="tiny">
                                 Register
                             </Button>
                         </Link>
@@ -32,9 +32,7 @@ export function MainHeader() {
                 )}
                 {userId && (
                     <>
-                        <Link href="/">
-                            <UserButton afterSignOutUrl="/" />
-                        </Link>
+                        <UserButton afterSignOutUrl="/" />
                         <Button variant="primary" size="tiny">
                             <SignOutButton />
                         </Button>
