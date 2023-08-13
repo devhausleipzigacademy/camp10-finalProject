@@ -111,7 +111,7 @@ function JobForm() {
                     <Select
                         label="Current Stage"
                         id="currentStage"
-                        isRequired={false}
+                        isRequired={true}
                         options={[
                             'Scouted',
                             'Applied',
