@@ -22,20 +22,10 @@ enum priority {
   High
 }
 
-// model Board {
-//   id      String   @unique // === userId from clerck
-//   columns Column[]
-//   jobs    Job[]
-//   tags    Tag[]
-// }
-
 model Tag {
   id             Int              @id @default(autoincrement())
   name           String           @unique
   userId         String
-  // boardId        String
-  // board          Board            @relation(fields: [boardId], references: [id])
-  // JobTaggedbyTag JobTaggedbyTag[]
   job Job[]
 }
 
@@ -45,7 +35,6 @@ model Column {
   positionInBoard Int
   color           String
   title           String
-  // board           Board  @relation(fields: [boardId], references: [id])
   jobs            Job[]
 }
 
@@ -53,7 +42,6 @@ model Job {
   id               String           @id @default(uuid())
   userId           String
   columnId         String
-  // board            Board            @relation(fields: [boardId], references: [id])
   column           Column           @relation(fields: [columnId], references: [id])
   title            String
   url              String
@@ -65,15 +53,5 @@ model Job {
   positionInColumn Int
   remoteType       remoteType?
   priority         priority?
-  // JobTaggedbyTag   JobTaggedbyTag[]
   tag Tag[]
 }
-
-// model JobTaggedbyTag {
-//   jobId String
-//   tagId Int
-//   job   Job    @relation(fields: [jobId], references: [id])
-//   tag   Tag    @relation(fields: [tagId], references: [id])
-
-//   @@id([jobId, tagId])
-// }
