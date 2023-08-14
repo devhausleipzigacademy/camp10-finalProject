@@ -1,14 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { HiArrowNarrowRight } from 'react-icons/hi';
-import { auth } from '@clerk/nextjs';
-import { UserButton } from '@clerk/nextjs';
+import { auth, UserButton, SignOutButton } from '@clerk/nextjs';
+import Button from './shared/Button';
 
 export function MainHeader() {
-    // TODO: replace with clerk auth
-    // TODO: replace with Button component
 
-    const { isAuth } = auth();
+    const { userId } = auth();
     return (
         <header className={`flex justify-between 2xl:max-w-7xl py-m`}>
             <Link href="/" className="font-500 text-xxl">
@@ -16,27 +14,27 @@ export function MainHeader() {
             </Link>
             <nav className="space-x-s flex items-center">
                 <HiArrowNarrowRight className="text-xl" />
-                {!isAuth && (
+                {!userId && (
                     <>
                         <Link href="/login">
-                            <button className="border border-basicColors-light rounded-full px-s py-xxs hover:cursor-pointer">
+                            <Button variant="primary" size="tiny">
                                 Login
-                            </button>
+                            </Button>
                         </Link>
                         <Link href="/registration">
-                            <button className="border border-basicColors-light rounded-full px-s py-xxs hover:cursor-pointer">
+                            <Button variant="active" size="tiny">
                                 Register
-                            </button>
-                        </Link>
-                        <Link href="/">
-                            <UserButton afterSignOutUrl="/" />
+                            </Button>
                         </Link>
                     </>
                 )}
-                {isAuth && (
-                    <button className="border border-basicColors-light rounded-full px-s py-xxs hover:cursor-pointer">
-                        Logout
-                    </button>
+                {userId && (
+                    <>
+                        <UserButton afterSignOutUrl="/" />
+                        <Button variant="primary" size="tiny">
+                            <SignOutButton />
+                        </Button>
+                    </>
                 )}
             </nav>
         </header>
