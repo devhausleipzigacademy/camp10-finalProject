@@ -1,8 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Footer } from '@/components/shared/Footer';
-import { cn } from '@/utils/cn';
-import MainHeader from '@/components/MainHeader';
+import { MainHeader } from '@/components/MainHeader';
 import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata: Metadata = {

@@ -5,12 +5,36 @@ import { auth, UserButton, SignOutButton } from '@clerk/nextjs';
 import Button from './shared/Button';
 
 export function MainHeader() {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    // TODO: replace with clerk auth
+    // TODO: replace with Button component
+>>>>>>> f37694d (fix layout)
 
     const { userId } = auth();
     return (
         <header className={`flex justify-between 2xl:max-w-7xl py-m`}>
             <Link href="/" className="font-500 text-xxl">
                 EMPLEO.
+=======
+  // TODO: replace with clerk auth
+  // TODO: replace with Button component
+  const isAuth = false;
+  return (
+    <header className={`flex justify-between 2xl:max-w-7xl py-m`}>
+      <Link href="/" className="font-500 text-xxl">
+        EMPLEO.
+      </Link>
+      <nav className="space-x-s flex items-center">
+        <HiArrowNarrowRight className="text-xl" />
+        {!isAuth && (
+          <>
+            <Link href="/login">
+              <button className="border border-basicColors-light rounded-full px-s py-xxs hover:cursor-pointer">
+                Login
+              </button>
+>>>>>>> 8d560e4 (fix layout)
             </Link>
             <nav className="space-x-s flex items-center">
                 <HiArrowNarrowRight className="text-xl" />
