@@ -34,7 +34,9 @@ export function MainHeader() {
                         <Button variant="primary" size="tiny">
                             <SignOutButton />
                         </Button>
+                        <span>{userId}</span>
                     </>
+
                 )}
             </nav>
         </header>
