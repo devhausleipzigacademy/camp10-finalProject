@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Footer } from '@/components/shared/Footer';
 import { MainHeader } from '@/components/MainHeader';
+import Providers from '@/utils/provider';
 import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
@@ -16,15 +17,17 @@ export default function RootLayout({
 }) {
     return (
         <ClerkProvider>
-            <html lang="en">
-                <body className="cloud-background font-Default text-basicColors-light flex justify-center">
-                    <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
-                        <MainHeader />
-                        {children}
-                        <Footer />
-                    </div>
-                </body>
-            </html>
+            <Providers>
+                <html lang="en">
+                    <body className="cloud-background font-Default text-basicColors-light flex justify-center">
+                        <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
+                            <MainHeader />
+                            {children}
+                            <Footer />
+                        </div>
+                    </body>
+                </html>
+            </Providers>
         </ClerkProvider>
     );
 }
