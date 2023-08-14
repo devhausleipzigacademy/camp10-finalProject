@@ -21,9 +21,9 @@ function TagsInput() {
   return (
     <div className='flex flex-col gap-xs'>
       <label htmlFor="tags" className='text-s font-600'>Tags</label>
-      <div className="flex items-center gap-xs px-xxs bg-basicColors-dark bg-opacity-0 border focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
+      <div className="flex items-center w-full flex-wrap gap-x-xs px-xxs bg-basicColors-dark bg-opacity-0 border focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
         {tags.map((tag, index) => (
-            <div className="flex bg-opacity-0 border rounded-full h-4/5 px-xs text-xs items-center gap-xxs">
+            <div className="flex bg-opacity-0 border rounded-full h-m px-xs py-xxs my-xs text-xs items-center gap-xxs">
               <span>{tag}</span>
               <RxCross2 className="text-xxs"/>
             </div>
