@@ -16,6 +16,24 @@ dependencies:
   '@dnd-kit/utilities':
     specifier: ^3.2.1
     version: 3.2.1(react@18.2.0)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  '@hookform/resolvers':
+    specifier: ^3.2.0
+    version: 3.2.0(react-hook-form@7.45.4)
+=======
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+  '@hookform/resolvers':
+    specifier: ^3.2.0
+    version: 3.2.0(react-hook-form@7.45.4)
+>>>>>>> 598a173 (use form hook)
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
   '@prisma/client':
     specifier: 5.1.0
     version: 5.1.0(prisma@5.1.0)
@@ -67,6 +85,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-hook-form:
+    specifier: ^7.45.4
+    version: 7.45.4(react@18.2.0)
   react-icons:
     specifier: ^4.10.1
     version: 4.10.1(react@18.2.0)
@@ -200,8 +221,21 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       csstype: 3.1.1
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     dev: false
 
+=======
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+    dev: false
+
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+    dev: false
+
+>>>>>>> main
   /@dnd-kit/accessibility@3.0.1(react@18.2.0):
     resolution: {integrity: sha512-HXRrwS9YUYQO9lFRc/49uO/VICbM+O+ZRpFDe9Pd1rwVv2PCNkRiTZRdxrDgng/UkvdC3Re9r2vwPpXXrWeFzg==}
     peerDependencies:
@@ -282,6 +316,14 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: false
 
+  /@hookform/resolvers@3.2.0(react-hook-form@7.45.4):
+    resolution: {integrity: sha512-skXQHhLxq0Sz2xDwCyv5dygBCtXJe1GmWwxDzfdtl0X6agD6qcyTG8HrZWkjJoy8AkiLARqYvSYJ8z7+Nwmi7w==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.45.4(react@18.2.0)
+    dev: false
+
   /@humanwhocodes/config-array@0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}
     engines: {node: '>=10.10.0'}
@@ -333,7 +375,20 @@ packages:
     dev: false
 
   /@next/env@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-RmHanbV21saP/6OEPBJ7yJMuys68cIf8OBBWd7+uj40LdpmswVAwe1uzeuFyUsd6SfeITWT3XnQfn6wULeKwDQ==}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-RmHanbV21saP/6OEPBJ7yJMuys68cIf8OBBWd7+uj40LdpmswVAwe1uzeuFyUsd6SfeITWT3XnQfn6wULeKwDQ==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /@next/eslint-plugin-next@13.4.12:
@@ -343,8 +398,16 @@ packages:
     dev: false
 
   /@next/swc-darwin-arm64@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-deUrbCXTMZ6ZhbOoloqecnUeNpUOupi8SE2tx4jPfNS9uyUR9zK4iXBvH65opVcA/9F5I/p8vDXSYbUlbmBjZg==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-deUrbCXTMZ6ZhbOoloqecnUeNpUOupi8SE2tx4jPfNS9uyUR9zK4iXBvH65opVcA/9F5I/p8vDXSYbUlbmBjZg==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
@@ -352,8 +415,16 @@ packages:
     optional: true
 
   /@next/swc-darwin-x64@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-WRvH7RxgRHlC1yb5oG0ZLx8F7uci9AivM5/HGGv9ZyG2Als8Ij64GC3d+mQ5sJhWjusyU6T6V1WKTUoTmOB0zQ==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-WRvH7RxgRHlC1yb5oG0ZLx8F7uci9AivM5/HGGv9ZyG2Als8Ij64GC3d+mQ5sJhWjusyU6T6V1WKTUoTmOB0zQ==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
@@ -361,14 +432,29 @@ packages:
     optional: true
 
   /@next/swc-linux-arm64-gnu@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-YEKracAWuxp54tKiAvvq73PUs9lok57cc8meYRibTWe/VdPB2vLgkTVWFcw31YDuRXdEhdX0fWS6Q+ESBhnEig==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-YEKracAWuxp54tKiAvvq73PUs9lok57cc8meYRibTWe/VdPB2vLgkTVWFcw31YDuRXdEhdX0fWS6Q+ESBhnEig==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
   /@next/swc-linux-arm64-musl@13.4.12:
     resolution: {integrity: sha512-LhJR7/RAjdHJ2Isl2pgc/JaoxNk0KtBgkVpiDJPVExVWA1c6gzY57+3zWuxuyWzTG+fhLZo2Y80pLXgIJv7g3g==}
     engines: {node: '>= 10'}
@@ -381,6 +467,14 @@ packages:
   /@next/swc-linux-x64-gnu@13.4.12:
     resolution: {integrity: sha512-1DWLL/B9nBNiQRng+1aqs3OaZcxC16Nf+mOnpcrZZSdyKHek3WQh6j/fkbukObgNGwmCoVevLUa/p3UFTTqgqg==}
     engines: {node: '>= 10'}
+=======
+  /@next/swc-linux-x64-gnu@13.4.12:
+    resolution:
+      {
+        integrity: sha512-1DWLL/B9nBNiQRng+1aqs3OaZcxC16Nf+mOnpcrZZSdyKHek3WQh6j/fkbukObgNGwmCoVevLUa/p3UFTTqgqg==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [x64]
     os: [linux]
     requiresBuild: true
@@ -388,8 +482,16 @@ packages:
     optional: true
 
   /@next/swc-linux-x64-musl@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-kEAJmgYFhp0VL+eRWmUkVxLVunn7oL9Mdue/FS8yzRBVj7Z0AnIrHpTIeIUl1bbdQq1VaoOztnKicAjfkLTRCQ==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-kEAJmgYFhp0VL+eRWmUkVxLVunn7oL9Mdue/FS8yzRBVj7Z0AnIrHpTIeIUl1bbdQq1VaoOztnKicAjfkLTRCQ==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [x64]
     os: [linux]
     requiresBuild: true
@@ -397,8 +499,16 @@ packages:
     optional: true
 
   /@next/swc-win32-arm64-msvc@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-GMLuL/loR6yIIRTnPRY6UGbLL9MBdw2anxkOnANxvLvsml4F0HNIgvnU3Ej4BjbqMTNjD4hcPFdlEow4XHPdZA==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-GMLuL/loR6yIIRTnPRY6UGbLL9MBdw2anxkOnANxvLvsml4F0HNIgvnU3Ej4BjbqMTNjD4hcPFdlEow4XHPdZA==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
@@ -406,8 +516,16 @@ packages:
     optional: true
 
   /@next/swc-win32-ia32-msvc@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-PhgNqN2Vnkm7XaMdRmmX0ZSwZXQAtamBVSa9A/V1dfKQCV1rjIZeiy/dbBnVYGdj63ANfsOR/30XpxP71W0eww==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-PhgNqN2Vnkm7XaMdRmmX0ZSwZXQAtamBVSa9A/V1dfKQCV1rjIZeiy/dbBnVYGdj63ANfsOR/30XpxP71W0eww==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
@@ -415,8 +533,16 @@ packages:
     optional: true
 
   /@next/swc-win32-x64-msvc@13.4.12:
+<<<<<<< HEAD
     resolution: {integrity: sha512-Z+56e/Ljt0bUs+T+jPjhFyxYBcdY2RIq9ELFU+qAMQMteHo7ymbV7CKmlcX59RI9C4YzN8PgMgLyAoi916b5HA==}
     engines: {node: '>= 10'}
+=======
+    resolution:
+      {
+        integrity: sha512-Z+56e/Ljt0bUs+T+jPjhFyxYBcdY2RIq9ELFU+qAMQMteHo7ymbV7CKmlcX59RI9C4YzN8PgMgLyAoi916b5HA==,
+      }
+    engines: { node: '>= 10' }
+>>>>>>> be21434 (resolve lock conflicts])
     cpu: [x64]
     os: [win32]
     requiresBuild: true
@@ -445,6 +571,13 @@ packages:
     dev: false
 
   /@panva/hkdf@1.1.1:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==}
     dev: false
 
@@ -472,6 +605,18 @@ packages:
       pvtsutils: 1.3.3
       tslib: 2.6.1
       webcrypto-core: 1.7.7
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /@pkgr/utils@2.4.2:
@@ -557,6 +702,7 @@ packages:
     dev: false
 
   /@tanstack/table-core@8.9.3:
+<<<<<<< HEAD
     resolution: {integrity: sha512-NpHZBoHTfqyJk0m/s/+CSuAiwtebhYK90mDuf5eylTvgViNOujiaOaxNDxJkQQAsVvHWZftUGAx1EfO1rkKtLg==}
     engines: {node: '>=12'}
     dev: false
@@ -630,6 +776,26 @@ packages:
 
   /@types/node@16.18.6:
     resolution: {integrity: sha512-vmYJF0REqDyyU0gviezF/KHq/fYaUbFhkcNbQCuPGFQj6VTbXuHZoxs/Y7mutWe73C8AC6l9fFu8mSYiBAqkGA==}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-NpHZBoHTfqyJk0m/s/+CSuAiwtebhYK90mDuf5eylTvgViNOujiaOaxNDxJkQQAsVvHWZftUGAx1EfO1rkKtLg==,
+      }
+    engines: { node: '>=12' }
+    dev: false
+
+  /@types/json5@0.0.29:
+    resolution:
+      {
+        integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /@types/node@20.4.5:
@@ -637,6 +803,13 @@ packages:
     dev: false
 
   /@types/prop-types@15.7.5:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: false
 
@@ -646,6 +819,18 @@ packages:
 
   /@types/range-parser@1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /@types/react-dom@18.2.7:
@@ -663,6 +848,13 @@ packages:
     dev: false
 
   /@types/scheduler@0.16.3:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
     dev: false
 
@@ -683,6 +875,12 @@ packages:
 
   /@types/uuid@9.0.2:
     resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
+=======
+    resolution:
+      {
+        integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
     dev: false
 
   /@typescript-eslint/parser@5.62.0(eslint@8.46.0)(typescript@5.1.6):
@@ -894,11 +1092,30 @@ packages:
     dev: false
 
   /ast-types-flow@0.0.7:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==}
     dev: false
 
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /autoprefixer@10.4.14(postcss@8.4.27):
@@ -1006,6 +1223,7 @@ packages:
     dev: false
 
   /camelcase-css@2.0.1:
+<<<<<<< HEAD
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
     dev: false
@@ -1022,6 +1240,19 @@ packages:
   /camelcase@5.3.1:
     resolution: {integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==}
     engines: {node: '>=6'}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==,
+      }
+    engines: { node: '>= 6' }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /caniuse-lite@1.0.30001519:
@@ -1068,6 +1299,13 @@ packages:
     dev: false
 
   /color-name@1.1.4:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: false
 
@@ -1076,6 +1314,18 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /commander@4.1.1:
@@ -1143,12 +1393,31 @@ packages:
     dev: false
 
   /deep-is@0.1.4:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
     dev: false
 
   /deepmerge@4.2.2:
     resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
     engines: {node: '>=0.10.0'}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /default-browser-id@3.0.0:
@@ -2130,12 +2399,31 @@ packages:
     dev: false
 
   /jose@4.14.4:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==}
     dev: false
 
   /js-cookie@3.0.1:
     resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
     engines: {node: '>=12'}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /js-tokens@4.0.0:
@@ -2313,7 +2601,20 @@ packages:
     dev: false
 
   /next-auth@4.22.3(next@13.4.12)(react-dom@18.2.0)(react@18.2.0):
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-XAgy9xV3J2eJOXrQhmxdjV6MLM29ibm6WtMXc3KY6IPZeApf+SuBuPvlqCUfbu5YsAzlg9WSw6u01dChTfeZOA==}
+=======
+    resolution:
+      {
+        integrity: sha512-XAgy9xV3J2eJOXrQhmxdjV6MLM29ibm6WtMXc3KY6IPZeApf+SuBuPvlqCUfbu5YsAzlg9WSw6u01dChTfeZOA==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5
@@ -2338,8 +2639,16 @@ packages:
     dev: false
 
   /next@13.4.12(react-dom@18.2.0)(react@18.2.0):
+<<<<<<< HEAD
     resolution: {integrity: sha512-eHfnru9x6NRmTMcjQp6Nz0J4XH9OubmzOa7CkWL+AUrUxpibub3vWwttjduu9No16dug1kq04hiUUpo7J3m3Xw==}
     engines: {node: '>=16.8.0'}
+=======
+    resolution:
+      {
+        integrity: sha512-eHfnru9x6NRmTMcjQp6Nz0J4XH9OubmzOa7CkWL+AUrUxpibub3vWwttjduu9No16dug1kq04hiUUpo7J3m3Xw==,
+      }
+    engines: { node: '>=16.8.0' }
+>>>>>>> be21434 (resolve lock conflicts])
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -2598,11 +2907,24 @@ packages:
     dev: false
 
   /path-parse@1.0.7:
+<<<<<<< HEAD
+<<<<<<< HEAD
+    resolution:
+      {
+        integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==,
+      }
+=======
+=======
+>>>>>>> main
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
     dev: false
 
   /path-to-regexp@6.2.1:
     resolution: {integrity: sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==}
+<<<<<<< HEAD
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /path-type@4.0.0:
@@ -2751,6 +3073,7 @@ packages:
     dev: false
 
   /punycode@2.3.0:
+<<<<<<< HEAD
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
     engines: {node: '>=6'}
     dev: false
@@ -2773,6 +3096,26 @@ packages:
   /quick-lru@4.0.1:
     resolution: {integrity: sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==}
     engines: {node: '>=8'}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==,
+      }
+    engines: { node: '>=6' }
+    dev: false
+
+  /queue-microtask@1.2.3:
+    resolution:
+      {
+        integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /react-dom@18.2.0(react@18.2.0):
@@ -2783,6 +3126,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form@7.45.4(react@18.2.0):
+    resolution: {integrity: sha512-HGDV1JOOBPZj10LB3+OZgfDBTn+IeEsNOKiq/cxbQAIbKaiJUe/KV8DBUzsx0Gx/7IG/orWqRRm736JwOfUSWQ==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-icons@4.10.1(react@18.2.0):
@@ -2949,6 +3301,7 @@ packages:
     dev: false
 
   /slash@4.0.0:
+<<<<<<< HEAD
     resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
     engines: {node: '>=12'}
     dev: false
@@ -2975,6 +3328,19 @@ packages:
       map-obj: 4.3.0
       snake-case: 3.0.4
       type-fest: 2.19.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==,
+      }
+    engines: { node: '>=12' }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /source-map-js@1.0.2:
@@ -3091,6 +3457,7 @@ packages:
     dev: false
 
   /supports-preserve-symlinks-flag@1.0.0:
+<<<<<<< HEAD
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: false
@@ -3101,6 +3468,19 @@ packages:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==,
+      }
+    engines: { node: '>= 0.4' }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /synckit@0.8.5:
@@ -3169,12 +3549,26 @@ packages:
     dev: false
 
   /titleize@3.0.0:
+<<<<<<< HEAD
     resolution: {integrity: sha512-KxVu8EYHDPBdUYdKZdKtU2aj2XfEx9AfjXxE/Aj0vT06w2icA09Vus1rh6eSu1y01akYg6BjIK/hxyLJINoMLQ==}
     engines: {node: '>=12'}
     dev: false
 
   /to-no-case@1.0.2:
     resolution: {integrity: sha512-Z3g735FxuZY8rodxV4gH7LxClE4H0hTIyHNIHdk+vpQxjLm0cwnKXq/OFVZ76SOQmto7txVcwSCwkU5kqp+FKg==}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-KxVu8EYHDPBdUYdKZdKtU2aj2XfEx9AfjXxE/Aj0vT06w2icA09Vus1rh6eSu1y01akYg6BjIK/hxyLJINoMLQ==,
+      }
+    engines: { node: '>=12' }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /to-regex-range@5.0.1:
@@ -3210,11 +3604,30 @@ packages:
     dev: false
 
   /tslib@1.14.1:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
     dev: false
 
   /tslib@2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==,
+      }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /tslib@2.6.1:
@@ -3239,6 +3652,7 @@ packages:
     dev: false
 
   /type-fest@0.20.2:
+<<<<<<< HEAD
     resolution: {integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==}
     engines: {node: '>=10'}
     dev: false
@@ -3246,6 +3660,19 @@ packages:
   /type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    resolution:
+      {
+        integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==,
+      }
+    engines: { node: '>=10' }
+>>>>>>> be21434 (resolve lock conflicts])
+=======
+>>>>>>> d04eef2 (use Button component in  MainHeader)
+=======
+>>>>>>> main
     dev: false
 
   /typed-array-buffer@1.0.0:
@@ -3336,12 +3763,10 @@ packages:
     dev: false
 
   /uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
-    dev: false
-
-  /uuid@9.0.0:
-    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    resolution:
+      {
+        integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==,
+      }
     hasBin: true
     dev: false
 
