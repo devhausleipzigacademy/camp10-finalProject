@@ -22,27 +22,31 @@ enum priority {
   High
 }
 
+// TODO: use Clerk's webwook to sync user data to the user model 
+
 model Tag {
-  id             Int              @id @default(autoincrement())
-  name           String           @unique
-  userId         String
-  job Job[]
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  userId    String
+  job       Job[]
+  createdAt DateTime @default(now())
 }
 
 model Column {
-  id              String @id @default(uuid())
+  id              String   @id @default(uuid())
   userId          String
   positionInBoard Int
   color           String
   title           String
   jobs            Job[]
+  createdAt       DateTime @default(now())
 }
 
 model Job {
-  id               String           @id @default(uuid())
+  id               String      @id @default(uuid())
   userId           String
   columnId         String
-  column           Column           @relation(fields: [columnId], references: [id])
+  column           Column      @relation(fields: [columnId], references: [id])
   title            String
   url              String
   companyName      String
@@ -53,5 +57,6 @@ model Job {
   positionInColumn Int
   remoteType       remoteType?
   priority         priority?
-  tag Tag[]
+  tag              Tag[]
+  createdAt        DateTime    @default(now())
 }
