@@ -1,6 +1,5 @@
 // import BasicTable from '@/components/BasicTable';
 // import Board from '@/components/Board';
-import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
 import { Column, Job, PrismaClient } from '@prisma/client';
@@ -10,39 +9,6 @@ const prisma = new PrismaClient();
 export type ColumnWithJobs = Omit<Column, 'userId' | 'createdAt'> & {
     jobs: Job[];
 };
-
-const DUMMY_JOBCARD_DATA_FROM_DB: Job[] = [];
-
-const DUMMY_COLUMN_DATA_FROM_DB: ColumnWithJobs[] = [
-    {
-        id: 'c1',
-        positionInBoard: 0,
-        title: 'Scouted',
-        color: '#B4A0D1',
-        jobs: [] as Job[],
-    },
-    {
-        id: 'c2',
-        positionInBoard: 1,
-        title: 'Applied',
-        color: '#CBD87E',
-        jobs: [] as Job[],
-    },
-    {
-        id: 'c3',
-        positionInBoard: 2,
-        title: 'Interview',
-        color: '#FDC959',
-        jobs: DUMMY_JOBCARD_DATA_FROM_DB,
-    },
-    {
-        id: 'c4',
-        positionInBoard: 3,
-        title: 'Offer',
-        color: '#FE5A35',
-        jobs: [],
-    },
-];
 
 const initColumns = [
     {
@@ -74,9 +40,6 @@ const initColumns = [
 
 export default async function KanbanBoard() {
     const { userId } = auth();
-    console.log(userId);
-    type ColumnSchema = Omit<Column, 'createdAt' | 'id'>;
-
     const getColumns = async ():Promise<ColumnWithJobs[]> => {
         // if user is signed in, try to fetch existing columns
         const res = await prisma.column.findMany({
