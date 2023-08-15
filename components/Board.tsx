@@ -1,5 +1,4 @@
 'use client';
-import { v4 as uuid } from 'uuid';
 import {
     DndContext,
     DragEndEvent,
@@ -18,6 +17,7 @@ import JobCard from './JobCard';
 import Column from './Column';
 import { ColumnWithJobs } from '@/app/(dashboard)/page';
 import { Job } from '@prisma/client';
+import { useAuth } from '@clerk/nextjs';
 
 export type Column = {
     id: string;
@@ -49,21 +49,24 @@ export default function Board({columnData}: BoardProps) {
     );
 
     // TODO: use react query to fetch data, if null, create templates and save to the database. 
-    // const { userId } = useAuth();
+    const { userId } = useAuth();
     // const { data: columnsData } = useQuery({
     //     queryKey: ['columns'],
     //     queryFn: () => axios.get(`/api/column?userId=${userId}`).then(res => res),
     // })
 
-    function createNewCol() {
-        const colToAdd: ColumnWithJobs = {
-            id: uuid(),
-            title: `Title`,
+    function createNewCol(userId: string) {
+        const colToAdd: Omit<ColumnWithJobs, "id"> = {
+            title: `New Column`,
             positionInBoard: columnData.length,
             color: '#4c9a2a',
-            jobs: [],
+            jobs: [] as Job[],
+            createdAt: new Date(),
+            userId: userId
         };
-        setCols([...cols, colToAdd]);
+        // TODO: create a new col in database
+        // useMutation?
+        // setCols([...cols, colToAdd]);
     }
 
     function deleteCol(id: string) {
@@ -225,7 +228,7 @@ export default function Board({columnData}: BoardProps) {
                         </SortableContext>
                     </div>
                     <button
-                        onClick={() => createNewCol()}
+                        onClick={() => createNewCol(userId as string)}
                         className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"
                     >
                         <HiOutlinePlusCircle size={30} />
