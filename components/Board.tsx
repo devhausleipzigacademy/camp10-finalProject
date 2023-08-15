@@ -14,9 +14,11 @@ import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
-
+import { auth } from '@clerk/nextjs'
 import JobCard from './JobCard';
 import Column from './Column';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios'
 
 export type Column = {
     id: string;
@@ -86,6 +88,13 @@ export default function Board() {
             },
         })
     );
+
+    // TODO: use react query to fetch data, if null, create templates and save to the database. 
+    const { userId } = auth();
+    const { data: columnsData } = useQuery({
+        queryKey: ['columns'],
+        queryFn: () => axios.get(`/api/columns?userId=${userId}`).then(res => res),
+    })
 
     function createNewCol() {
         const colToAdd: Column = {
