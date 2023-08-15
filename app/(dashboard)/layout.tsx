@@ -7,7 +7,6 @@ export default function DashboardLayout({
 }) {
     return (
         <>
-            <p>Dashboard Layout</p>
             {children}
         </>
     );
