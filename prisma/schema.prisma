@@ -10,8 +10,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-    id    Int     @id @default(autoincrement())
-    email String  @unique
-    name  String?
+enum remoteType {
+  Remote
+  Hybrid
+  Onsite
+}
+
+enum priority {
+  Low
+  Medium
+  High
+}
+
+// TODO: use Clerk's webwook to sync user data to the user model 
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  userId    String
+  job       Job[]
+  createdAt DateTime @default(now())
+}
+
+model Column {
+  id              String   @id @default(uuid())
+  userId          String
+  positionInBoard Int
+  color           String
+  title           String
+  jobs            Job[]
+  createdAt       DateTime @default(now())
+}
+
+model Job {
+  id               String      @id @default(uuid())
+  userId           String
+  columnId         String
+  column           Column      @relation(fields: [columnId], references: [id])
+  title            String
+  url              String
+  companyName      String
+  companyWebsite   String?
+  location         String?
+  description      String?
+  deadline         DateTime?
+  positionInColumn Int
+  remoteType       remoteType?
+  priority         priority?
+  tag              Tag[]
+  createdAt        DateTime    @default(now())
 }
