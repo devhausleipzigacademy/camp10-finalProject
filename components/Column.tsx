@@ -5,9 +5,10 @@ import { Column } from './Board';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
+import { ColumnWithJobs } from '@/app/(dashboard)/page';
 
 type ColumnProps = {
-    column: Column;
+    column: ColumnWithJobs;
     deleteColumn: (id: string) => void;
     children: React.ReactNode;
 };
@@ -50,7 +51,7 @@ export default function Column({
             )}
         >
             <div
-                style={{ borderColor: column.colour }}
+                style={{ borderColor: column.color }}
                 // onClick={() => setEditMode(true)}
                 className="py-6 h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >

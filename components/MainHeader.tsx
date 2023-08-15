@@ -31,10 +31,7 @@ export function MainHeader() {
                 {userId && (
                     <>
                         <UserButton afterSignOutUrl="/" />
-                        <Button variant="primary" size="tiny">
-                            <SignOutButton />
-                        </Button>
-                        <span>{userId}</span>
+                        <SignOutButton/>
                     </>
 
                 )}

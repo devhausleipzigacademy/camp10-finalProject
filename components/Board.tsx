@@ -14,68 +14,39 @@ import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
-import { auth } from '@clerk/nextjs'
 import JobCard from './JobCard';
 import Column from './Column';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios'
+import { ColumnWithJobs } from '@/app/(dashboard)/page';
+import { Job } from '@prisma/client';
 
 export type Column = {
     id: string;
     title: string;
-    colour: string;
+    color: string;
+    positionInBoard: number;
     jobs: Job[];
 };
-export type Job = {
-    id: string;
-    colId: string;
-    job_title: string;
-    company: string;
-    deadline: string;
-    location: string;
-    city: string;
-    url: string;
-};
+// export type Job = {
+//     id: string;
+//     colId: string;
+//     job_title: string;
+//     company: string;
+//     deadline: string;
+//     location: string;
+//     city: string;
+//     url: string;
+// };
 
-const DUMMY_JOBCARD_DATA_FROM_DB: Job[] = [
-    {
-        id: 'J1',
-        colId: 'c3',
-        job_title: 'Human Resources Manager',
-        company: 'Kwideo',
-        deadline: '01-Jul-2023',
-        location: 'France',
-        city: 'Moulins',
-        url: 'https://dedecms.com/vestibulum/proin.json?lectus=at&suspendisse=velit&potenti=eu&in=est&eleifend=congue&quam=elementum&a=in&odio=hac&in=habitasse&hac=platea&habitasse=dictumst&platea=morbi&dictumst=vestibulum&maecenas=velit&ut=id&massa=pretium&quis=iaculis&augue=diam&luctus=erat&tincidunt=fermentum&nulla=justo&mollis=nec&molestie=condimentum&lorem=neque&quisque=sapien&ut=placerat&erat=ante&curabitur=nulla&gravida=justo&nisi=aliquam&at=quis&nibh=turpis&in=eget&hac=elit&habitasse=sodales&platea=scelerisque&dictumst=mauris&aliquam=sit&augue=amet&quam=eros&sollicitudin=suspendisse&vitae=accumsan&consectetuer=tortor&eget=quis&rutrum=turpis&at=sed&lorem=ante&integer=vivamus&tincidunt=tortor&ante=duis&vel=mattis&ipsum=egestas&praesent=metus&blandit=aenean&lacinia=fermentum&erat=donec&vestibulum=ut&sed=mauris&magna=eget&at=massa&nunc=tempor&commodo=convallis&placerat=nulla&praesent=neque&blandit=libero&nam=convallis&nulla=eget&integer=eleifend&pede=luctus&justo=ultricies&lacinia=eu&eget=nibh&tincidunt=quisque&eget=id&tempus=justo&vel=sit&pede=amet&morbi=sapien&porttitor=dignissim&lorem=vestibulum&id=vestibulum&ligula=ante&suspendisse=ipsum&ornare=primis&consequat=in&lectus=faucibus&in=orci',
-    },
-    {
-        id: 'J2',
-        colId: 'c3',
-        job_title: 'Account Coordinator',
-        company: 'Bluezoom',
-        deadline: '21-Jan-2023',
-        location: 'China',
-        city: 'Chengbei',
-        url: 'http://lulu.com/tempus/semper/est/quam/pharetra/magna.aspx?sed=nulla&ante=eget&vivamus=eros&tortor=elementum&duis=pellentesque&mattis=quisque&egestas=porta&metus=volutpat&aenean=erat&fermentum=quisque&donec=erat&ut=eros&mauris=viverra&eget=eget&massa=congue&tempor=eget&convallis=semper&nulla=rutrum&neque=nulla&libero=nunc&convallis=purus&eget=phasellus&eleifend=in&luctus=felis&ultricies=donec&eu=semper&nibh=sapien&quisque=a&id=libero&justo=nam&sit=dui&amet=proin&sapien=leo&dignissim=odio&vestibulum=porttitor&vestibulum=id&ante=consequat&ipsum=in&primis=consequat&in=ut&faucibus=nulla&orci=sed&luctus=accumsan&et=felis&ultrices=ut&posuere=at&cubilia=dolor&curae=quis&nulla=odio&dapibus=consequat&dolor=varius&vel=integer&est=ac&donec=leo&odio=pellentesque&justo=ultrices&sollicitudin=mattis&ut=odio&suscipit=donec&a=vitae&feugiat=nisi&et=nam&eros=ultrices&vestibulum=libero&ac=non&est=mattis&lacinia=pulvinar&nisi=nulla&venenatis=pede&tristique=ullamcorper&fusce=augue',
-    },
-];
 
-const DUMMY_COLUMN_DATA_FROM_DB: Column[] = [
-    { id: 'c1', title: 'Scouted', colour: '#B4A0D1', jobs: [] },
-    { id: 'c2', title: 'Applied', colour: '#CBD87E', jobs: [] },
-    {
-        id: 'c3',
-        title: 'Interview',
-        colour: '#FDC959',
-        jobs: DUMMY_JOBCARD_DATA_FROM_DB,
-    },
-    { id: 'c4', title: 'Offer', colour: '#FE5A35', jobs: [] },
-];
 
-export default function Board() {
-    const [cols, setCols] = useState<Column[]>(DUMMY_COLUMN_DATA_FROM_DB);
+type BoardProps = {
+    columnData: ColumnWithJobs[]
+}
 
-    const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+export default function Board({columnData}: BoardProps) {
+    const [cols, setCols] = useState<ColumnWithJobs[]>(columnData);
+
+    const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(null);
 
     const [activeJob, setActiveJob] = useState<
         (Job & { color: string }) | null
@@ -90,17 +61,18 @@ export default function Board() {
     );
 
     // TODO: use react query to fetch data, if null, create templates and save to the database. 
-    const { userId } = auth();
-    const { data: columnsData } = useQuery({
-        queryKey: ['columns'],
-        queryFn: () => axios.get(`/api/columns?userId=${userId}`).then(res => res),
-    })
+    // const { userId } = useAuth();
+    // const { data: columnsData } = useQuery({
+    //     queryKey: ['columns'],
+    //     queryFn: () => axios.get(`/api/column?userId=${userId}`).then(res => res),
+    // })
 
     function createNewCol() {
-        const colToAdd: Column = {
+        const colToAdd: ColumnWithJobs = {
             id: uuid(),
             title: `Title`,
-            colour: '#4c9a2a',
+            positionInBoard: columnData.length,
+            color: '#4c9a2a',
             jobs: [],
         };
         setCols([...cols, colToAdd]);
@@ -122,7 +94,7 @@ export default function Board() {
             );
             return setActiveJob({
                 ...event.active.data.current.job,
-                color: findParent?.colour,
+                color: findParent?.color,
             });
         }
     }
@@ -254,7 +226,7 @@ export default function Board() {
                                                 <JobCard
                                                     job={job}
                                                     key={job.id}
-                                                    colColor={col.colour}
+                                                    colColor={col.color}
                                                     parent={col.id}
                                                 />
                                             );
