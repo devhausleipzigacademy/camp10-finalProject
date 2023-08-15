@@ -26,18 +26,6 @@ export type Column = {
     positionInBoard: number;
     jobs: Job[];
 };
-// export type Job = {
-//     id: string;
-//     colId: string;
-//     job_title: string;
-//     company: string;
-//     deadline: string;
-//     location: string;
-//     city: string;
-//     url: string;
-// };
-
-
 
 type BoardProps = {
     columnData: ColumnWithJobs[]

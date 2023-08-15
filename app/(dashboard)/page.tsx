@@ -40,17 +40,17 @@ const initColumns = [
 
 export default async function KanbanBoard() {
     const { userId } = auth();
-    const getColumns = async ():Promise<ColumnWithJobs[]> => {
-        // if user is signed in, try to fetch existing columns
+    const getColumns = async (userId: string | undefined): Promise<ColumnWithJobs[]> => {
+        // when user is signed in, try to fetch existing columns
         const res = await prisma.column.findMany({
             where: {
-                userId: userId as string,
+                userId: userId,
             },
             include: {
                 jobs: true,
             },
         });
-        // if response if null, create new columns and job for the user. 
+        // if response if null, create new columns and job for the user.
         if (res.length === 0 && userId) {
             const res = await prisma.column.createMany({
                 data: initColumns.map(col => {
@@ -60,7 +60,6 @@ export default async function KanbanBoard() {
                     };
                 }),
             });
-            console.log('res:', res);
 
             const column = await prisma.column.findFirst({
                 where: {
@@ -82,14 +81,14 @@ export default async function KanbanBoard() {
                         url: 'https://example.com/careers',
                     },
                 });
-                console.log("new job:", resNewJob)
+                console.log('new job:', resNewJob);
             }
-            return await getColumns()
+            return await getColumns(userId);
         }
         return res;
     };
-    let userColumns = await getColumns();
-    console.log('userColumnsFromDB:', userColumns);
+    let userColumns = await getColumns(userId as string);
+    // console.log('userColumnsFromDB:', userColumns);
 
     return <BoardNoSSR columnData={userColumns} />;
     // return <BasicTable />;
