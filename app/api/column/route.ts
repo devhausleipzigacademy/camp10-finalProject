@@ -4,10 +4,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export const GET = async (req: NextRequest, { params }: Params) => {
+export const POST = async (req: NextRequest) => {
+  const body = await req.json()
+  console.log("NewCol:", body)
+  const newColumn = await prisma.column.create({
+    data: body
+  });
+  return NextResponse.json(newColumn);
+};
+
+
+export const GET = async (req: NextRequest) => {
+  const userId = req.nextUrl.searchParams.get("userId") as string;
   const columns = await prisma.column.findMany({
     where: {
-      userId: params.userId
+      userId: userId
     },
     include: {
       jobs: true
@@ -16,4 +27,3 @@ export const GET = async (req: NextRequest, { params }: Params) => {
 
   return NextResponse.json(columns);
 };
-
