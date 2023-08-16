@@ -68,25 +68,6 @@ export default function Board({ columnData }: BoardProps) {
     const [cols, setCols] = useState<ColumnWithJobs[]>(columnsData);
     // const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
 
-    // const createNewColumn = useMutation({
-    //     mutationFn: async (userId: string) => {
-    //         const newCol = await axios
-    //             .post('/api/column', { ...newColumnTemplate } as Omit<
-    //                 ColumnWithJobs,
-    //                 'id' | 'createdAt' | 'jobs'
-    //             >)
-    //             .then(res => res.data);
-    //         return newCol;
-    //     },
-    //     onSuccess: async res => {
-    //         console.log('Fetched Cols:', columnsData);
-    //         await queryClient.invalidateQueries(['columns']);
-    //         console.log('Column added successfully');
-    //     },
-    //     onError: err => {
-    //         console.log('errror');
-    //     },
-    // });
 
     const deleteColumn = useMutation({
         mutationFn: async (columnId: string) =>
