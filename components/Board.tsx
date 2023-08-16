@@ -31,8 +31,6 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-    const [cols, setCols] = useState<ColumnWithJobs[]>(columnData);
-
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
@@ -52,25 +50,38 @@ export default function Board({ columnData }: BoardProps) {
     // TODO: use react query to fetch data, if null, create templates and save to the database.
     const { userId } = useAuth();
     const queryClient = useQueryClient();
-    const { data: columnsData } = useQuery({
+    const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
         queryFn: () =>
-            axios.get(`/api/column?userId=${userId}`).then(res => res),
+            axios.get(`/api/column?userId=${userId}`).then(res => res.data),
+        initialData: columnData,
     });
 
-    const newColumnTemplate = {
+    const newColumnTemplate: ColumnWithJobs = {
+        id: '',
         title: 'title',
         positionInBoard: columnData.length,
         color: '#4c9a2a',
+        userId: userId as string,
+        createdAt: new Date(),
+        jobs: [] as Job[],
     };
 
+    const [cols, setCols] = useState<ColumnWithJobs[]>(columnsData);
+    const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
+
     const createNewColumn = useMutation({
-        mutationFn: async (userId: string) =>
-            await axios
-                .post('/api/column', { ...newColumnTemplate, userId})
-                .then(res => res.data),
+        mutationFn: async (userId: string) => {
+            const newCol = await axios
+                .post('/api/column', { ...newColumnTemplate } as Omit<
+                    ColumnWithJobs,
+                    'id' | 'createdAt' | 'jobs'
+                >)
+                .then(res => res.data);
+            return newCol;
+        },
         onSuccess: async res => {
-            console.log("Fetched Cols:", columnsData)
+            console.log('Fetched Cols:', columnsData);
             await queryClient.invalidateQueries(['columns']);
             console.log('Column added successfully');
         },
@@ -80,12 +91,9 @@ export default function Board({ columnData }: BoardProps) {
     });
 
     const deleteColumn = useMutation({
-        mutationFn: async (userId: string) =>
-            await axios
-                .post('/api/column', { ...newColumnTemplate, userId})
-                .then(res => res.data),
+        mutationFn: async (columnId: string) =>
+            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
-            console.log("Fetched Cols:", columnsData)
             await queryClient.invalidateQueries(['columns']);
             console.log('Column added successfully');
         },
@@ -227,7 +235,10 @@ export default function Board({ columnData }: BoardProps) {
                                 <Column
                                     key={col.id}
                                     column={col}
-                                    deleteColumn={() => {deleteColumn}}
+                                    isNewColumn={false}
+                                    deleteColumn={() => {
+                                        deleteColumn.mutateAsync(col.id);
+                                    }}
                                 >
                                     <SortableContext
                                         items={col.jobs.map(job => job.id)}
@@ -245,10 +256,52 @@ export default function Board({ columnData }: BoardProps) {
                                     </SortableContext>
                                 </Column>
                             ))}
+                            {newCols &&
+                                newCols.map((col, idx) => {
+                                    return (
+                                        <Column
+                                            key={idx}
+                                            column={col}
+                                            isNewColumn={true}
+                                            deleteColumn={() => null}
+                                        >
+                                            <SortableContext
+                                                items={col.jobs.map(
+                                                    job => job.id
+                                                )}
+                                            >
+                                                {col.jobs.map(job => {
+                                                    return (
+                                                        <JobCard
+                                                            job={job}
+                                                            key={job.id}
+                                                            colColor={
+                                                                col.color
+                                                            }
+                                                            parent={col.id}
+                                                        />
+                                                    );
+                                                })}
+                                            </SortableContext>
+                                        </Column>
+                                    );
+                                })}
                         </SortableContext>
                     </div>
                     <button
-                        onClick={() => createNewColumn.mutateAsync(userId as string)}
+                        onClick={() => {
+                            setNewCols([
+                                ...newCols,
+                                {
+                                    ...newColumnTemplate,
+                                    id: '',
+                                    userId: userId?.toString(),
+                                    createdAt: new Date(),
+                                    jobs: [] as Job[],
+                                } as ColumnWithJobs,
+                            ]);
+                            // createNewColumn.mutateAsync(userId as string)
+                        }}
                         className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"
                     >
                         <HiOutlinePlusCircle size={30} />
@@ -271,6 +324,7 @@ export default function Board({ columnData }: BoardProps) {
                             <Column
                                 key={activeColumn.id}
                                 column={activeColumn}
+                                isNewColumn={false}
                                 deleteColumn={() => null}
                                 // eslint-disable-next-line react/no-children-prop
                                 children={[]}

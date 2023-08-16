@@ -1,8 +1,6 @@
-import { Column, PrismaClient } from "@prisma/client";
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/components/prismaClient";
 
-const prisma = new PrismaClient();
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json()

@@ -1,22 +1,24 @@
 import { FcLikePlaceholder } from 'react-icons/fc';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
-import { Column } from './Board';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
 import { ColumnWithJobs } from '@/app/(dashboard)/page';
+import { useState } from 'react';
 
 type ColumnProps = {
     column: ColumnWithJobs;
     deleteColumn: (id: string) => void;
     children: React.ReactNode;
+    isNewColumn: boolean;
 };
 
 export default function Column({
     column,
     deleteColumn,
     children,
+    isNewColumn
 }: ColumnProps) {
     const {
         setNodeRef,
@@ -39,6 +41,8 @@ export default function Column({
         transform: CSS.Transform.toString(transform),
     };
 
+    const [isEditable, setIsEditable] = useState(isNewColumn)
+    
     return (
         <div
             ref={setNodeRef}
@@ -59,23 +63,23 @@ export default function Column({
                     <FcLikePlaceholder />
                 </div>
                 <div className="text-3xl font-medium text-[#F2F2F2]">
-                    <h1> {column.title} </h1>
-                    {/* {!editMode && column.title} */}
-                    {/* {editMode && (
+                    {!isEditable && (<h1> {column.title} </h1>)}
+                    {isEditable && (
                         <input
                             className="px-2 bg-black border rounded outline-none focus:border-rose-500"
                             value={column.title}
                             onChange={(e) =>
-                                updateCol(column.id, e.target.value)
+                                // updateCol(column.id, e.target.value)
+                                // TODO: updated col in database
+                                console.log("Edit title of")
                             }
                             autoFocus
-                            onBlur={() => setEditMode(false)}
                             onKeyDown={(e) => {
                                 if (e.key !== "Enter") return;
-                                setEditMode(false);
+                                setIsEditable(false);
                             }}
                         />
-                    )} */}
+                    )}
                 </div>
                 <button
                     onClick={() => deleteColumn(column.id)}
@@ -88,6 +92,7 @@ export default function Column({
             <div className="flex flex-col flex-grow gap-6 p-3 overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
+            <div className='text-cardColors-blue'>Hi {isEditable ? "true" : "false"}</div>
         </div>
     );
 }

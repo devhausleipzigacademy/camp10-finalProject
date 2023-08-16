@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
 import { Column, Job, PrismaClient } from '@prisma/client';
+import prisma from '@/components/prismaClient';
 
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
-const prisma = new PrismaClient();
 export type ColumnWithJobs = Column & {
     jobs: Job[];
 };
