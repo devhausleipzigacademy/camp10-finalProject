@@ -1,4 +1,4 @@
-import prisma from "@/components/prismaClient";
+import prisma from '@/utils/prismaClient';
 // Sample code, not tested
 const getJob = async () => {
     // select title of column from job table based on the relation
@@ -11,7 +11,7 @@ const getJob = async () => {
             },
         },
         where: {
-          userId: "userId",
-        }
+            userId: 'userId',
+        },
     });
 };

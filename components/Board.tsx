@@ -18,19 +18,17 @@ import Column from './Column';
 import { ColumnWithJobs } from '@/app/(dashboard)/page';
 import { Job } from '@prisma/client';
 import { useAuth } from '@clerk/nextjs';
-import {
-    useQuery,
-    useMutation,
-    useQueryClient,
-    QueryClient,
-} from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 type BoardProps = {
     columnData: ColumnWithJobs[];
 };
 
+const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
+
 export default function Board({ columnData }: BoardProps) {
+    // DND
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
@@ -47,7 +45,7 @@ export default function Board({ columnData }: BoardProps) {
         })
     );
 
-    // TODO: use react query to fetch data, if null, create templates and save to the database.
+    // React Query
     const { userId } = useAuth();
     const queryClient = useQueryClient();
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
@@ -68,27 +66,27 @@ export default function Board({ columnData }: BoardProps) {
     };
 
     const [cols, setCols] = useState<ColumnWithJobs[]>(columnsData);
-    const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
+    // const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
 
-    const createNewColumn = useMutation({
-        mutationFn: async (userId: string) => {
-            const newCol = await axios
-                .post('/api/column', { ...newColumnTemplate } as Omit<
-                    ColumnWithJobs,
-                    'id' | 'createdAt' | 'jobs'
-                >)
-                .then(res => res.data);
-            return newCol;
-        },
-        onSuccess: async res => {
-            console.log('Fetched Cols:', columnsData);
-            await queryClient.invalidateQueries(['columns']);
-            console.log('Column added successfully');
-        },
-        onError: err => {
-            console.log('errror');
-        },
-    });
+    // const createNewColumn = useMutation({
+    //     mutationFn: async (userId: string) => {
+    //         const newCol = await axios
+    //             .post('/api/column', { ...newColumnTemplate } as Omit<
+    //                 ColumnWithJobs,
+    //                 'id' | 'createdAt' | 'jobs'
+    //             >)
+    //             .then(res => res.data);
+    //         return newCol;
+    //     },
+    //     onSuccess: async res => {
+    //         console.log('Fetched Cols:', columnsData);
+    //         await queryClient.invalidateQueries(['columns']);
+    //         console.log('Column added successfully');
+    //     },
+    //     onError: err => {
+    //         console.log('errror');
+    //     },
+    // });
 
     const deleteColumn = useMutation({
         mutationFn: async (columnId: string) =>
@@ -122,15 +120,21 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
 
+        // if the dragged el & over el are both Job
         if (
             over.data.current?.type === 'Job' &&
             active.data.current?.type === 'Job'
         ) {
+            // no switching of columns
             if (over.data.current?.parent === active.data.current?.parent) {
+                // get index of the current
                 const parentIndex = cols.findIndex(
+                    // come back later
                     col => col.id === over.data.current?.parent
                 );
+                // get the current column state
                 const parentColumn = cols[parentIndex];
+                // an (new) array after Job is moved
                 const movedArray = arrayMove(
                     parentColumn.jobs,
                     parentColumn.jobs.findIndex(
@@ -140,6 +144,7 @@ export default function Board({ columnData }: BoardProps) {
                         job => job.id === over.data.current?.job.id
                     )
                 );
+                // changing the whole column state (update the jobs of this specific column)
                 setCols([
                     ...cols.slice(0, parentIndex),
                     { ...parentColumn, jobs: movedArray },
@@ -147,7 +152,7 @@ export default function Board({ columnData }: BoardProps) {
                 ]);
                 return;
             }
-
+            // when the Job is going into a different column
             const newColumns = cols.map(column => {
                 if (column.id === over.data.current?.parent) {
                     const currentJob = active.data.current?.job;
@@ -175,6 +180,7 @@ export default function Board({ columnData }: BoardProps) {
                 return column;
             });
             setCols(newColumns);
+            // make a patch mutation that triggers the patch request to change the positionInBoard
         }
 
         if (
@@ -235,7 +241,7 @@ export default function Board({ columnData }: BoardProps) {
                                 <Column
                                     key={col.id}
                                     column={col}
-                                    isNewColumn={false}
+                                    isNewColumn={col.isNewColumn ?? false}
                                     deleteColumn={() => {
                                         deleteColumn.mutateAsync(col.id);
                                     }}
@@ -256,7 +262,7 @@ export default function Board({ columnData }: BoardProps) {
                                     </SortableContext>
                                 </Column>
                             ))}
-                            {newCols &&
+                            {/* {newCols &&
                                 newCols.map((col, idx) => {
                                     return (
                                         <Column
@@ -275,9 +281,7 @@ export default function Board({ columnData }: BoardProps) {
                                                         <JobCard
                                                             job={job}
                                                             key={job.id}
-                                                            colColor={
-                                                                col.color
-                                                            }
+                                                            colColor={col.color}
                                                             parent={col.id}
                                                         />
                                                     );
@@ -285,21 +289,25 @@ export default function Board({ columnData }: BoardProps) {
                                             </SortableContext>
                                         </Column>
                                     );
-                                })}
+                            })} */}
                         </SortableContext>
                     </div>
                     <button
                         onClick={() => {
-                            setNewCols([
-                                ...newCols,
+                            setCols([
+                                ...columnsData,
                                 {
                                     ...newColumnTemplate,
                                     id: '',
+                                    positionInBoard: columnsData.length,
                                     userId: userId?.toString(),
                                     createdAt: new Date(),
                                     jobs: [] as Job[],
+                                    isNewColumn: true,
                                 } as ColumnWithJobs,
                             ]);
+                            // scroll to have certain element in the view
+                            // scroll x = 250px
                             // createNewColumn.mutateAsync(userId as string)
                         }}
                         className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"

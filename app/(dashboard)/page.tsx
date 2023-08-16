@@ -1,11 +1,12 @@
 import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
 import { Column, Job, PrismaClient } from '@prisma/client';
-import prisma from '@/components/prismaClient';
+import prisma from '@/utils/prismaClient';
 
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 export type ColumnWithJobs = Column & {
     jobs: Job[];
+    isNewColumn?: boolean;
 };
 
 const initColumns = [
@@ -38,7 +39,9 @@ const initColumns = [
 
 export default async function KanbanBoard() {
     const { userId } = auth();
-    const getColumns = async (userId: string | undefined): Promise<ColumnWithJobs[]> => {
+    const getColumns = async (
+        userId: string | undefined
+    ): Promise<ColumnWithJobs[]> => {
         // when user is signed in, try to fetch existing columns
         const res = await prisma.column.findMany({
             where: {
