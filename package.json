@@ -17,7 +17,6 @@
         "@hookform/resolvers": "^3.2.0",
         "@prisma/client": "5.1.0",
         "@tanstack/react-query": "^4.32.1",
-        "@tanstack/react-query-devtools": "^4.32.6",
         "@tanstack/react-table": "^8.9.3",
         "@types/node": "20.4.5",
         "@types/react": "18.2.18",
