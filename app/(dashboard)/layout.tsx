@@ -7,6 +7,7 @@ export default function DashboardLayout({
 }) {
     return (
         <>
+            <div>Board Header</div>
             {children}
         </>
     );

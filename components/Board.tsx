@@ -218,14 +218,14 @@ export default function Board({ columnData }: BoardProps) {
     }
 
     return (
-        <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-auto px-[40px]">
+        <div className="flex py-xl w-full overflow-x-scroll">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
                 sensors={sensor}
                 onDragOver={onDragOver}
             >
-                <div className="flex gap-4 m-auto">
+                <div className="flex gap-4">
                     <div className="flex gap-2">
                         <SortableContext
                             items={cols.map(col => col.id)}

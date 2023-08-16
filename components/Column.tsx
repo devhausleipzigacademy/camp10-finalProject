@@ -42,7 +42,7 @@ export default function Column({
     };
 
     const [isEditable, setIsEditable] = useState(isNewColumn)
-    
+
     return (
         <div
             ref={setNodeRef}
@@ -50,7 +50,7 @@ export default function Column({
             {...attributes}
             {...listeners}
             className={cn(
-                'bg-[#0D1117] border px-4 py-2 gap-3 w-[320px] h-[5500px] max-h-[560px] rounded-md flex flex-col',
+                'bg-[#0D1117] border px-4 py-2 gap-3 w-[250px] h-[5500px] max-h-[560px] rounded-md flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -63,7 +63,7 @@ export default function Column({
                     <FcLikePlaceholder />
                 </div>
                 <div className="text-3xl font-medium text-[#F2F2F2]">
-                    {!isEditable && (<h1> {column.title} </h1>)}
+                    {!isEditable && (<h3> {column.title} </h3>)}
                     {isEditable && (
                         <input
                             className="px-2 bg-black border rounded outline-none focus:border-rose-500"
@@ -88,11 +88,9 @@ export default function Column({
                     <HiDotsHorizontal size={20} />
                 </button>
             </div>
-
             <div className="flex flex-col flex-grow gap-6 p-3 overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
-            <div className='text-cardColors-blue'>Hi {isEditable ? "true" : "false"}</div>
         </div>
     );
 }
