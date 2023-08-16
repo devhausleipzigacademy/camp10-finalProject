@@ -1,30 +1,37 @@
 'use client';
 
 import SquareIcon from '@/icons/SquareIcon';
-import InputDashboardHeader from './InputDashboardHeader';
+
 import { useState } from 'react';
 import SearchIcon from '@/icons/SearchIcon';
+import SearchInput from './SearchInput';
+import { getInitialState } from '@dnd-kit/core/dist/store';
+import { string } from 'zod';
+import dynamic from 'next/dynamic';
+import BasicTable from '../BasicTable';
 
+const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 
 export default function DashboardHeader() {
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+    };
     const [toggleViewMode, setToggleViewMode] = useState(false);
     return (
         <div>
-            <header className="bg-basicColors-dark w-full h-[80px] flex flex-row justify-between">
-                <InputDashboardHeader
-                    className="bg-basicColors-dark rounded-full border-[1px] border-basicColors-light w-[320px] h-[50px] text-basicColors-light pl-xl"
-                    placeholder="search..."
-                    icon={<SearchIcon />}
-                />
+            <header className="bg-basicColors-dark w-full h-[80px] flex flex-row justify-between py-s">
+          
+                <SearchInput onSearch={handleSearch} />
 
-                <div className="flex felx-column">
-                    <button onClick={() => setToggleViewMode(!toggleViewMode)}>
-                        <SquareIcon />
-                        {/* <TabelIcon /> */}
-                        {toggleViewMode ? 'happy' : 'unhappy'}
+                <div className="">
+                    <button className='' onClick={() => setToggleViewMode(!toggleViewMode)}>
+                       switch
                     </button>
                 </div>
             </header>
+            {toggleViewMode ? <BasicTable/> : <BoardNoSSR />}
         </div>
     );
 }

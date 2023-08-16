@@ -2,16 +2,14 @@ export default function SearchIcon() {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width={0.75}
-            stroke="currentColor"
-            className="w-1/3 h-1/3"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-2 h-2"
         >
             <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                fill-rule="evenodd"
+                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                clip-rule="evenodd"
             />
         </svg>
     );
