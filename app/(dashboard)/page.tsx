@@ -1,5 +1,3 @@
-// import BasicTable from '@/components/BasicTable';
-// import Board from '@/components/Board';
 import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
 import { Column, Job, PrismaClient } from '@prisma/client';

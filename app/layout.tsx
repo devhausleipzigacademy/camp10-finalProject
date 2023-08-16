@@ -17,17 +17,17 @@ export default function RootLayout({
 }) {
     return (
         <ClerkProvider>
-            <Providers>
-                <html lang="en">
-                    <body className="cloud-background font-Default text-basicColors-light flex justify-center">
+            <html lang="en">
+                <body className="cloud-background font-Default text-basicColors-light flex justify-center">
+                    <Providers>
                         <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
                             <MainHeader />
                             {children}
                             <Footer />
                         </div>
-                    </body>
-                </html>
-            </Providers>
+                    </Providers>
+                </body>
+            </html>
         </ClerkProvider>
     );
 }
