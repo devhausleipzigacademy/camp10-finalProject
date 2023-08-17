@@ -1,6 +1,7 @@
 'use client';
 
-import SearchIcon from '@/icons/SearchIcon';
+import { HiInformationCircle, HiOutlineViewGrid } from 'react-icons/hi';
+import { AiFillInfoCircle} from 'react-icons/ai';
 import React, { ChangeEvent, useState } from 'react';
 
 export type SearchProps = {
@@ -9,7 +10,7 @@ export type SearchProps = {
 
 export default function SearchInput(props: SearchProps) {
     const { onSearch } = props;
-    const [value, setValue] = useState('search');
+    const [value, setValue] = useState('Search...');
     const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
         setValue(target.value);
@@ -21,22 +22,23 @@ export default function SearchInput(props: SearchProps) {
     };
 
     return (
-        <div className="relative-w-full text-basicColors-light">
-            <label className=" flex bg-basicColors-dark border-[1px] border-basicColors-light w-[320px] h-[50px] text-basicColors-light rounded-full text-xs focus:outline-none pr-s">
-                <SearchIcon />
-                <input
-                    type={'search'}
-                    name={'search'}
-                    placeholder={value}
-                    onChange={event => searchHandler(event)}
-                    onKeyDown={handleKeyDown}
-                    className="bg-transparent"
-                />
-                <button
-                    type="submit"
-                    className="absolute right-0 top-0 mt-3 ml-4"
-                ></button>
-            </label>
-        </div>
+        
+            <div
+                className=" text-basicColors-light 
+                rounded-full border border-green-800"
+            >
+                <label placeholder="Search..." className="flex items-center px-s py-[13px]">
+                    <AiFillInfoCircle  />
+                    <input
+                        type={'search'}
+                        name={'search'}
+                        placeholder={value}
+                        onChange={event => searchHandler(event)}
+                        onKeyDown={handleKeyDown}
+                        className="bg-transparent outline-none pl-xs "
+                    />
+                </label>
+            </div>
+        
     );
 }
