@@ -14,6 +14,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNewColumnStore } from '@/utils/store/newcolumns';
+import { useColumnStore } from '@/utils/store/columns';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -40,6 +41,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const { removeColumn } = useNewColumnStore();
+    const columns = useColumnStore()
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -61,7 +63,9 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
         onSuccess: async res => {
             setIsEditable(false);
+            column.isNewColumn = false;
             queryClient.invalidateQueries(['columns']);
+            columns.addNewColumn({...column, id: res.id})
             removeColumn(column.positionInBoard);
             toast.success('Created a new column successfully.', {toastId: "succes1"});
         },
@@ -75,6 +79,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             await axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
+            columns.removeColumn(column.positionInBoard)
             toast.success('Column deleted successfully', {toastId: "succes2"});
         },
         onError: err => {

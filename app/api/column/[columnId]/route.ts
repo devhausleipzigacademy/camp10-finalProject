@@ -15,13 +15,14 @@ export const GET = async (req: NextRequest, { params }: Params) => {
 };
 
 export const PATCH = async (req: NextRequest, { params }: Params) => {
-    const data = req.body;
+    const data = await req.json();
     const updatedColumn = await prisma.column.update({
         where: {
             id: params.columnId,
         },
-        data: req.body as Partial<Column>,
+        data: data as Partial<Column>,
     });
+    console.log(data)
     return NextResponse.json(updatedColumn);
 }
 

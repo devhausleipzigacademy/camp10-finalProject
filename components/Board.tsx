@@ -10,7 +10,7 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import JobCard from './JobCard';
@@ -21,6 +21,8 @@ import { useAuth } from '@clerk/nextjs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNewColumnStore } from '@/utils/store/newcolumns';
+import { toast } from 'react-toastify';
+import { useColumnStore } from '@/utils/store/columns';
 
 type BoardProps = {
     columnData: ColumnWithJobs[];
@@ -28,11 +30,9 @@ type BoardProps = {
 
 export default function Board({ columnData }: BoardProps) {
     const { newColumns, addNewColumn } = useNewColumnStore();
-    // DND
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
-
     const [activeJob, setActiveJob] = useState<
         (Job & { color: string }) | null
     >(null);
@@ -47,11 +47,34 @@ export default function Board({ columnData }: BoardProps) {
 
     // React Query
     const { userId } = useAuth();
+    const queryClient = useQueryClient();
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
         queryFn: () =>
             axios.get(`/api/column?userId=${userId}`).then(res => res.data),
         initialData: columnData,
+    });
+
+    const { columns, setColumns } = useColumnStore();
+    useEffect(() => {
+        setColumns(columnsData);
+    }, []);
+
+    const patchColumn = useMutation({
+        mutationFn: async (column: ColumnWithJobs) =>
+            await axios
+                .patch(`/api/column/${column.id}`, {
+                    positionInBoard: column.positionInBoard,
+                })
+                .then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            console.log('patched');
+        },
+        onError: err => {
+            console.log(err);
+            toast.error('Something went wrong, try again!');
+        },
     });
 
     const newColumnTemplate: ColumnWithJobs = {
@@ -70,7 +93,7 @@ export default function Board({ columnData }: BoardProps) {
         }
 
         if (event.active.data.current?.type === 'Job') {
-            const findParent = columnsData.find(
+            const findParent = columns.find(
                 col => event.active.data.current?.parent === col.id
             );
             return setActiveJob({
@@ -84,21 +107,15 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
 
-        // if the dragged el & over el are both Job
         if (
             over.data.current?.type === 'Job' &&
             active.data.current?.type === 'Job'
         ) {
-            // no switching of columns
             if (over.data.current?.parent === active.data.current?.parent) {
-                // get index of the current
-                const parentIndex = columnsData.findIndex(
-                    // come back later
+                const parentIndex = columns.findIndex(
                     col => col.id === over.data.current?.parent
                 );
-                // get the current column state
-                const parentColumn = columnsData[parentIndex];
-                // an (new) array after Job is moved
+                const parentColumn = columns[parentIndex];
                 const movedArray = arrayMove(
                     parentColumn.jobs,
                     parentColumn.jobs.findIndex(
@@ -108,16 +125,15 @@ export default function Board({ columnData }: BoardProps) {
                         job => job.id === over.data.current?.job.id
                     )
                 );
-                // changing the whole column state (update the jobs of this specific column)
-                // setCols([
-                //     ...columnsData.slice(0, parentIndex),
-                //     { ...parentColumn, jobs: movedArray },
-                //     ...columnsData.slice(parentIndex + 1),
-                // ]);
+                setColumns([
+                    ...columns.slice(0, parentIndex),
+                    { ...parentColumn, jobs: movedArray },
+                    ...columns.slice(parentIndex + 1),
+                ]);
                 return;
             }
-            // when the Job is going into a different column
-            const newColumns = columnsData.map(column => {
+
+            const newColumns = columns.map(column => {
                 if (column.id === over.data.current?.parent) {
                     const currentJob = active.data.current?.job;
                     const findArrayPosition = column.jobs.findIndex(
@@ -143,8 +159,7 @@ export default function Board({ columnData }: BoardProps) {
                 }
                 return column;
             });
-            // setCols(newColumns);
-            // make a patch mutation that triggers the patch request to change the positionInBoard
+            setColumns(newColumns);
         }
 
         if (
@@ -152,7 +167,7 @@ export default function Board({ columnData }: BoardProps) {
             active.data.current?.type === 'Job' &&
             over.data.current?.column.id !== active.data.current?.parent
         ) {
-            const newColumns = columnsData.map(column => {
+            const newColumns = columns.map(column => {
                 if (column.id === over.id) {
                     return {
                         ...column,
@@ -170,7 +185,7 @@ export default function Board({ columnData }: BoardProps) {
                 }
                 return column;
             });
-            // setCols(newColumns);
+            setColumns(newColumns);
         }
     }
 
@@ -180,11 +195,11 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
         const movedArray = arrayMove(
-            columnsData,
-            columnsData.findIndex(col => col.id === active.id),
-            columnsData.findIndex(col => col.id === over.id)
+            columns,
+            columns.findIndex(col => col.id === active.id),
+            columns.findIndex(col => col.id === over.id)
         );
-        // setCols(movedArray);
+        setColumns(movedArray);
     }
 
     return (
@@ -198,10 +213,10 @@ export default function Board({ columnData }: BoardProps) {
                 <div className="flex gap-4">
                     <div className="flex gap-2">
                         <SortableContext
-                            items={columnsData.map(col => col.id)}
+                            items={columns.map(col => col.id)}
                             // [col_1, col_2,...]
                         >
-                            {columnsData.map(col => (
+                            {columns.map(col => (
                                 <Column
                                     key={col.id}
                                     column={col}
@@ -225,7 +240,7 @@ export default function Board({ columnData }: BoardProps) {
                             ))}
                             {newColumns.map(col => (
                                 <Column
-                                    key={col.id}
+                                    key={col.positionInBoard}
                                     column={col}
                                     isNewColumn={col.isNewColumn ?? false}
                                 >
@@ -252,7 +267,8 @@ export default function Board({ columnData }: BoardProps) {
                             addNewColumn({
                                 id: '',
                                 title: '',
-                                positionInBoard: columnsData.length + newColumns.length,
+                                positionInBoard:
+                                    columnsData.length + newColumns.length,
                                 color: '#FFFFFF',
                                 userId: userId?.toString(),
                                 createdAt: new Date(),

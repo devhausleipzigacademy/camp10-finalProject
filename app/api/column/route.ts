@@ -25,6 +25,9 @@ export const GET = async (req: NextRequest) => {
         include: {
             jobs: true,
         },
+        orderBy: {
+            positionInBoard: 'asc',
+        }
     });
 
     return NextResponse.json(columns);
