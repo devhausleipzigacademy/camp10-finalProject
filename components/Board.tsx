@@ -345,7 +345,7 @@ export default function Board({ columnData }: BoardProps) {
                                 title: '',
                                 positionInBoard:
                                     columnsData.length + newColumns.length,
-                                color: '#FFFFFF',
+                                color: '#AAAAAA',
                                 userId: userId?.toString(),
                                 createdAt: new Date(),
                                 jobs: [] as Job[],
