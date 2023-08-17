@@ -20,6 +20,8 @@ type ColumnProps = {
     isNewColumn: boolean;
 };
 
+const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
+
 export default function Column({ column, children, isNewColumn }: ColumnProps) {
     const {
         setNodeRef,
@@ -87,6 +89,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         newColumn.title = newTitle as string;
         column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
         // const col = await axios.post('/api/column', newColumn);
+        column.color = colorSet[column.positionInBoard % colorSet.length];
         createNewColumn.mutateAsync(column.userId);
     };
 
@@ -134,7 +137,9 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 <button
-                    onClick={() => deleteColumn.mutateAsync(column.id)}
+                    onClick={() => {
+                        deleteColumn.mutateAsync(column.id);
+                    }}
                     className="px-1 py-2 rounded text-colBorder stroke-gray-300 hover:stroke-white hover:bg-colBG"
                 >
                     <HiDotsHorizontal size={20} />

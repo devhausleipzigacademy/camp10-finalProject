@@ -25,8 +25,6 @@ type BoardProps = {
     columnData: ColumnWithJobs[];
 };
 
-const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
-
 export default function Board({ columnData }: BoardProps) {
     // DND
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
@@ -234,18 +232,16 @@ export default function Board({ columnData }: BoardProps) {
                             setCols([
                                 ...columnsData,
                                 {
-                                    ...newColumnTemplate,
                                     id: '',
+                                    title: '',
                                     positionInBoard: columnsData.length,
+                                    color: '#FFFFFF',
                                     userId: userId?.toString(),
                                     createdAt: new Date(),
                                     jobs: [] as Job[],
                                     isNewColumn: true,
                                 } as ColumnWithJobs,
                             ]);
-                            // scroll to have certain element in the view
-                            // scroll x = 250px
-                            // createNewColumn.mutateAsync(userId as string)
                         }}
                         className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"
                     >
