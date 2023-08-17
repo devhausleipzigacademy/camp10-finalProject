@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prismaClient';
+import { ColumnSchema } from '@/schema/column';
 
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
-    console.log('NewCol:', body);
-    const newColumn = await prisma.column.create({
-        data: body,
-    });
-    return NextResponse.json(newColumn);
+    try {
+        const col = ColumnSchema.parse(body);
+        const newColumn = await prisma.column.create({
+            data: col,
+        });
+        return NextResponse.json(newColumn);
+    } catch (err) {
+        console.log(err);
+        return NextResponse.error();
+    }
 };
 
 export const GET = async (req: NextRequest) => {

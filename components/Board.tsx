@@ -68,19 +68,6 @@ export default function Board({ columnData }: BoardProps) {
     const [cols, setCols] = useState<ColumnWithJobs[]>(columnsData);
     // const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
 
-
-    const deleteColumn = useMutation({
-        mutationFn: async (columnId: string) =>
-            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
-        onSuccess: async res => {
-            await queryClient.invalidateQueries(['columns']);
-            console.log('Column added successfully');
-        },
-        onError: err => {
-            console.log('errror');
-        },
-    });
-
     function onDragStart(event: DragStartEvent) {
         if (event.active.data.current?.type === 'Column') {
             return setActiveColumn(event.active.data.current.column);
@@ -223,9 +210,6 @@ export default function Board({ columnData }: BoardProps) {
                                     key={col.id}
                                     column={col}
                                     isNewColumn={col.isNewColumn ?? false}
-                                    deleteColumn={() => {
-                                        deleteColumn.mutateAsync(col.id);
-                                    }}
                                 >
                                     <SortableContext
                                         items={col.jobs.map(job => job.id)}
@@ -243,34 +227,6 @@ export default function Board({ columnData }: BoardProps) {
                                     </SortableContext>
                                 </Column>
                             ))}
-                            {/* {newCols &&
-                                newCols.map((col, idx) => {
-                                    return (
-                                        <Column
-                                            key={idx}
-                                            column={col}
-                                            isNewColumn={true}
-                                            deleteColumn={() => null}
-                                        >
-                                            <SortableContext
-                                                items={col.jobs.map(
-                                                    job => job.id
-                                                )}
-                                            >
-                                                {col.jobs.map(job => {
-                                                    return (
-                                                        <JobCard
-                                                            job={job}
-                                                            key={job.id}
-                                                            colColor={col.color}
-                                                            parent={col.id}
-                                                        />
-                                                    );
-                                                })}
-                                            </SortableContext>
-                                        </Column>
-                                    );
-                            })} */}
                         </SortableContext>
                     </div>
                     <button
@@ -314,7 +270,6 @@ export default function Board({ columnData }: BoardProps) {
                                 key={activeColumn.id}
                                 column={activeColumn}
                                 isNewColumn={false}
-                                deleteColumn={() => null}
                                 // eslint-disable-next-line react/no-children-prop
                                 children={[]}
                             />

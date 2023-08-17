@@ -11,20 +11,16 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ColumnProps = {
     column: ColumnWithJobs;
-    deleteColumn: (id: string) => void;
     children: React.ReactNode;
     isNewColumn: boolean;
 };
 
-export default function Column({
-    column,
-    deleteColumn,
-    children,
-    isNewColumn,
-}: ColumnProps) {
+export default function Column({ column, children, isNewColumn }: ColumnProps) {
     const {
         setNodeRef,
         attributes,
@@ -59,13 +55,40 @@ export default function Column({
             return newCol;
         },
         onSuccess: async res => {
+            setIsEditable(false);
+            queryClient.invalidateQueries(['columns']);
+            toast.success('Created a new column successfully.');
             await queryClient.invalidateQueries(['columns']);
-            console.log('Column added successfully');
         },
         onError: err => {
-            console.log('errror');
+            toast.error('Something went wrong, try again.');
         },
     });
+
+    const deleteColumn = useMutation({
+        mutationFn: async (columnId: string) =>
+            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            toast.success('Column deleted successfully');
+        },
+        onError: err => {
+            toast.error('Something went wrong, try again!');
+        },
+    });
+
+    const onSumitHandler: React.FormEventHandler<
+        HTMLFormElement
+    > = async event => {
+        event.preventDefault();
+        const data = new FormData(event.target as HTMLFormElement);
+        const newTitle = data.get('title');
+        const { id, jobs, isNewColumn, ...newColumn } = column;
+        newColumn.title = newTitle as string;
+        column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
+        // const col = await axios.post('/api/column', newColumn);
+        createNewColumn.mutateAsync(column.userId);
+    };
 
     return (
         <div
@@ -90,23 +113,7 @@ export default function Column({
                     {isEditable && (
                         <form
                             className="flex justify-around rounded"
-                            onSubmit={async e => {
-                                e.preventDefault();
-                                const data = new FormData(
-                                    e.target as HTMLFormElement
-                                );
-                                const newTitle = data.get('title');
-                                const { id, jobs, isNewColumn, ...newColumn } =
-                                    column;
-                                newColumn.title = newTitle as string;
-                                column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
-                                const col = await axios
-                                    .post('/api/column', newColumn)
-                                    .then(res => res.data);
-                                console.log(col);
-                                setIsEditable(false);
-                                queryClient.invalidateQueries(['columns']);
-                            }}
+                            onSubmit={onSumitHandler}
                         >
                             <input
                                 className="w-3/4 px-xs rounded-md text-basicColors-dark"
@@ -127,7 +134,7 @@ export default function Column({
                     )}
                 </div>
                 <button
-                    onClick={() => deleteColumn(column.id)}
+                    onClick={() => deleteColumn.mutateAsync(column.id)}
                     className="px-1 py-2 rounded text-colBorder stroke-gray-300 hover:stroke-white hover:bg-colBG"
                 >
                     <HiDotsHorizontal size={20} />
@@ -136,6 +143,20 @@ export default function Column({
             <div className="flex flex-col flex-grow gap-6 p-3 overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+            ;{/* Same as */}
+            <ToastContainer />;
         </div>
     );
 }

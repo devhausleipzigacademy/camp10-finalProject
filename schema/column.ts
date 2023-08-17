@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const ColumnSchema = z.object({
-  title: z.string().min(2).max(30),
+  title: z.string().min(3).max(30),
   positionInBoard: z.number().min(0).max(10),
   color: z.string().optional().default("#ffffff"),
-  userId: z.string().uuid(),
+  userId: z.string().startsWith("user_")
 })
