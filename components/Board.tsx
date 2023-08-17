@@ -20,12 +20,14 @@ import { Job } from '@prisma/client';
 import { useAuth } from '@clerk/nextjs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useNewColumnStore } from '@/utils/store/newcolumns';
 
 type BoardProps = {
     columnData: ColumnWithJobs[];
 };
 
 export default function Board({ columnData }: BoardProps) {
+    const { newColumns, addNewColumn } = useNewColumnStore();
     // DND
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
@@ -45,7 +47,6 @@ export default function Board({ columnData }: BoardProps) {
 
     // React Query
     const { userId } = useAuth();
-    const queryClient = useQueryClient();
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
         queryFn: () =>
@@ -63,7 +64,7 @@ export default function Board({ columnData }: BoardProps) {
         jobs: [] as Job[],
     };
 
-    const [cols, setCols] = useState<ColumnWithJobs[]>(columnsData);
+    const [cols, setCols] = useState<ColumnWithJobs[]>([]);
     // const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
 
     function onDragStart(event: DragStartEvent) {
@@ -72,7 +73,7 @@ export default function Board({ columnData }: BoardProps) {
         }
 
         if (event.active.data.current?.type === 'Job') {
-            const findParent = cols.find(
+            const findParent = columnsData.find(
                 col => event.active.data.current?.parent === col.id
             );
             return setActiveJob({
@@ -94,12 +95,12 @@ export default function Board({ columnData }: BoardProps) {
             // no switching of columns
             if (over.data.current?.parent === active.data.current?.parent) {
                 // get index of the current
-                const parentIndex = cols.findIndex(
+                const parentIndex = columnsData.findIndex(
                     // come back later
                     col => col.id === over.data.current?.parent
                 );
                 // get the current column state
-                const parentColumn = cols[parentIndex];
+                const parentColumn = columnsData[parentIndex];
                 // an (new) array after Job is moved
                 const movedArray = arrayMove(
                     parentColumn.jobs,
@@ -112,14 +113,14 @@ export default function Board({ columnData }: BoardProps) {
                 );
                 // changing the whole column state (update the jobs of this specific column)
                 setCols([
-                    ...cols.slice(0, parentIndex),
+                    ...columnsData.slice(0, parentIndex),
                     { ...parentColumn, jobs: movedArray },
-                    ...cols.slice(parentIndex + 1),
+                    ...columnsData.slice(parentIndex + 1),
                 ]);
                 return;
             }
             // when the Job is going into a different column
-            const newColumns = cols.map(column => {
+            const newColumns = columnsData.map(column => {
                 if (column.id === over.data.current?.parent) {
                     const currentJob = active.data.current?.job;
                     const findArrayPosition = column.jobs.findIndex(
@@ -154,7 +155,7 @@ export default function Board({ columnData }: BoardProps) {
             active.data.current?.type === 'Job' &&
             over.data.current?.column.id !== active.data.current?.parent
         ) {
-            const newColumns = cols.map(column => {
+            const newColumns = columnsData.map(column => {
                 if (column.id === over.id) {
                     return {
                         ...column,
@@ -182,9 +183,9 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
         const movedArray = arrayMove(
-            cols,
-            cols.findIndex(col => col.id === active.id),
-            cols.findIndex(col => col.id === over.id)
+            columnsData,
+            columnsData.findIndex(col => col.id === active.id),
+            columnsData.findIndex(col => col.id === over.id)
         );
         setCols(movedArray);
     }
@@ -200,10 +201,32 @@ export default function Board({ columnData }: BoardProps) {
                 <div className="flex gap-4">
                     <div className="flex gap-2">
                         <SortableContext
-                            items={cols.map(col => col.id)}
+                            items={columnsData.map(col => col.id)}
                             // [col_1, col_2,...]
                         >
-                            {cols.map(col => (
+                            {columnsData.map(col => (
+                                <Column
+                                    key={col.id}
+                                    column={col}
+                                    isNewColumn={col.isNewColumn ?? false}
+                                >
+                                    <SortableContext
+                                        items={col.jobs.map(job => job.id)}
+                                    >
+                                        {col.jobs.map(job => {
+                                            return (
+                                                <JobCard
+                                                    job={job}
+                                                    key={job.id}
+                                                    colColor={col.color}
+                                                    parent={col.id}
+                                                />
+                                            );
+                                        })}
+                                    </SortableContext>
+                                </Column>
+                            ))}
+                            {newColumns.map(col => (
                                 <Column
                                     key={col.id}
                                     column={col}
@@ -229,19 +252,29 @@ export default function Board({ columnData }: BoardProps) {
                     </div>
                     <button
                         onClick={() => {
-                            setCols([
-                                ...columnsData,
-                                {
-                                    id: '',
-                                    title: '',
-                                    positionInBoard: columnsData.length,
-                                    color: '#FFFFFF',
-                                    userId: userId?.toString(),
-                                    createdAt: new Date(),
-                                    jobs: [] as Job[],
-                                    isNewColumn: true,
-                                } as ColumnWithJobs,
-                            ]);
+                            // setCols([
+                            //     ...cols,
+                            //     {
+                            //         id: '',
+                            //         title: '',
+                            //         positionInBoard: columnsData.length + cols.length,
+                            //         color: '#FFFFFF',
+                            //         userId: userId?.toString(),
+                            //         createdAt: new Date(),
+                            //         jobs: [] as Job[],
+                            //         isNewColumn: true,
+                            //     } as ColumnWithJobs,
+                            // ]);
+                            addNewColumn({
+                                id: '',
+                                title: '',
+                                positionInBoard: columnsData.length + cols.length,
+                                color: '#FFFFFF',
+                                userId: userId?.toString(),
+                                createdAt: new Date(),
+                                jobs: [] as Job[],
+                                isNewColumn: true,
+                            } as ColumnWithJobs);
                         }}
                         className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"
                     >

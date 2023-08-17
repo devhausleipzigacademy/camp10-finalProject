@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNewColumnStore } from '@/utils/store/newcolumns';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -22,7 +23,11 @@ type ColumnProps = {
 
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
-export default function Column({ column, children, isNewColumn }: ColumnProps) {
+export default function Column({
+    column,
+    children,
+    isNewColumn,
+}: ColumnProps) {
     const {
         setNodeRef,
         attributes,
@@ -37,6 +42,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             column,
         },
     });
+
+    const { removeColumn } = useNewColumnStore()
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -59,8 +66,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         onSuccess: async res => {
             setIsEditable(false);
             queryClient.invalidateQueries(['columns']);
+            removeColumn(column.positionInBoard)
             toast.success('Created a new column successfully.');
-            await queryClient.invalidateQueries(['columns']);
         },
         onError: err => {
             toast.error('Something went wrong, try again.');
