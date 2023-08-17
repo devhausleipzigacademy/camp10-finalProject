@@ -69,7 +69,25 @@ export default function Board({ columnData }: BoardProps) {
                 .then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            console.log('patched');
+            console.log('patched column');
+        },
+        onError: err => {
+            console.log(err);
+            toast.error('Something went wrong, try again!');
+        },
+    });
+
+    const patchJob = useMutation({
+        mutationFn: async (job: Job) =>
+            await axios
+                .patch(`/api/job/${job.id}`, {
+                    positionInColumn: job.positionInColumn,
+                    columnId: job.columnId,
+                })
+                .then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            console.log('patched job');
         },
         onError: err => {
             console.log(err);
@@ -111,6 +129,7 @@ export default function Board({ columnData }: BoardProps) {
             over.data.current?.type === 'Job' &&
             active.data.current?.type === 'Job'
         ) {
+            // when job is draged in the same column
             if (over.data.current?.parent === active.data.current?.parent) {
                 const parentIndex = columns.findIndex(
                     col => col.id === over.data.current?.parent
@@ -124,12 +143,23 @@ export default function Board({ columnData }: BoardProps) {
                     parentColumn.jobs.findIndex(
                         job => job.id === over.data.current?.job.id
                     )
-                );
+                ).map((job, idx) => {
+                    return {
+                        ...job,
+                        positionInColumn: idx,
+                    };
+                });
+
                 setColumns([
                     ...columns.slice(0, parentIndex),
                     { ...parentColumn, jobs: movedArray },
                     ...columns.slice(parentIndex + 1),
                 ]);
+
+                movedArray.forEach(async job => {
+                    patchJob.mutateAsync(job);
+                });
+
                 return;
             }
 
@@ -139,27 +169,48 @@ export default function Board({ columnData }: BoardProps) {
                     const findArrayPosition = column.jobs.findIndex(
                         col => col.id === over.data.current?.job.id
                     );
+                    const movedJobs = [
+                        ...column.jobs.slice(0, findArrayPosition),
+                        currentJob,
+                        ...column.jobs.slice(findArrayPosition),
+                    ].map((job, idx) => {
+                        return {
+                            ...job,
+                            columnId: column.id,
+                            positonInColumn: idx,
+                        };
+                    });
+                    console.log(movedJobs);
                     return {
                         ...column,
-                        jobs: [
-                            ...column.jobs.slice(0, findArrayPosition),
-                            currentJob,
-                            ...column.jobs.slice(findArrayPosition),
-                        ],
+                        jobs: movedJobs,
                     };
                 }
 
                 if (column.id === active.data.current?.parent) {
+                    const movedJobs = column.jobs
+                        .filter(job => job.id !== active.data.current?.job.id)
+                        .map((job, idx) => {
+                            return {
+                                ...job,
+                                columnId: column.id,
+                                positonInColumn: idx,
+                            };
+                        });
+                    console.log(movedJobs);
                     return {
                         ...column,
-                        jobs: column.jobs.filter(
-                            job => job.id !== active.data.current?.job.id
-                        ),
+                        jobs: movedJobs,
                     };
                 }
                 return column;
             });
             setColumns(newColumns);
+            newColumns.forEach(col => {
+                col.jobs.forEach(job => {
+                    patchJob.mutateAsync(job);
+                });
+            });
         }
 
         if (
@@ -169,18 +220,40 @@ export default function Board({ columnData }: BoardProps) {
         ) {
             const newColumns = columns.map(column => {
                 if (column.id === over.id) {
+                    const newJobs = column.jobs
+                        .concat({
+                            ...active.data.current?.job,
+                        })
+                        .map((job, idx) => {
+                            return {
+                                ...job,
+                                columnId: column.id,
+                                positionInColumn: idx,
+                            };
+                        });
+                    console.log('Switch column?', newJobs, column.id);
+                    newJobs.forEach(async job => {
+                        patchJob.mutateAsync(job);
+                    });
                     return {
                         ...column,
-                        jobs: column.jobs.concat(active.data.current?.job),
+                        jobs: newJobs,
                     };
                 }
 
                 if (column.id === active.data.current?.parent) {
+                    const newJobs = column.jobs
+                        .filter(job => job.id !== active.data.current?.job.id)
+                        .map((job, idx) => {
+                            return {
+                                ...job,
+                                columnId: column.id,
+                                positionInColumn: idx,
+                            };
+                        });
                     return {
                         ...column,
-                        jobs: column.jobs.filter(
-                            job => job.id !== active.data.current?.job.id
-                        ),
+                        jobs: newJobs,
                     };
                 }
                 return column;
@@ -200,6 +273,9 @@ export default function Board({ columnData }: BoardProps) {
             columns.findIndex(col => col.id === over.id)
         );
         setColumns(movedArray);
+        movedArray.forEach(async col => {
+            await patchColumn.mutateAsync(col);
+        });
     }
 
     return (

@@ -23,7 +23,11 @@ export const GET = async (req: NextRequest) => {
             userId: userId,
         },
         include: {
-            jobs: true,
+            jobs: {
+                orderBy: {
+                    positionInColumn: 'asc',
+                }
+            }
         },
         orderBy: {
             positionInBoard: 'asc',
