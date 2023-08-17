@@ -4,6 +4,7 @@ import { Footer } from '@/components/shared/Footer';
 import { MainHeader } from '@/components/MainHeader';
 import Providers from '@/utils/provider';
 import { ClerkProvider } from '@clerk/nextjs';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
     title: 'there will be a name',
@@ -25,6 +26,17 @@ export default function RootLayout({
                             {children}
                             <Footer />
                         </div>
+                        <ToastContainer
+                            containerId={'myToast'}
+                            position="top-right"
+                            autoClose={1000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            draggable
+                            theme="light"
+                        />
                     </Providers>
                 </body>
             </html>

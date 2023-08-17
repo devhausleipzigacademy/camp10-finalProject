@@ -64,9 +64,6 @@ export default function Board({ columnData }: BoardProps) {
         jobs: [] as Job[],
     };
 
-    const [cols, setCols] = useState<ColumnWithJobs[]>([]);
-    // const [newCols, setNewCols] = useState<ColumnWithJobs[]>([]);
-
     function onDragStart(event: DragStartEvent) {
         if (event.active.data.current?.type === 'Column') {
             return setActiveColumn(event.active.data.current.column);
@@ -112,11 +109,11 @@ export default function Board({ columnData }: BoardProps) {
                     )
                 );
                 // changing the whole column state (update the jobs of this specific column)
-                setCols([
-                    ...columnsData.slice(0, parentIndex),
-                    { ...parentColumn, jobs: movedArray },
-                    ...columnsData.slice(parentIndex + 1),
-                ]);
+                // setCols([
+                //     ...columnsData.slice(0, parentIndex),
+                //     { ...parentColumn, jobs: movedArray },
+                //     ...columnsData.slice(parentIndex + 1),
+                // ]);
                 return;
             }
             // when the Job is going into a different column
@@ -146,7 +143,7 @@ export default function Board({ columnData }: BoardProps) {
                 }
                 return column;
             });
-            setCols(newColumns);
+            // setCols(newColumns);
             // make a patch mutation that triggers the patch request to change the positionInBoard
         }
 
@@ -173,7 +170,7 @@ export default function Board({ columnData }: BoardProps) {
                 }
                 return column;
             });
-            setCols(newColumns);
+            // setCols(newColumns);
         }
     }
 
@@ -187,7 +184,7 @@ export default function Board({ columnData }: BoardProps) {
             columnsData.findIndex(col => col.id === active.id),
             columnsData.findIndex(col => col.id === over.id)
         );
-        setCols(movedArray);
+        // setCols(movedArray);
     }
 
     return (
@@ -252,23 +249,10 @@ export default function Board({ columnData }: BoardProps) {
                     </div>
                     <button
                         onClick={() => {
-                            // setCols([
-                            //     ...cols,
-                            //     {
-                            //         id: '',
-                            //         title: '',
-                            //         positionInBoard: columnsData.length + cols.length,
-                            //         color: '#FFFFFF',
-                            //         userId: userId?.toString(),
-                            //         createdAt: new Date(),
-                            //         jobs: [] as Job[],
-                            //         isNewColumn: true,
-                            //     } as ColumnWithJobs,
-                            // ]);
                             addNewColumn({
                                 id: '',
                                 title: '',
-                                positionInBoard: columnsData.length + cols.length,
+                                positionInBoard: columnsData.length + newColumns.length,
                                 color: '#FFFFFF',
                                 userId: userId?.toString(),
                                 createdAt: new Date(),

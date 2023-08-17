@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNewColumnStore } from '@/utils/store/newcolumns';
 
@@ -23,11 +23,7 @@ type ColumnProps = {
 
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
-export default function Column({
-    column,
-    children,
-    isNewColumn,
-}: ColumnProps) {
+export default function Column({ column, children, isNewColumn }: ColumnProps) {
     const {
         setNodeRef,
         attributes,
@@ -43,7 +39,7 @@ export default function Column({
         },
     });
 
-    const { removeColumn } = useNewColumnStore()
+    const { removeColumn } = useNewColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -54,9 +50,9 @@ export default function Column({
     };
 
     const createNewColumn = useMutation({
-        mutationFn: async (userId: string) => {
+        mutationFn: async (col: Partial<ColumnWithJobs>) => {
             const newCol = await axios
-                .post('/api/column', { ...column } as Omit<
+                .post('/api/column', { ...col } as Omit<
                     ColumnWithJobs,
                     'id' | 'createdAt' | 'jobs'
                 >)
@@ -66,8 +62,8 @@ export default function Column({
         onSuccess: async res => {
             setIsEditable(false);
             queryClient.invalidateQueries(['columns']);
-            removeColumn(column.positionInBoard)
-            toast.success('Created a new column successfully.');
+            removeColumn(column.positionInBoard);
+            toast.success('Created a new column successfully.', {toastId: "succes1"});
         },
         onError: err => {
             toast.error('Something went wrong, try again.');
@@ -79,7 +75,7 @@ export default function Column({
             await axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Column deleted successfully');
+            toast.success('Column deleted successfully', {toastId: "succes2"});
         },
         onError: err => {
             toast.error('Something went wrong, try again!');
@@ -96,8 +92,8 @@ export default function Column({
         newColumn.title = newTitle as string;
         column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
         // const col = await axios.post('/api/column', newColumn);
-        column.color = colorSet[column.positionInBoard % colorSet.length];
-        createNewColumn.mutateAsync(column.userId);
+        newColumn.color = colorSet[column.positionInBoard % colorSet.length];
+        await createNewColumn.mutateAsync(newColumn);
     };
 
     return (
@@ -155,20 +151,6 @@ export default function Column({
             <div className="flex flex-col flex-grow gap-6 p-3 overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
-            ;{/* Same as */}
-            <ToastContainer />;
         </div>
     );
 }
