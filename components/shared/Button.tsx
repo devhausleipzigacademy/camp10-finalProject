@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-type ButtonVariant = 'primary' | 'hover' | 'active';
+type ButtonVariant = 'primary';
 type ButtonSize = 'default' | 'medium' | 'small' | 'tiny' | 'square';
 type ButtonText = 'default' | 'small';
 
@@ -15,9 +15,7 @@ type ButtonProps = {
 >;
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-cardColors-black text-basicColors-light ',
-  hover: 'bg-hoverColors-hover text-hoverColors-hoverMain',
-  active: 'bg-basicColors-light text-basicColors-dark border-basicColors-light',
+  primary: 'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain focus:bg-basicColors-light focus:text-basicColors-dark focus:border-basicColors-light',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

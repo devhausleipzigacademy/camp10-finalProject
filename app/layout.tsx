@@ -4,6 +4,7 @@ import { Footer } from '@/components/shared/Footer';
 import { MainHeader } from '@/components/MainHeader';
 import Providers from '@/utils/provider';
 import { ClerkProvider } from '@clerk/nextjs';
+import Button from '@/components/shared/Button';
 
 export const metadata: Metadata = {
     title: 'there will be a name',
