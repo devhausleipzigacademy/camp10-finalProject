@@ -7,9 +7,13 @@ module.exports = {
     ],
     theme: {
         colors: {
+            transparent: {
+                DEFAULT: 'rgba(0,0,0,0)'
+            },
             basicColors: {
                 dark: '#3D3D3D',
                 light: '#F5F7FE',
+                
             },
             hoverColors: {
                 hoverMain: '#F5F7FE',
@@ -31,7 +35,7 @@ module.exports = {
             },
         },
         fontFamily: {
-            Default: ['Plus Jakarta Sans', 'sans-serif'],
+            DEFAULT: ['Plus Jakarta Sans', 'sans-serif'],
         },
         fontSize: {
             headerOne: '7.5rem',
