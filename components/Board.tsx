@@ -20,16 +20,14 @@ import { Job } from '@prisma/client';
 import { useAuth } from '@clerk/nextjs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useNewColumnStore } from '@/utils/store/newcolumns';
 import { toast } from 'react-toastify';
-import { useColumnStore } from '@/utils/store/columns';
+import { useColumnStore } from '@/store/columns';
 
 type BoardProps = {
     columnData: ColumnWithJobs[];
 };
 
 export default function Board({ columnData }: BoardProps) {
-    const { newColumns, addNewColumn } = useNewColumnStore();
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
@@ -55,7 +53,7 @@ export default function Board({ columnData }: BoardProps) {
         initialData: columnData,
     });
 
-    const { columns, setColumns } = useColumnStore();
+    const { existingColumns, setColumns, newColumns, addNewColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
     }, []);
@@ -111,7 +109,7 @@ export default function Board({ columnData }: BoardProps) {
         }
 
         if (event.active.data.current?.type === 'Job') {
-            const findParent = columns.find(
+            const findParent = existingColumns.find(
                 col => event.active.data.current?.parent === col.id
             );
             return setActiveJob({
@@ -131,10 +129,10 @@ export default function Board({ columnData }: BoardProps) {
         ) {
             // when job is draged in the same column
             if (over.data.current?.parent === active.data.current?.parent) {
-                const parentIndex = columns.findIndex(
+                const parentIndex = existingColumns.findIndex(
                     col => col.id === over.data.current?.parent
                 );
-                const parentColumn = columns[parentIndex];
+                const parentColumn = existingColumns[parentIndex];
                 const movedArray = arrayMove(
                     parentColumn.jobs,
                     parentColumn.jobs.findIndex(
@@ -151,9 +149,9 @@ export default function Board({ columnData }: BoardProps) {
                 });
 
                 setColumns([
-                    ...columns.slice(0, parentIndex),
+                    ...existingColumns.slice(0, parentIndex),
                     { ...parentColumn, jobs: movedArray },
-                    ...columns.slice(parentIndex + 1),
+                    ...existingColumns.slice(parentIndex + 1),
                 ]);
 
                 movedArray.forEach(async job => {
@@ -163,7 +161,7 @@ export default function Board({ columnData }: BoardProps) {
                 return;
             }
 
-            const newColumns = columns.map(column => {
+            const newColumns = existingColumns.map(column => {
                 if (column.id === over.data.current?.parent) {
                     const currentJob = active.data.current?.job;
                     const findArrayPosition = column.jobs.findIndex(
@@ -218,7 +216,7 @@ export default function Board({ columnData }: BoardProps) {
             active.data.current?.type === 'Job' &&
             over.data.current?.column.id !== active.data.current?.parent
         ) {
-            const newColumns = columns.map(column => {
+            const newColumns = existingColumns.map(column => {
                 if (column.id === over.id) {
                     const newJobs = column.jobs
                         .concat({
@@ -268,9 +266,9 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
         const movedArray = arrayMove(
-            columns,
-            columns.findIndex(col => col.id === active.id),
-            columns.findIndex(col => col.id === over.id)
+            existingColumns,
+            existingColumns.findIndex(col => col.id === active.id),
+            existingColumns.findIndex(col => col.id === over.id)
         );
         setColumns(movedArray);
         movedArray.forEach(async col => {
@@ -289,10 +287,10 @@ export default function Board({ columnData }: BoardProps) {
                 <div className="flex gap-4">
                     <div className="flex gap-2">
                         <SortableContext
-                            items={columns.map(col => col.id)}
+                            items={existingColumns.map(col => col.id)}
                             // [col_1, col_2,...]
                         >
-                            {columns.map(col => (
+                            {existingColumns.map(col => (
                                 <Column
                                     key={col.id}
                                     column={col}
