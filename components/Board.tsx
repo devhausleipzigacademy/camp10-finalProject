@@ -28,6 +28,8 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
+    const { userId } = useAuth();
+
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
@@ -43,8 +45,7 @@ export default function Board({ columnData }: BoardProps) {
         })
     );
 
-    // React Query
-    const { userId } = useAuth();
+    // Data Handling
     const queryClient = useQueryClient();
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
@@ -93,16 +94,6 @@ export default function Board({ columnData }: BoardProps) {
             toast.error('Something went wrong, refresh the page!');
         },
     });
-
-    // const newColumnTemplate: ColumnWithJobs = {
-    //     id: '',
-    //     title: 'title',
-    //     positionInBoard: columnData.length,
-    //     color: '#4c9a2a',
-    //     userId: userId as string,
-    //     createdAt: new Date(),
-    //     jobs: [] as Job[],
-    // };
 
     function onDragStart(event: DragStartEvent) {
         if (event.active.data.current?.type === 'Column') {
