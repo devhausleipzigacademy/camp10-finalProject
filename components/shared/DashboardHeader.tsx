@@ -18,17 +18,17 @@ export default function DashboardHeader() {
     };
     const [toggleViewMode, setToggleViewMode] = useState(false);
     return (
-        <div className="ml-xl">
-            <header className="ui-background  container h-[80px] flex flex-row justify-between py-s pl-m border">
+        <div className="">
+            <header className="ui-background  container h-[80px] flex flex-row justify-between py-s px-m border">
                 <SearchInput onSearch={handleSearch} />
 
                 <div
                     onClick={() => setToggleViewMode(!toggleViewMode)}
-                    className=" flex items-center justify-center  border-2 rounded-xl border-basicColors-light mr-m"
+                    className="flex items-center justify-center border rounded-xl border-basicColors-light w-[120px] overflow-hidden"
                 >
                     <div
                         className={cn(
-                            'w-[68.5px] h-[49px] rounded-l-xl px-m py-[0.725rem]',
+                            'w-1/2 h-full flex justify-center items-center',
                             toggleViewMode
                                 ? 'bg-basicColors-dark'
                                 : 'bg-basicColors-light'
@@ -41,7 +41,7 @@ export default function DashboardHeader() {
                     </div>
                     <div
                         className={cn(
-                            'w-[68.5px] h-[49px] rounded-r-xl px-m py-[0.725rem]',
+                            'w-1/2 h-full flex justify-center items-center',
                             !toggleViewMode
                                 ? 'bg-basicColors-dark'
                                 : 'bg-basicColors-light'
