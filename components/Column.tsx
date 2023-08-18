@@ -5,6 +5,7 @@ import { Column } from './Board';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
+import DropdownMenu from './shared/DropdownMenu';
 
 type ColumnProps = {
     column: Column;
@@ -77,10 +78,11 @@ export default function Column({
                     )} */}
                 </div>
                 <button
-                    onClick={() => deleteColumn(column.id)}
+                    // onClick={() => deleteColumn(column.id)}
                     className="px-1 py-2 rounded text-colBorder stroke-gray-300 hover:stroke-white hover:bg-colBG"
                 >
-                    <HiDotsHorizontal size={20} />
+                    {/* <HiDotsHorizontal size={20} /> */}
+                    <DropdownMenu onDelete={() => deleteColumn(column.id)} />
                 </button>
             </div>
 
