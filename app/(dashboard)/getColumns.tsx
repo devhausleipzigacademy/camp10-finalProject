@@ -1,7 +1,7 @@
 import prisma from '@/utils/prismaClient';
-import { Column, Job } from '@prisma/client';
+import { Column as ColumnType, Job } from '@prisma/client';
 
-export type ColumnWithJobs = Column & {
+export type ColumnWithJobs = ColumnType & {
   jobs: Job[];
   isNewColumn?: boolean;
 };

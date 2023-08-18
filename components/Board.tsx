@@ -15,13 +15,13 @@ import { createPortal } from 'react-dom';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import JobCard from './JobCard';
 import Column from './Column';
-import { ColumnWithJobs } from '@/app/(dashboard)/page';
-import { Job } from '@prisma/client';
+import { Job, Column as ColumnType } from '@prisma/client';
 import { useAuth } from '@clerk/nextjs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useColumnStore } from '@/store/columns';
+import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 
 type BoardProps = {
     columnData: ColumnWithJobs[];

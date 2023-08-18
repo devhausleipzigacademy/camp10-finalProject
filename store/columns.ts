@@ -1,4 +1,4 @@
-import { ColumnWithJobs } from '@/app/(dashboard)/page';
+import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import { create } from 'zustand';
 
 type ColumnStore = {
@@ -17,7 +17,7 @@ export const useColumnStore = create<ColumnStore>()(set => ({
     setColumns: (columns: ColumnWithJobs[]) =>
         set({ existingColumns: columns }),
     addColumn: (newCol: ColumnWithJobs) =>
-        set(state => ({ existingColumns: [...state.newColumns, newCol] })),
+        set(state => ({ existingColumns: [...state.existingColumns, newCol] })),
     removeColumn: (columnPosition: number) =>
         set(state => ({
             existingColumns: state.existingColumns.filter(

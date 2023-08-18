@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
 import { getColumns } from './getColumns';
 
-
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 
 export default async function Dashboard() {
