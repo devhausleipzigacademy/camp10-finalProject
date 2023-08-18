@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useColumnStore } from '@/store/columns';
 import DropdownMenu from './shared/DropdownMenu';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
+import { HiCheck } from 'react-icons/hi';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -117,7 +118,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s gap-3 w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
+                'ui-background px-m py-s w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -132,11 +133,11 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     {!isEditable && <h3> {column.title} </h3>}
                     {isEditable && (
                         <form
-                            className="flex justify-around rounded"
+                            className="flex justify-around"
                             onSubmit={onSumitHandler}
                         >
                             <input
-                                className="w-3/4 px-xs rounded-md text-basicColors-dark"
+                                className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
                                 placeholder="confirm title"
                                 name="title"
                                 autoFocus
@@ -146,22 +147,20 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             />
                             <button
                                 type="submit"
-                                className="aspect-square bg-cardColors-yellow rounded-lg"
+                                className="aspect-square w-m flex justify-center items-center rounded-full hover:bg-basicColors-light hover:text-textColors-textBody"
                             >
-                                Add
+                                <HiCheck size={16} />
                             </button>
                         </form>
                     )}
                 </div>
-                <button
-                    // onClick={() => deleteColumn(column.id)}
-                    className="px-1 py-2 rounded text-colBorder stroke-gray-300 hover:stroke-white hover:bg-colBG"
-                >
-                    {/* <HiDotsHorizontal size={20} /> */}
-                    <DropdownMenu
-                        onDelete={() => deleteColumn.mutateAsync(column.id)}
-                    />
-                </button>
+                {!isEditable && (
+                    <button className="rounded">
+                        <DropdownMenu
+                            onDelete={() => deleteColumn.mutateAsync(column.id)}
+                        />
+                    </button>
+                )}
             </div>
             <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto">
                 {children}
