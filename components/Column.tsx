@@ -6,7 +6,6 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
-import { ColumnWithJobs } from '@/app/(dashboard)/page';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
@@ -14,6 +13,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useColumnStore } from '@/store/columns';
+import DropdownMenu from './shared/DropdownMenu';
+import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -154,12 +155,11 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 <button
-                    onClick={() => {
-                        deleteColumn.mutateAsync(column.id);
-                    }}
+                    // onClick={() => deleteColumn(column.id)}
                     className="px-1 py-2 rounded text-colBorder stroke-gray-300 hover:stroke-white hover:bg-colBG"
                 >
-                    <HiDotsHorizontal size={20} />
+                    {/* <HiDotsHorizontal size={20} /> */}
+                    <DropdownMenu onDelete={() => deleteColumn.mutateAsync(column.id)} />
                 </button>
             </div>
             <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto">
