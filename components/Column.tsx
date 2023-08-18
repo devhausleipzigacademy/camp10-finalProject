@@ -117,13 +117,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'bg-[#0D1117] border px-4 py-2 gap-3 w-[250px] h-[5500px] max-h-[560px] rounded-md flex flex-col',
+                'ui-background px-m py-s gap-3 w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
             <div
                 style={{ borderColor: column.color }}
-                className="py-6 h-[50px] cursor-grab border-b-8 flex justify-evenly items-center"
+                className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
                 <div className="">
                     <HiCube size={24} />

@@ -19,7 +19,7 @@ export default function DashboardHeader() {
     const [toggleViewMode, setToggleViewMode] = useState(false);
     return (
         <div className="ml-xl">
-            <header className="bg-basicColors-dark container h-[80px] flex flex-row justify-between py-s pl-m ">
+            <header className="ui-background  container h-[80px] flex flex-row justify-between py-s pl-m border">
                 <SearchInput onSearch={handleSearch} />
 
                 <div
