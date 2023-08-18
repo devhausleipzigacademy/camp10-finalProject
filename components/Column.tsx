@@ -1,5 +1,4 @@
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { HiDotsHorizontal } from 'react-icons/hi';
+import { HiDotsHorizontal, HiCube } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { Column } from './Board';
 import { CSS } from '@dnd-kit/utilities';
@@ -52,10 +51,10 @@ export default function Column({
             <div
                 style={{ borderColor: column.colour }}
                 // onClick={() => setEditMode(true)}
-                className="py-6 h-[50px] cursor-grab border-b-8 flex justify-between items-center"
+                className="py-6 h-[50px] cursor-grab border-b-8 flex justify-evenly items-center"
             >
                 <div className="">
-                    <FcLikePlaceholder />
+                    <HiCube size={24} />
                 </div>
                 <div className="text-3xl font-medium text-[#F2F2F2]">
                     <h1> {column.title} </h1>
