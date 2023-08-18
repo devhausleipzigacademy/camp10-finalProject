@@ -64,12 +64,14 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             setIsEditable(false);
             column.isNewColumn = false;
             queryClient.invalidateQueries(['columns']);
+            // update local state
+            removeColumn(column.positionInBoard);
             addColumn({
                 ...column,
                 id: res.id,
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
-            removeNewColumn(column.positionInBoard);
+
             toast.success('Created a new column successfully.', {
                 toastId: 'succes1',
             });

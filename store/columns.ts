@@ -17,7 +17,7 @@ export const useColumnStore = create<ColumnStore>()(set => ({
     setColumns: (columns: ColumnWithJobs[]) =>
         set({ existingColumns: columns }),
     addColumn: (newCol: ColumnWithJobs) =>
-        set(state => ({ existingColumns: [...state.existingColumns, newCol] })),
+        set(state => ({ existingColumns: [...state.newColumns, newCol] })),
     removeColumn: (columnPosition: number) =>
         set(state => ({
             existingColumns: state.existingColumns.filter(
@@ -25,7 +25,7 @@ export const useColumnStore = create<ColumnStore>()(set => ({
             ),
         })),
     addNewColumn: (newCol: ColumnWithJobs) =>
-        set(state => ({ newColumns: [...state.newColumns, newCol] })),
+        set(state => ({ newColumns: [...state.existingColumns, newCol] })),
     removeNewColumn: (columnPosition: number) =>
         set(state => ({
             newColumns: state.newColumns.filter(

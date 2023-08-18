@@ -51,9 +51,10 @@ export default function Board({ columnData }: BoardProps) {
         queryFn: () =>
             axios.get(`/api/column?userId=${userId}`).then(res => res.data),
         initialData: columnData,
+        refetchInterval: 3000,
     });
 
-    const { existingColumns, setColumns, newColumns, addNewColumn } = useColumnStore();
+    const { existingColumns, setColumns, newColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
     }, []);
@@ -71,7 +72,7 @@ export default function Board({ columnData }: BoardProps) {
         },
         onError: err => {
             console.log(err);
-            toast.error('Something went wrong, try again!');
+            toast.error('Something went wrong, refresh the page!');
         },
     });
 
@@ -89,7 +90,7 @@ export default function Board({ columnData }: BoardProps) {
         },
         onError: err => {
             console.log(err);
-            toast.error('Something went wrong, try again!');
+            toast.error('Something went wrong, refresh the page!');
         },
     });
 
@@ -312,33 +313,11 @@ export default function Board({ columnData }: BoardProps) {
                                     </SortableContext>
                                 </Column>
                             ))}
-                            {newColumns.map(col => (
-                                <Column
-                                    key={col.positionInBoard}
-                                    column={col}
-                                    isNewColumn={col.isNewColumn ?? false}
-                                >
-                                    <SortableContext
-                                        items={col.jobs.map(job => job.id)}
-                                    >
-                                        {col.jobs.map(job => {
-                                            return (
-                                                <JobCard
-                                                    job={job}
-                                                    key={job.id}
-                                                    colColor={col.color}
-                                                    parent={col.id}
-                                                />
-                                            );
-                                        })}
-                                    </SortableContext>
-                                </Column>
-                            ))}
                         </SortableContext>
                     </div>
                     <button
                         onClick={() => {
-                            addNewColumn({
+                            addColumn({
                                 id: '',
                                 title: '',
                                 positionInBoard:
