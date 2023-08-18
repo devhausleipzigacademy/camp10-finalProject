@@ -94,15 +94,15 @@ export default function Board({ columnData }: BoardProps) {
         },
     });
 
-    const newColumnTemplate: ColumnWithJobs = {
-        id: '',
-        title: 'title',
-        positionInBoard: columnData.length,
-        color: '#4c9a2a',
-        userId: userId as string,
-        createdAt: new Date(),
-        jobs: [] as Job[],
-    };
+    // const newColumnTemplate: ColumnWithJobs = {
+    //     id: '',
+    //     title: 'title',
+    //     positionInBoard: columnData.length,
+    //     color: '#4c9a2a',
+    //     userId: userId as string,
+    //     createdAt: new Date(),
+    //     jobs: [] as Job[],
+    // };
 
     function onDragStart(event: DragStartEvent) {
         if (event.active.data.current?.type === 'Column') {
@@ -270,8 +270,9 @@ export default function Board({ columnData }: BoardProps) {
             existingColumns,
             existingColumns.findIndex(col => col.id === active.id),
             existingColumns.findIndex(col => col.id === over.id)
-        );
-        setColumns(movedArray);
+        ).map((col, idx) => ({...col, positionInBoard: idx}))
+
+        setColumns(movedArray)
         movedArray.forEach(async col => {
             await patchColumn.mutateAsync(col);
         });

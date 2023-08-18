@@ -162,7 +162,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     <HiDotsHorizontal size={20} />
                 </button>
             </div>
-            <div className="flex flex-col flex-grow gap-6 p-3 overflow-x-hidden overflow-y-auto">
+            <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
         </div>

@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
-import { Column, Job, PrismaClient } from '@prisma/client';
+import { Column, Job } from '@prisma/client';
 import prisma from '@/utils/prismaClient';
 
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
