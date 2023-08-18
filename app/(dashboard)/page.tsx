@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+// import BasicTable from '@/components/BasicTable';
+// import Board from '@/components/Board';
+import DashboardHeader from '@/components/shared/DashboardHeader';
+>>>>>>> main
 import dynamic from 'next/dynamic';
 import { auth } from '@clerk/nextjs';
 import { Column, Job } from '@prisma/client';
@@ -9,6 +15,7 @@ export type ColumnWithJobs = Column & {
     isNewColumn?: boolean;
 };
 
+<<<<<<< HEAD
 const initColumns = [
     {
         title: 'Scouted',
@@ -95,5 +102,14 @@ export default async function KanbanBoard() {
     // console.log('userColumnsFromDB:', userColumns);
 
     return <BoardNoSSR columnData={userColumns} />;
+=======
+export default function KanbanBoard() {
+    return (
+        <>
+            <DashboardHeader />
+            {/* <BoardNoSSR />; */}
+        </>
+    );
+>>>>>>> main
     // return <BasicTable />;
 }
