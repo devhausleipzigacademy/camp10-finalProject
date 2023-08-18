@@ -55,7 +55,7 @@ export default function Board({ columnData }: BoardProps) {
         refetchInterval: 3000,
     });
 
-    const { existingColumns, setColumns, newColumns, addColumn } = useColumnStore();
+    const { existingColumns, setColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
     }, []);
@@ -261,9 +261,9 @@ export default function Board({ columnData }: BoardProps) {
             existingColumns,
             existingColumns.findIndex(col => col.id === active.id),
             existingColumns.findIndex(col => col.id === over.id)
-        ).map((col, idx) => ({...col, positionInBoard: idx}))
+        ).map((col, idx) => ({ ...col, positionInBoard: idx }));
 
-        setColumns(movedArray)
+        setColumns(movedArray);
         movedArray.forEach(async col => {
             await patchColumn.mutateAsync(col);
         });
@@ -312,8 +312,7 @@ export default function Board({ columnData }: BoardProps) {
                             addColumn({
                                 id: '',
                                 title: '',
-                                positionInBoard:
-                                    columnsData.length + newColumns.length,
+                                positionInBoard: existingColumns.length,
                                 color: '#AAAAAA',
                                 userId: userId?.toString(),
                                 createdAt: new Date(),
