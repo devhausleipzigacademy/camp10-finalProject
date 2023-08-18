@@ -19,12 +19,12 @@ export default function DashboardHeader() {
     const [toggleViewMode, setToggleViewMode] = useState(false);
     return (
         <div className="">
-            <header className="ui-background  container h-[80px] flex flex-row justify-between py-s px-m border">
+            <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
                 <SearchInput onSearch={handleSearch} />
 
                 <div
                     onClick={() => setToggleViewMode(!toggleViewMode)}
-                    className="flex items-center justify-center border rounded-xl border-basicColors-light w-[120px] overflow-hidden"
+                    className="flex items-center justify-center border rounded-xl border-basicColors-light w-[7.5rem] overflow-hidden"
                 >
                     <div
                         className={cn(
@@ -35,7 +35,7 @@ export default function DashboardHeader() {
                         )}
                     >
                         <SlGrid
-                            size={25}
+                            size={20}
                             color={!toggleViewMode ? '#3D3D3D' : '#F5F7FE'}
                         />
                     </div>
@@ -48,7 +48,7 @@ export default function DashboardHeader() {
                         )}
                     >
                         <HiOutlineListBullet
-                            size={25}
+                            size={20}
                             color={toggleViewMode ? '#3D3D3D' : '#F5F7FE'}
                         />
                     </div>

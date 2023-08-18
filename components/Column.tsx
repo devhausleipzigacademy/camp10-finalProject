@@ -129,8 +129,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 <div className="">
                     <HiCube size={24} />
                 </div>
-                <div className="text-3xl font-medium text-[#F2F2F2]">
-                    {!isEditable && <h3> {column.title} </h3>}
+                <div className="text-basicColors-light">
+                    {!isEditable && <h4> {column.title} </h4>}
                     {isEditable && (
                         <form
                             className="flex justify-around"
@@ -162,7 +162,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     </button>
                 )}
             </div>
-            <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto">
+            <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
                 {children}
             </div>
         </div>
