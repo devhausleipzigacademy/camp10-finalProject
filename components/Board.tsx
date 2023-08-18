@@ -270,7 +270,7 @@ export default function Board({ columnData }: BoardProps) {
     }
 
     return (
-        <div className="flex py-xl w-full overflow-x-scroll">
+        <div className="flex w-full overflow-x-scroll">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
