@@ -54,7 +54,7 @@ export default function DashboardHeader() {
                     </div>
                 </div>
             </header>
-            {toggleViewMode ? <BasicTable /> : <BoardNoSSR />}
+            {toggleViewMode ? <BasicTable /> : <></>}
         </div>
     );
 }

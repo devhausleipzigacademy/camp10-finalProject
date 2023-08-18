@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
-import { Job } from './Board';
+// import { Job } from './Board';
+import { Job } from '@prisma/client';
 
 type JobCardProps = {
     job: Job;
@@ -116,10 +117,10 @@ export default function JobCard({
             </button>
             <div className="flex flex-col w-full h-full text-white">
                 <p className="text-xl font-semibold truncate">
-                    {job.job_title}
+                    {job.title}
                 </p>
-                <p className="text-sm font-medium"> {job.company} </p>
-                <p className="self-end pt-4 pr-2 text-xs">{job.deadline}</p>
+                <p className="text-sm font-medium"> {job.companyName} </p>
+                <p className="self-end pt-4 pr-2 text-xs">{job.deadline?.toISOString()}</p>
             </div>
         </div>
     );

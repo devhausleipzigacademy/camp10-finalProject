@@ -4,7 +4,7 @@ import { Footer } from '@/components/shared/Footer';
 import { MainHeader } from '@/components/MainHeader';
 import Providers from '@/utils/provider';
 import { ClerkProvider } from '@clerk/nextjs';
-import Button from '@/components/shared/Button';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
     title: 'there will be a name',
@@ -18,17 +18,28 @@ export default function RootLayout({
 }) {
     return (
         <ClerkProvider>
-            <Providers>
-                <html lang="en">
-                    <body className="cloud-background font-Default text-basicColors-light flex justify-center">
+            <html lang="en">
+                <body className="cloud-background font-Default text-basicColors-light flex justify-center">
+                    <Providers>
                         <div className="max-w-[1280px] mx-xl xl:mx-xxl 2xl:mx-auto">
                             <MainHeader />
                             {children}
                             <Footer />
                         </div>
-                    </body>
-                </html>
-            </Providers>
+                        <ToastContainer
+                            containerId={'myToast'}
+                            position="top-right"
+                            autoClose={1000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            draggable
+                            theme="light"
+                        />
+                    </Providers>
+                </body>
+            </html>
         </ClerkProvider>
     );
 }
