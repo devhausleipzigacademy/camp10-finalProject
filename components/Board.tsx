@@ -12,7 +12,7 @@ import {
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { HiOutlinePlusCircle } from 'react-icons/hi';
+import { HiPlus } from 'react-icons/hi';
 import JobCard from './JobCard';
 import Column from './Column';
 import { Job, Column as ColumnType } from '@prisma/client';
@@ -278,7 +278,7 @@ export default function Board({ columnData }: BoardProps) {
     }
 
     return (
-        <div className="flex py-xl w-full overflow-x-scroll">
+        <div className="flex w-auto overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
@@ -328,9 +328,9 @@ export default function Board({ columnData }: BoardProps) {
                                 isNewColumn: true,
                             } as ColumnWithJobs);
                         }}
-                        className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"
+                        className="ui-background rounded-full flex my-auto relative -left-s w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
                     >
-                        <HiOutlinePlusCircle size={30} />
+                        <HiPlus size={20} />
                     </button>
                 </div>
                 {activeJob &&
