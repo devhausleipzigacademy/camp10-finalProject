@@ -1,7 +1,7 @@
 'use client';
 
 import { HiInformationCircle, HiOutlineViewGrid } from 'react-icons/hi';
-import { AiFillInfoCircle} from 'react-icons/ai';
+import { AiFillInfoCircle } from 'react-icons/ai';
 import React, { ChangeEvent, useState } from 'react';
 
 export type SearchProps = {
@@ -22,23 +22,19 @@ export default function SearchInput(props: SearchProps) {
     };
 
     return (
-        
-            <div
-                className=" text-basicColors-light 
-                rounded-full border border-green-800"
-            >
-                <label placeholder="Search..." className="flex items-center px-s py-[13px]">
-                    <AiFillInfoCircle  />
-                    <input
-                        type={'search'}
-                        name={'search'}
-                        placeholder={value}
-                        onChange={event => searchHandler(event)}
-                        onKeyDown={handleKeyDown}
-                        className="bg-transparent outline-none pl-xs "
-                    />
-                </label>
-            </div>
-        
+        <label
+            placeholder="Search..."
+            className="flex items-center px-s h-full rounded-full border"
+        >
+            <AiFillInfoCircle />
+            <input
+                type={'search'}
+                name={'search'}
+                placeholder={value}
+                onChange={event => searchHandler(event)}
+                onKeyDown={handleKeyDown}
+                className="bg-transparent outline-none px-xs"
+            />
+        </label>
     );
 }

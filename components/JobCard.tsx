@@ -99,7 +99,7 @@ export default function JobCard({
             // onClick={() => toggleCardSize()}
             style={style}
             className={cn(
-                'py-3 px-2 h-[110px] items-center flex text-left cursor-grab rounded-md rounded-tr-none relative',
+                'h-[110px] items-center flex text-left cursor-grab rounded-md rounded-tr-none relative',
                 isDragging && 'opacity-25'
             )}
         >
