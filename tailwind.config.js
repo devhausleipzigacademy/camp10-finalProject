@@ -2,17 +2,10 @@
 module.exports = {
     darkMode: ['class'],
     content: [
-<<<<<<< HEAD
-        './pages/**/*.{js,ts,jsx,tsx,mdx}',
-        './components/**/*.{js,ts,jsx,tsx,mdx}',
-        './app/**/*.{js,ts,jsx,tsx,mdx}',
-        
-=======
         './pages/**/*.{ts,tsx}',
         './components/**/*.{ts,tsx}',
         './app/**/*.{ts,tsx}',
         './src/**/*.{ts,tsx}',
->>>>>>> main
     ],
     theme: {
         container: {
@@ -148,15 +141,11 @@ module.exports = {
             },
         },
     },
-<<<<<<< HEAD
     
     plugins: [
        
             require('tailwind-scrollbar'),
         
     ],
-=======
-    plugins: [require('tailwindcss-animate')],
->>>>>>> main
 };
 

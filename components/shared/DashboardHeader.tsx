@@ -27,32 +27,32 @@ export default function DashboardHeader({ onToggle, toggleViewMode }: Props) {
 
                 <div
                     onClick={() => onToggle(!toggleViewMode)}
-                    className=" flex items-center justify-center  border-2 rounded-xl border-basicColors-light mr-m"
+                    className=" flex items-center justify-center  border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
                 >
                     <div
                         className={cn(
                             'w-1/2 h-full flex justify-center items-center',
                             toggleViewMode
-                                ? 'bg-basicColors-dark'
-                                : 'bg-basicColors-light'
+                                ? 'bg-basicColors-light'
+                                : 'bg-basicColors-dark'
                         )}
                     >
                         <SlGrid
                             size={20}
-                            color={!toggleViewMode ? '#3D3D3D' : '#F5F7FE'}
+                            color={!toggleViewMode ? '#F5F7FE' : '#3D3D3D'}
                         />
                     </div>
                     <div
                         className={cn(
                             'w-1/2 h-full flex justify-center items-center',
                             !toggleViewMode
-                                ? 'bg-basicColors-dark'
-                                : 'bg-basicColors-light'
+                                ? 'bg-basicColors-light'
+                                : 'bg-basicColors-dark'
                         )}
                     >
                         <HiOutlineListBullet
                             size={20}
-                            color={toggleViewMode ? '#3D3D3D' : '#F5F7FE'}
+                            color={toggleViewMode ? '#F5F7FE' : '#3D3D3D'}
                         />
                     </div>
                 </div>
