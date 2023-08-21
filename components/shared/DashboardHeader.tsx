@@ -8,23 +8,26 @@ import { HiOutlineListBullet } from 'react-icons/hi2';
 import { SlGrid } from 'react-icons/sl';
 import { cn } from '@/utils/cn';
 
-const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
+type Props = {
+    onToggle: (value: boolean) => void;
+    toggleViewMode: boolean;
+};
 
-export default function DashboardHeader() {
+export default function DashboardHeader({ onToggle, toggleViewMode }: Props) {
     const [searchValue, setSearchValue] = useState('');
 
     const handleSearch = (value: string) => {
         setSearchValue(value);
     };
-    const [toggleViewMode, setToggleViewMode] = useState(false);
+
     return (
         <div className="">
             <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
                 <SearchInput onSearch={handleSearch} />
 
                 <div
-                    onClick={() => setToggleViewMode(!toggleViewMode)}
-                    className="flex items-center justify-center border rounded-xl border-basicColors-light w-[7.5rem] overflow-hidden"
+                    onClick={() => onToggle(!toggleViewMode)}
+                    className=" flex items-center justify-center  border-2 rounded-xl border-basicColors-light mr-m"
                 >
                     <div
                         className={cn(
@@ -54,7 +57,6 @@ export default function DashboardHeader() {
                     </div>
                 </div>
             </header>
-            {toggleViewMode ? <BasicTable /> : <></>}
         </div>
     );
 }
