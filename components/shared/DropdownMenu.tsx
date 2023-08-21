@@ -25,7 +25,7 @@ export default function DropdownMenu({ onDelete }: Props) {
                 <HiDotsHorizontal size={20} />
             </button>
             {open && (
-                <div className=" border bg-basicColors-dark text-basicColors-light w-[120px] h-[120px] rounded-lg absolute text-s text-left px-s py-xs z-100">
+                <div className=" border bg-basicColors-dark text-basicColors-light w-[120px] h-[120px] rounded-lg absolute text-s text-left px-s py-xs z-[100]">
                     <ul className="relative">
                         <li className="hover:bg-hoverColors-hover rounded-sm py-xxs">
                             edit
