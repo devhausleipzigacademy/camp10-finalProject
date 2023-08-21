@@ -11,15 +11,18 @@ import {
 import testDataTable from '@/app/(dashboard)/testDataTable.json';
 import { useMemo, useState } from 'react';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
+import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
 
 type Job = {
     id: number;
+    state: boolean;
     job_title: string;
     company_name: string;
-    priority: string;
-    deadline: string;
+    location: string;
     status: string;
+    deadline: string;
+    action: string;
 };
 
 export default function BasicTable() {
@@ -28,9 +31,9 @@ export default function BasicTable() {
     //define cols
     const columns: ColumnDef<Job>[] = [
         {
-            header: 'ID',
-            accessorKey: 'id',
-            footer: 'ID',
+            header: '???',
+            accessorKey: 'state',
+            footer: '???',
         },
         {
             header: 'Job',
@@ -43,61 +46,27 @@ export default function BasicTable() {
             footer: 'Company',
         },
         {
-            header: 'Priority',
-            accessorKey: 'priority',
-            footer: 'Priority',
+            header: 'Location',
+            accessorKey: 'location',
+            footer: 'Location',
         },
         {
             header: 'Status',
             accessorKey: 'status',
             footer: 'Status',
         },
+
         {
             header: 'Deadline',
             accessorKey: 'deadline',
             footer: 'Deadline',
-            cell: cell => cell.getValue().split('/'), // An example to format a col
+            // cell: cell => cell.getValue().split('/'),
         },
-
-        // Combine 2 cols example:
-        // {
-        //   header: "First Name",
-        //   accessorKey: "first_name",
-        //   footer: "First Name",
-        // },
-        // {
-        //   header: "Last Name",
-        //   accessorKey: "last_name",
-        //   footer: "Last Name",
-        // },
-        // {
-        //   header: "Name",
-        //   accessorFn: (row) => ` ${row.first_name}  ${row.last_name}`,  // accessorFn: (callback)
-        //   footer: "Name",
-        // },
-
-        // nested headerGroups example.
-        // Note: You need to add 'header.isPlaceholder ? null : flexRender()' ternary to header flexRender.
-        // {
-        //   header: "Positions",
-        //   columns: [
-        //     {
-        //       header: "Job Title",
-        //       accessorKey: "first_name",
-        //       footer: "Job Title",
-        //     },
-        //     {
-        //       header: "Company",
-        //       accessorKey: "last_name",
-        //       footer: "Company",
-        //     },
-        //   ],
-        // },
-        // {
-        //   header: "Mail",
-        //   accessorKey: "email",
-        //   footer: "Mail",
-        // },
+        {
+            header: 'Actions',
+            accessorKey: 'actions',
+            footer: 'Actions',
+        },
     ];
     const [sorting, setSorting] = useState([]);
     const [filter, setFilter] = useState('');
@@ -118,18 +87,19 @@ export default function BasicTable() {
     });
 
     return (
-        <div className="w3-container">
+        <div className="ui-background border">
             <input
                 type="text"
                 value={filter}
                 onChange={e => setFilter(e.target.value)}
             />
-            <table className="w3-table-all w3-hoverable">
-                <thead>
+            <table className="border mx-auto container ">
+                <thead className="">
                     {exampleTable.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
+                                    className="border p-s text-left"
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
@@ -139,12 +109,19 @@ export default function BasicTable() {
                                               header.column.columnDef.header,
                                               header.getContext()
                                           )}
-                                    {
-                                        {
-                                            asc: <BsArrowUpShort />,
-                                            desc: <BsArrowDownShort />,
-                                        }[header.column.getIsSorted() ?? null]
-                                    }
+                                    {header.column.getIsSorted() ===
+                                    false ? null : header.column.getIsSorted() ===
+                                      'asc' ? (
+                                        <BsArrowUpShort
+                                            size={18}
+                                            className="inline-block ml-2"
+                                        />
+                                    ) : (
+                                        <BsArrowDownShort
+                                            size={18}
+                                            className="inline-block ml-2"
+                                        />
+                                    )}
                                 </th>
                             ))}
                         </tr>
@@ -152,9 +129,21 @@ export default function BasicTable() {
                 </thead>
                 <tbody>
                     {exampleTable.getRowModel().rows.map(row => (
-                        <tr key={row.id} draggable>
+                        <tr
+                            key={row.id}
+                            className="odd:bg-[#f2f2f2] odd:bg-opacity-5 hover:outline-none transition-transform ease-in-out hover:scale-y-[1.06] hover:scale-x-[1.01]"
+                        >
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
+                                <td key={cell.id} className="border p-s">
+                                    {cell.column.columnDef.header ===
+                                    'Actions' ? (
+                                        <div className="flex justify-between    ">
+                                            {' '}
+                                            <HiArchive size={20} />{' '}
+                                            <HiPencil size={20} />{' '}
+                                            <HiTrash size={20} />{' '}
+                                        </div>
+                                    ) : null}
                                     {flexRender(
                                         cell.column.columnDef.cell,
                                         cell.getContext()
