@@ -115,6 +115,10 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
 
+        if (over.data.current?.column.isNewColumn) {
+            return
+        }
+
         if (
             over.data.current?.type === 'Job' &&
             active.data.current?.type === 'Job'
@@ -153,6 +157,7 @@ export default function Board({ columnData }: BoardProps) {
                 return;
             }
 
+            // move job to a different column
             const newColumns = existingColumns.map(column => {
                 if (column.id === over.data.current?.parent) {
                     const currentJob = active.data.current?.job;
@@ -257,6 +262,9 @@ export default function Board({ columnData }: BoardProps) {
         setActiveJob(null);
         const { active, over } = event;
         if (!over || over.id === active.id) return;
+        if (over.data.current?.column.isNewColumn) {
+            return
+        }
         const movedArray = arrayMove(
             existingColumns,
             existingColumns.findIndex(col => col.id === active.id),
