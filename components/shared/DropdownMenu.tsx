@@ -3,21 +3,16 @@ import { HiDotsHorizontal } from 'react-icons/hi';
 
 type Props = {
     onDelete: () => void;
+    onEdit: () => void;
 };
 
-export default function DropdownMenu({ onDelete }: Props) {
+export default function DropdownMenu({ onDelete, onEdit }: Props) {
     const [open, setOpen] = useState<boolean>(false);
 
     const dropdownMenuRef = useRef<HTMLDivElement>(null);
     const DropdownMenuHandler = (state: boolean) => {
         setOpen(!state);
     };
-    const handleClickDropdown = (event: MouseEvent) => {
-        if (open && !dropdownMenuRef.current?.contains(event.target as Node)) {
-            setOpen(false);
-        }
-    };
-    window.addEventListener('click', handleClickDropdown);
 
     return (
         <div className="relative" ref={dropdownMenuRef}>
@@ -25,18 +20,21 @@ export default function DropdownMenu({ onDelete }: Props) {
                 <HiDotsHorizontal size={20} />
             </div>
             {open && (
-                <div className="border text-basicColors-light w-[120px] h-[120px] rounded-lg text-s text-left px-s py-xs z-50 absolute top-m ui-background">
-                    <ul className="relative">
-                        <li className="hover:bg-hoverColors-hover rounded-sm py-xxs">
+                <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background right-[0]">
+                    <ul className="relative w-full">
+                        <li
+                            className="hover:bg-hoverColors-hover rounded-sm p-xxs"
+                            onClick={onEdit}
+                        >
                             edit
                         </li>
                         <li
-                            className="hover:bg-hoverColors-hover rounded-sm py-xxs"
+                            className="hover:bg-hoverColors-hover rounded-sm p-xxs"
                             onClick={onDelete}
                         >
                             delete
                         </li>
-                        <li className="hover:bg-hoverColors-hover rounded-sm py-xxs">
+                        <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
                             color
                         </li>
                     </ul>

@@ -79,13 +79,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 toastId: 'succes1',
             });
         },
-        onError: (error) => {
-            console.log(error)
+        onError: error => {
+            console.log(error);
             if (error instanceof AxiosError) {
                 if (error.response?.status === 422) {
-                    console.log(422)
-                    toast.error("The title needs at least 3 characters.")
-                    return
+                    console.log(422);
+                    toast.error('The title needs at least 3 characters.');
+                    return;
                 }
             }
             toast.error('Something went wrong in the server!');
@@ -107,18 +107,41 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
+    const patchColumnTitle = useMutation({
+        mutationFn: async (column: Partial<ColumnWithJobs>) =>
+            await axios
+                .patch(`/api/column/${column.id}`, {
+                    title: column.title,
+                })
+                .then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            toast.success('Title is successfully updated.')
+        },
+        onError: err => {
+            console.log(err);
+            toast.error('Something went wrong, refresh the page!');
+        },
+    });
+
     const onSumitHandler: React.FormEventHandler<
         HTMLFormElement
     > = async event => {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
-        const newTitle = data.get('title');
-        const { id, jobs, isNewColumn, ...newColumn } = column;
-        newColumn.title = newTitle as string;
-        column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
-        // const col = await axios.post('/api/column', newColumn);
-        newColumn.color = colorSet[column.positionInBoard % colorSet.length];
-        await createNewColumn.mutateAsync(newColumn);
+        const newTitle = data.get('title') as string;
+        if (column.isNewColumn) {
+            const { id, jobs, isNewColumn, ...newColumn } = column;
+            newColumn.title = newTitle;
+            column.title = newTitle;
+            newColumn.color =
+                colorSet[column.positionInBoard % colorSet.length];
+            await createNewColumn.mutateAsync(newColumn);
+        } else {
+            patchColumnTitle.mutateAsync({ ...column, title: newTitle });
+            column.title = newTitle;
+            setIsEditable(false)
+        }
     };
 
     return (
@@ -128,7 +151,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background-no-blur px-m py-s w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
+                'ui-background px-m py-s w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -165,13 +188,14 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 {!isEditable && (
-                        <button className="rounded overflow-visible">
-                            <DropdownMenu
-                                onDelete={() =>
-                                    deleteColumn.mutateAsync(column.id)
-                                }
-                            />
-                        </button>
+                    <button className="rounded overflow-visible">
+                        <DropdownMenu
+                            onDelete={() => deleteColumn.mutateAsync(column.id)}
+                            onEdit={() => {
+                                setIsEditable(true);
+                            }}
+                        />
+                    </button>
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
