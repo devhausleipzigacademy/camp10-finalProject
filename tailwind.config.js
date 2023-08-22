@@ -33,6 +33,7 @@ module.exports = {
         },
         fontWeight: {
             800: '800',
+            700: '700',
             600: '600',
             500: '500',
             400: '400',
@@ -141,11 +142,6 @@ module.exports = {
             },
         },
     },
-    
-    plugins: [
-       
-            require('tailwind-scrollbar'),
-        
-    ],
-};
 
+    plugins: [require('tailwind-scrollbar')],
+};

@@ -12,7 +12,9 @@ import testDataTable from '@/app/(dashboard)/testDataTable.json';
 import { useMemo, useState } from 'react';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
+import { BiPlus, BiMinus } from 'react-icons/bi';
 import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
+import Button from './shared/Button';
 
 type Job = {
     id: number;
@@ -31,9 +33,9 @@ export default function BasicTable() {
     //define cols
     const columns: ColumnDef<Job>[] = [
         {
-            header: '???',
-            accessorKey: 'state',
-            footer: '???',
+            header: '☐',
+            accessorKey: 'checked',
+            footer: ' ',
         },
         {
             header: 'Job',
@@ -68,7 +70,8 @@ export default function BasicTable() {
             footer: 'Actions',
         },
     ];
-    const [sorting, setSorting] = useState([]);
+    let sorting: any, setSorting: any;
+    [sorting, setSorting] = useState([]);
     const [filter, setFilter] = useState('');
 
     const exampleTable = useReactTable({
@@ -87,28 +90,69 @@ export default function BasicTable() {
     });
 
     return (
-        <div className="ui-background border">
-            <input
-                type="text"
-                value={filter}
-                onChange={e => setFilter(e.target.value)}
-            />
-            <table className="border mx-auto container ">
+        <div className="ui-background border px-m pb-m">
+            <div className="flex justify-between p-s">
+                <input
+                    type="text"
+                    value={filter}
+                    onChange={e => setFilter(e.target.value)}
+                    className="border bg-transparent rounded-full outline-none py-xxs px-s"
+                />
+                <div className="flex gap-s">
+                    <Button
+                        size="tiny"
+                        onClick={() => exampleTable.setPageIndex(0)}
+                    >
+                        {' '}
+                        First Page
+                    </Button>
+                    <button
+                        onClick={() => exampleTable.previousPage()}
+                        disabled={!exampleTable.getCanPreviousPage()}
+                        className=" disabled:hover:bg-transparent disabled:opacity-30"
+                    >
+                        <BiMinus
+                            size={26}
+                            className=" border transition-colors ease-in-out bg-transparent rounded-full   text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain"
+                        />
+                    </button>
+                    <button
+                        className="disabled:hover:bg-transparent disabled:opacity-30  "
+                        onClick={() => exampleTable.nextPage()}
+                        disabled={!exampleTable.getCanNextPage()}
+                    >
+                        <BiPlus
+                            size={26}
+                            className="border transition-colors ease-in-out bg-transparent rounded-full  text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain"
+                        />
+                    </button>
+                    <Button
+                        size="tiny"
+                        onClick={() =>
+                            exampleTable.setPageIndex(
+                                exampleTable.getPageCount() - 1
+                            )
+                        }
+                    >
+                        {' '}
+                        Last Page{' '}
+                    </Button>
+                </div>
+            </div>
+            <table className=" container ">
                 <thead className="">
                     {exampleTable.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
-                                    className="border p-s text-left"
+                                    className="border px-m py-s text-left first:text-center font-600"
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext()
-                                          )}
+                                    {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}
                                     {header.column.getIsSorted() ===
                                     false ? null : header.column.getIsSorted() ===
                                       'asc' ? (
@@ -131,22 +175,47 @@ export default function BasicTable() {
                     {exampleTable.getRowModel().rows.map(row => (
                         <tr
                             key={row.id}
-                            className="odd:bg-[#f2f2f2] odd:bg-opacity-5 hover:outline-none transition-transform ease-in-out hover:scale-y-[1.06] hover:scale-x-[1.01]"
+                            className="odd:bg-[#f2f2f2] odd:bg-opacity-5"
                         >
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} className="border p-s">
+                                <td
+                                    key={cell.id}
+                                    className="border px-m py-s first:text-center "
+                                >
                                     {cell.column.columnDef.header ===
                                     'Actions' ? (
-                                        <div className="flex justify-between    ">
+                                        <div className="flex gap-s cursor-pointer">
                                             {' '}
-                                            <HiArchive size={20} />{' '}
-                                            <HiPencil size={20} />{' '}
-                                            <HiTrash size={20} />{' '}
+                                            <HiArchive
+                                                size={20}
+                                                onClick={() =>
+                                                    console.log('blupp')
+                                                }
+                                            />{' '}
+                                            <HiPencil
+                                                size={20}
+                                                onClick={() =>
+                                                    console.log('foo')
+                                                }
+                                            />{' '}
+                                            <HiTrash
+                                                size={20}
+                                                onClick={() =>
+                                                    console.log('bar')
+                                                }
+                                            />{' '}
                                         </div>
                                     ) : null}
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
+                                    {cell.column.columnDef.footer === ' ' ? (
+                                        <input
+                                            type="checkbox"
+                                            className="h-s w-s "
+                                        />
+                                    ) : (
+                                        flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )
                                     )}
                                 </td>
                             ))}
@@ -154,34 +223,6 @@ export default function BasicTable() {
                     ))}
                 </tbody>
             </table>
-            <div>
-                <button onClick={() => exampleTable.setPageIndex(0)}>
-                    {' '}
-                    First Page
-                </button>
-                <button
-                    onClick={() => exampleTable.previousPage()}
-                    disabled={!exampleTable.getCanPreviousPage()}
-                >
-                    <AiOutlineMinusCircle />
-                </button>
-                <button
-                    onClick={() => exampleTable.nextPage()}
-                    disabled={!exampleTable.getCanNextPage()}
-                >
-                    <AiOutlinePlusCircle />
-                </button>
-                <button
-                    onClick={() =>
-                        exampleTable.setPageIndex(
-                            exampleTable.getPageCount() - 1
-                        )
-                    }
-                >
-                    {' '}
-                    Last Page{' '}
-                </button>
-            </div>
         </div>
     );
 }
