@@ -22,11 +22,6 @@ type ColumnProps = {
     isNewColumn: boolean;
 };
 
-type ErrorReponseType = {
-    message: string;
-    status: number;
-};
-
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
 export default function Column({ column, children, isNewColumn }: ColumnProps) {
@@ -56,17 +51,17 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     };
 
     const createNewColumn = useMutation({
-        mutationFn: async (col: Partial<ColumnWithJobs>) => {
-            const response = await axios.post('/api/column', { ...col } as Omit<
-                ColumnWithJobs,
-                'id' | 'createdAt' | 'jobs'
-            >);
-            return response;
-        },
+        mutationFn: (col: Partial<ColumnWithJobs>) =>
+            axios
+                .post('/api/column', { ...col } as Omit<
+                    ColumnWithJobs,
+                    'id' | 'createdAt' | 'jobs'
+                >)
+                .then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
-            queryClient.invalidateQueries(['columns']);
+            await queryClient.invalidateQueries(['columns']);
             // update local state
             removeColumn(column.positionInBoard);
             addColumn({
@@ -79,13 +74,12 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 toastId: 'succes1',
             });
         },
-        onError: (error) => {
-            console.log(error)
+        onError: error => {
             if (error instanceof AxiosError) {
                 if (error.response?.status === 422) {
-                    console.log(422)
-                    toast.error("The title needs at least 3 characters.")
-                    return
+                    console.log(422);
+                    toast.error('The title needs at least 3 characters.');
+                    return;
                 }
             }
             toast.error('Something went wrong in the server!');
@@ -93,8 +87,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const deleteColumn = useMutation({
-        mutationFn: async (columnId: string) =>
-            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) =>
+            axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -118,7 +112,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
         // const col = await axios.post('/api/column', newColumn);
         newColumn.color = colorSet[column.positionInBoard % colorSet.length];
-        await createNewColumn.mutateAsync(newColumn);
+        createNewColumn.mutate(newColumn);
     };
 
     return (
@@ -165,13 +159,11 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 {!isEditable && (
-                        <button className="rounded overflow-visible">
-                            <DropdownMenu
-                                onDelete={() =>
-                                    deleteColumn.mutateAsync(column.id)
-                                }
-                            />
-                        </button>
+                    <button className="rounded overflow-visible">
+                        <DropdownMenu
+                            onDelete={() => deleteColumn.mutate(column.id)}
+                        />
+                    </button>
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
