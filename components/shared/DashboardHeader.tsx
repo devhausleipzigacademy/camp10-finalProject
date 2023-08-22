@@ -24,7 +24,7 @@ export default function DashboardHeader({ onToggle, toggleViewMode }: Props) {
 
             <div
                 onClick={() => onToggle(!toggleViewMode)}
-                className=" flex items-center justify-center  border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
+                className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
             >
                 <div
                     className={cn(
