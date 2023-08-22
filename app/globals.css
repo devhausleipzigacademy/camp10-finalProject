@@ -17,6 +17,12 @@
         backdrop-filter: blur(20px);
     }
 
+    .ui-background-no-blur {
+        /* background-color: rgba(80, 80, 80, 0.7); */
+        background: linear-gradient(#848484b4, #3d3d3d8d);
+    }
+
+
     :root {
         --background: 0 0% 100%;
         --foreground: 0 0% 3.9%;
