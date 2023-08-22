@@ -6,7 +6,9 @@ export const GET = async (req: NextRequest) => {
     const { userId } = auth();
 
     if (!userId) {
-        return NextResponse.json('Unauthorized', { status: 401 });
+        return NextResponse.json('You are not authorized. Are you logged in?', {
+            status: 401,
+        });
     }
 
     const tags = await prisma.tag.findMany({

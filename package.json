@@ -29,6 +29,7 @@
         "clsx": "^2.0.0",
         "eslint": "8.46.0",
         "eslint-config-next": "13.4.12",
+        "fuse.js": "^6.6.2",
         "next": "13.4.19",
         "next-auth": "^4.22.3",
         "postcss": "8.4.27",
