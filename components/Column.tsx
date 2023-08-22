@@ -51,22 +51,19 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     };
 
     const createNewColumn = useMutation({
-        mutationFn: async (col: Partial<ColumnWithJobs>) => {
-            const response = await axios.post('/api/column', { ...col } as Omit<
+        mutationFn: (col: Partial<ColumnWithJobs>) => axios.post('/api/column', { ...col } as Omit<
                 ColumnWithJobs,
                 'id' | 'createdAt' | 'jobs'
-            >);
-            return response;
-        },
+            >).then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
-            queryClient.invalidateQueries(['columns']);
+            await queryClient.invalidateQueries(['columns']);
             // update local state
             removeColumn(column.positionInBoard);
             addColumn({
                 ...column,
-                id: res.data.id,
+                id: res.id,
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
 
@@ -88,8 +85,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const deleteColumn = useMutation({
-        mutationFn: async (columnId: string) =>
-            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) => axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -103,8 +99,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const patchColumnTitle = useMutation({
-        mutationFn: async (column: Partial<ColumnWithJobs>) =>
-            await axios
+        mutationFn: (column: Partial<ColumnWithJobs>) => axios
                 .patch(`/api/column/${column.id}`, {
                     title: column.title,
                 })
@@ -133,7 +128,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 colorSet[column.positionInBoard % colorSet.length];
             createNewColumn.mutate(newColumn);
         } else {
-            patchColumnTitle.mutate({ ...column, title: newTitle });
+            await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
             setIsEditable(false)
         }
@@ -168,6 +163,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                                 className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
                                 placeholder="confirm title"
                                 name="title"
+                                value={column.title}
                                 autoFocus
                                 required
                                 minLength={3}

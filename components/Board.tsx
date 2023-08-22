@@ -279,7 +279,7 @@ export default function Board({ columnData }: BoardProps) {
         ).map((col, idx) => ({ ...col, positionInBoard: idx }));
 
         setColumns(movedArray);
-        movedArray.forEach(async col => {
+        movedArray.forEach(col => {
             patchColumn.mutate({id: col.id, positionInBoard: col.positionInBoard});
         });
     }

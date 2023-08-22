@@ -13,6 +13,13 @@ export default function DropdownMenu({ onDelete, onEdit }: Props) {
     const DropdownMenuHandler = (state: boolean) => {
         setOpen(!state);
     };
+    // close the dropdown by clicking outside of it. 
+    window.addEventListener('click', e => {
+        console.log(!(e.target instanceof SVGElement) && open);
+        if (!(e.target instanceof SVGElement) && open) {
+            setOpen(false);
+        }
+    });
 
     return (
         <div className="relative" ref={dropdownMenuRef}>
