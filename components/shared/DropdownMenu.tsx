@@ -20,7 +20,7 @@ export default function DropdownMenu({ onDelete, onEdit }: Props) {
                 <HiDotsHorizontal size={20} />
             </div>
             {open && (
-                <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background right-[0]">
+                <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-50">
                     <ul className="relative w-full">
                         <li
                             className="hover:bg-hoverColors-hover rounded-sm p-xxs"
