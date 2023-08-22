@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ColumnWithJobs } from './getColumns';
+import { ColumnWithJobs } from '../app/(dashboard)/getColumns';
 
 import dynamic from 'next/dynamic';
 import BasicTable from '@/components/BasicTable';
@@ -13,7 +13,7 @@ type Props = {
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 
 function Dashboard({ userColumns }: Props) {
-    const [toggleViewMode, setToggleViewMode] = useState(false);
+    const [toggleViewMode, setToggleViewMode] = useState(true);
     return (
         <>
             <div className="ml-xl">
