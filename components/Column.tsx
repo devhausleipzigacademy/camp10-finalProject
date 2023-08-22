@@ -163,7 +163,6 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                                 className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
                                 placeholder="confirm title"
                                 name="title"
-                                value={column.title}
                                 autoFocus
                                 required
                                 minLength={3}
