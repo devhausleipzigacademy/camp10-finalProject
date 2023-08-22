@@ -6,13 +6,15 @@ import { ColumnWithJobs } from './getColumns';
 import dynamic from 'next/dynamic';
 import BasicTable from '@/components/BasicTable';
 import DashboardHeader from '@/components/shared/DashboardHeader';
+import { JobsWithCols } from './getJobs';
 
 type Props = {
     userColumns: ColumnWithJobs[];
+    userJobs: JobsWithCols[];
 };
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 
-function Dashboard({ userColumns }: Props) {
+function Dashboard({ userColumns, userJobs }: Props) {
     const [toggleViewMode, setToggleViewMode] = useState(false);
     return (
         <>
@@ -25,7 +27,7 @@ function Dashboard({ userColumns }: Props) {
                     {toggleViewMode ? (
                         <BoardNoSSR columnData={userColumns} />
                     ) : (
-                        <BasicTable />
+                        <BasicTable jobData={userJobs} />
                     )}
                 </div>
             </div>

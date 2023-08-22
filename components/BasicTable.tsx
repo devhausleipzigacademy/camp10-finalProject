@@ -8,43 +8,42 @@ import {
     getFilteredRowModel,
     ColumnDef,
 } from '@tanstack/react-table';
-import testDataTable from '@/app/(dashboard)/testDataTable.json';
 import { useMemo, useState } from 'react';
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BiPlus, BiMinus } from 'react-icons/bi';
-import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
+import {
+    BsArrowDownShort,
+    BsArrowUpShort,
+    BsCheckSquare,
+    BsSquare,
+} from 'react-icons/bs';
 import Button from './shared/Button';
+import { JobsWithCols } from '@/app/(dashboard)/getJobs';
+import { cn } from '@/lib/utils';
 
-type Job = {
-    id: number;
-    state: boolean;
-    job_title: string;
-    company_name: string;
-    location: string;
-    status: string;
-    deadline: string;
-    action: string;
+type TableViewProps = {
+    jobData: JobsWithCols[];
 };
 
-export default function BasicTable() {
-    const data = useMemo(() => testDataTable, []);
+export default function BasicTable({ jobData }: TableViewProps) {
+    const data = useMemo(() => jobData, [jobData]);
+    console.log('data: ', data);
 
     //define cols
-    const columns: ColumnDef<Job>[] = [
+    const columns: ColumnDef<JobsWithCols>[] = [
         {
-            header: '☐',
+            header: 'check',
             accessorKey: 'checked',
-            footer: ' ',
+            footer: 'check',
         },
         {
             header: 'Job',
-            accessorKey: 'job_title',
+            accessorKey: 'title',
             footer: 'Job',
         },
         {
             header: 'Company',
-            accessorKey: 'company_name',
+            accessorKey: 'companyName',
             footer: 'Company',
         },
         {
@@ -54,8 +53,7 @@ export default function BasicTable() {
         },
         {
             header: 'Status',
-            accessorKey: 'status',
-            footer: 'Status',
+            accessorKey: 'column.title',
         },
 
         {
@@ -92,12 +90,12 @@ export default function BasicTable() {
     return (
         <div className="ui-background border px-m pb-m">
             <div className="flex justify-between p-s">
-                <input
+                {/* <input
                     type="text"
                     value={filter}
                     onChange={e => setFilter(e.target.value)}
                     className="border bg-transparent rounded-full outline-none py-xxs px-s"
-                />
+                /> */}
                 <div className="flex gap-s">
                     <Button
                         size="tiny"
@@ -139,31 +137,39 @@ export default function BasicTable() {
                     </Button>
                 </div>
             </div>
-            <table className=" container ">
+            <table className="container ">
                 <thead className="">
                     {exampleTable.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
-                                    className="border px-m py-s text-left first:text-center font-600"
+                                    className="border px-m py-s text-left font-600"
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
-                                    {flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
+                                    {header.column.columnDef.footer ===
+                                    'check' ? (
+                                        <BsSquare
+                                            size={21}
+                                            className="inline-block"
+                                        />
+                                    ) : (
+                                        flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )
                                     )}
                                     {header.column.getIsSorted() ===
                                     false ? null : header.column.getIsSorted() ===
                                       'asc' ? (
                                         <BsArrowUpShort
                                             size={18}
-                                            className="inline-block ml-2"
+                                            className="inline-block ml-xs"
                                         />
                                     ) : (
                                         <BsArrowDownShort
                                             size={18}
-                                            className="inline-block ml-2"
+                                            className="inline-block ml-xs"
                                         />
                                     )}
                                 </th>
@@ -175,17 +181,13 @@ export default function BasicTable() {
                     {exampleTable.getRowModel().rows.map(row => (
                         <tr
                             key={row.id}
-                            className="odd:bg-[#f2f2f2] odd:bg-opacity-5"
+                            className="odd:bg-[#f2f2f2] odd:bg-opacity-5 "
                         >
                             {row.getVisibleCells().map(cell => (
-                                <td
-                                    key={cell.id}
-                                    className="border px-m py-s first:text-center "
-                                >
+                                <td key={cell.id} className="border px-m py-s">
                                     {cell.column.columnDef.header ===
                                     'Actions' ? (
                                         <div className="flex gap-s cursor-pointer">
-                                            {' '}
                                             <HiArchive
                                                 size={20}
                                                 onClick={() =>
@@ -206,11 +208,10 @@ export default function BasicTable() {
                                             />{' '}
                                         </div>
                                     ) : null}
-                                    {cell.column.columnDef.footer === ' ' ? (
-                                        <input
-                                            type="checkbox"
-                                            className="h-s w-s "
-                                        />
+
+                                    {cell.column.columnDef.footer ===
+                                    'check' ? (
+                                        <BsSquare size={21} />
                                     ) : (
                                         flexRender(
                                             cell.column.columnDef.cell,
