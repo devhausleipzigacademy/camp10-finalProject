@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest) => {
         if (err instanceof ZodError) {
             return NextResponse.json(
                 {
-                    message: err.issues[0].message,
+                    statusText: err.issues[0].message,
                 },
                 { status: 422 }
             );

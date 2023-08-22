@@ -79,13 +79,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 toastId: 'succes1',
             });
         },
-        onError: (error: AxiosError) => {
-            if (error.response) {
-                const errorResponseBody = error.response
-                    .data as ErrorReponseType;
-                if (errorResponseBody.status === 422) {
-                    toast.error(errorResponseBody.message);
-                    return;
+        onError: (error) => {
+            console.log(error)
+            if (error instanceof AxiosError) {
+                if (error.response?.status === 422) {
+                    console.log(422)
+                    toast.error("The title needs at least 3 characters.")
+                    return
                 }
             }
             toast.error('Something went wrong in the server!');
