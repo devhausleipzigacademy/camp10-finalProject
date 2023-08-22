@@ -22,11 +22,6 @@ type ColumnProps = {
     isNewColumn: boolean;
 };
 
-type ErrorReponseType = {
-    message: string;
-    status: number;
-};
-
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
 export default function Column({ column, children, isNewColumn }: ColumnProps) {
@@ -116,7 +111,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 .then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Title is successfully updated.')
+            toast.success('Title is updated successfully')
         },
         onError: err => {
             console.log(err);
@@ -136,9 +131,9 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             column.title = newTitle;
             newColumn.color =
                 colorSet[column.positionInBoard % colorSet.length];
-            await createNewColumn.mutateAsync(newColumn);
+            createNewColumn.mutate(newColumn);
         } else {
-            patchColumnTitle.mutateAsync({ ...column, title: newTitle });
+            patchColumnTitle.mutate({ ...column, title: newTitle });
             column.title = newTitle;
             setIsEditable(false)
         }
@@ -190,7 +185,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 {!isEditable && (
                     <button className="rounded overflow-visible">
                         <DropdownMenu
-                            onDelete={() => deleteColumn.mutateAsync(column.id)}
+                            onDelete={() => deleteColumn.mutate(column.id)}
                             onEdit={() => {
                                 setIsEditable(true);
                             }}

@@ -79,12 +79,13 @@ export default function Board({ columnData }: BoardProps) {
 
     const patchJob = useMutation({
         mutationFn: async (job: Job) =>
-            await axios
+            axios
                 .patch(`/api/job/${job.id}`, {
                     positionInColumn: job.positionInColumn,
                     columnId: job.columnId,
                 })
                 .then(res => res.data),
+
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             console.log('patched job');
@@ -156,8 +157,8 @@ export default function Board({ columnData }: BoardProps) {
                     ...existingColumns.slice(parentIndex + 1),
                 ]);
 
-                movedArray.forEach(async job => {
-                    patchJob.mutateAsync(job);
+                movedArray.forEach(job => {
+                    patchJob.mutate(job);
                 });
 
                 return;
@@ -209,7 +210,7 @@ export default function Board({ columnData }: BoardProps) {
             setColumns(newColumns);
             newColumns.forEach(col => {
                 col.jobs.forEach(job => {
-                    patchJob.mutateAsync(job);
+                    patchJob.mutate(job);
                 });
             });
         }
@@ -233,8 +234,8 @@ export default function Board({ columnData }: BoardProps) {
                             };
                         });
                     console.log('Switch column?', newJobs, column.id);
-                    newJobs.forEach(async job => {
-                        patchJob.mutateAsync(job);
+                    newJobs.forEach(job => {
+                        patchJob.mutate(job);
                     });
                     return {
                         ...column,
@@ -279,7 +280,7 @@ export default function Board({ columnData }: BoardProps) {
 
         setColumns(movedArray);
         movedArray.forEach(async col => {
-            await patchColumn.mutateAsync({id: col.id, positionInBoard: col.positionInBoard});
+            patchColumn.mutate({id: col.id, positionInBoard: col.positionInBoard});
         });
     }
 
