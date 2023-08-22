@@ -21,11 +21,11 @@ export default function DropdownMenu({ onDelete }: Props) {
 
     return (
         <div className="relative" ref={dropdownMenuRef}>
-            <button onClick={() => DropdownMenuHandler(open)}>
+            <div onClick={() => DropdownMenuHandler(open)}>
                 <HiDotsHorizontal size={20} />
-            </button>
+            </div>
             {open && (
-                <div className=" border bg-basicColors-dark text-basicColors-light w-[120px] h-[120px] rounded-lg absolute text-s text-left px-s py-xs z-[100]">
+                <div className="border text-basicColors-light w-[120px] h-[120px] rounded-lg text-s text-left px-s py-xs z-50 absolute top-m ui-background">
                     <ul className="relative">
                         <li className="hover:bg-hoverColors-hover rounded-sm py-xxs">
                             edit

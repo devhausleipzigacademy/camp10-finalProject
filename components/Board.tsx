@@ -116,6 +116,7 @@ export default function Board({ columnData }: BoardProps) {
         if (!over || over.id === active.id) return;
 
         if (over.data.current?.column.isNewColumn) {
+            toast("Your new column doesn't have a title yet.")
             return
         }
 

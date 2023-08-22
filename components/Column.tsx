@@ -1,14 +1,13 @@
 'use client';
 
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { HiCube, HiDotsHorizontal } from 'react-icons/hi';
+import { HiCube } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +20,11 @@ type ColumnProps = {
     column: ColumnWithJobs;
     children: React.ReactNode;
     isNewColumn: boolean;
+};
+
+type ErrorReponseType = {
+    message: string;
+    status: number;
 };
 
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
@@ -41,7 +45,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-    const { removeNewColumn, addColumn, removeColumn } = useColumnStore();
+    const { addColumn, removeColumn } = useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -53,13 +57,11 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
 
     const createNewColumn = useMutation({
         mutationFn: async (col: Partial<ColumnWithJobs>) => {
-            const newCol = await axios
-                .post('/api/column', { ...col } as Omit<
-                    ColumnWithJobs,
-                    'id' | 'createdAt' | 'jobs'
-                >)
-                .then(res => res.data);
-            return newCol;
+            const response = await axios.post('/api/column', { ...col } as Omit<
+                ColumnWithJobs,
+                'id' | 'createdAt' | 'jobs'
+            >);
+            return response;
         },
         onSuccess: async res => {
             setIsEditable(false);
@@ -69,7 +71,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             removeColumn(column.positionInBoard);
             addColumn({
                 ...column,
-                id: res.id,
+                id: res.data.id,
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
 
@@ -77,8 +79,16 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 toastId: 'succes1',
             });
         },
-        onError: err => {
-            toast.error('Something went wrong, try again.');
+        onError: (error: AxiosError) => {
+            if (error.response) {
+                const errorResponseBody = error.response
+                    .data as ErrorReponseType;
+                if (errorResponseBody.status === 422) {
+                    toast.error(errorResponseBody.message);
+                    return;
+                }
+            }
+            toast.error('Something went wrong in the server!');
         },
     });
 
@@ -155,11 +165,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 {!isEditable && (
-                    <button className="rounded">
-                        <DropdownMenu
-                            onDelete={() => deleteColumn.mutateAsync(column.id)}
-                        />
-                    </button>
+                        <button className="rounded overflow-visible">
+                            <DropdownMenu
+                                onDelete={() =>
+                                    deleteColumn.mutateAsync(column.id)
+                                }
+                            />
+                        </button>
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
