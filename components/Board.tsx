@@ -115,9 +115,14 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
 
-        if (over.data.current?.column.isNewColumn) {
-            toast("Your new column doesn't have a title yet.")
-            return
+        if (
+            active.data.current?.type === 'Job' &&
+            over.data.current?.type === 'Column'
+        ) {
+            if (over.data.current?.column.isNewColumn) {
+                toast("Your new column doesn't have a title yet.");
+                return;
+            }
         }
 
         if (
@@ -264,7 +269,7 @@ export default function Board({ columnData }: BoardProps) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
         if (over.data.current?.column.isNewColumn) {
-            return
+            return;
         }
         const movedArray = arrayMove(
             existingColumns,
