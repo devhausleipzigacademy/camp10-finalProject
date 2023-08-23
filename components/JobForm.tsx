@@ -8,6 +8,7 @@ import TagsInput from './TagsInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { JobSchema } from '@/schema/job';
+import { useSearchParams } from 'next/navigation';
 
 type Form = {
     title: string;
@@ -24,6 +25,10 @@ type Form = {
 };
 
 function JobForm() {
+    const searchParams = useSearchParams()
+    const jobStatus = searchParams.get('status')
+    console.log(jobStatus)
+
     const {
         register,
         handleSubmit,
@@ -113,7 +118,7 @@ function JobForm() {
                         label="Current Stage"
                         id="currentStage"
                         isRequired={true}
-                        defaultValue={'Scouted'}
+                        defaultValue={jobStatus ?? "Scouted"}
                         options={[
                             'Scouted',
                             'Applied',

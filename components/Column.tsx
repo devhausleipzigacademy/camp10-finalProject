@@ -17,6 +17,7 @@ import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import Button from './shared/Button';
 import Link from 'next/link';
 import { HiCheck } from 'react-icons/hi';
+import { useParams } from 'next/navigation';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -191,7 +192,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
-                <Link href='/new-job'>
+                <Link href={`/new-job?status=${column.title}`}>
                     <Button size='square' variant='squareButton' >+</Button>
                 </Link>
                 {children}
