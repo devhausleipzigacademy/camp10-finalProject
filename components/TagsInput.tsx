@@ -28,10 +28,9 @@ function TagsInput({ tagData }: TagProps) {
 
     const fuse = new Fuse(existingTags); // Fuzzy search lib
     const fuzzyResults = fuse.search(query);
-    const fuzzyResItems: string[] = fuzzyResults.map(el => el.item);
-    const filteredResults: string[] = fuzzyResItems.filter(
-        el => newTags.indexOf(el) < 0
-    );
+    const filteredResults: string[] = fuzzyResults
+        .map(el => el.item)
+        .filter(el => newTags.indexOf(el) < 0);
 
     console.log(fuzzyResults, newTags);
 
