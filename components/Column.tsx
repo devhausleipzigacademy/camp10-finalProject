@@ -181,9 +181,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     <button className="rounded overflow-visible">
                         <DropdownMenu
                             onDelete={() => deleteColumn.mutate(column.id)}
-                            onEdit={() => {
-                                setIsEditable(true);
-                            }}
+                            onEdit={() => {setIsEditable(true);}}
+                            onColor={() =>{ } }
                         />
                     </button>
                 )}
