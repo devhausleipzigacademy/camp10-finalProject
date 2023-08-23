@@ -3,6 +3,7 @@ import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { NextRequest, NextResponse } from 'next/server';
 import { Column } from '@prisma/client';
 
+// TODO: add data validation & error handling if needed
 export const GET = async (req: NextRequest, { params }: Params) => {
     console.log(params.columnId);
     const deletedColumn = await prisma.column.findUnique({
