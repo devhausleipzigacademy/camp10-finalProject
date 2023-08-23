@@ -2,9 +2,11 @@
 
 import { Tag } from '@prisma/client';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import Fuse from 'fuse.js';
+import { cornersOfRectangle } from '@dnd-kit/core/dist/utilities/algorithms/helpers';
+import { object } from 'zod';
 
 type TagProps = {
     tagData: Tag[];
@@ -15,6 +17,7 @@ function TagsInput({ tagData }: TagProps) {
     const [existingTags, setExistingTags] = useState<string[]>([]);
     const [newTags, setNewTags] = useState<string[]>([]);
     const [query, setQuery] = useState('');
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         axios.get(`/api/tag`).then(({ data: userTags }) => {
@@ -25,8 +28,12 @@ function TagsInput({ tagData }: TagProps) {
 
     const fuse = new Fuse(existingTags); // Fuzzy search lib
     const fuzzyResults = fuse.search(query);
-    console.log(fuse);
-    console.log(fuzzyResults);
+    const fuzzyResItems: string[] = fuzzyResults.map(el => el.item);
+    const filteredResults: string[] = fuzzyResItems.filter(
+        el => newTags.indexOf(el) < 0
+    );
+
+    console.log(fuzzyResults, newTags);
 
     function createTagHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key !== 'Enter') return;
@@ -37,12 +44,13 @@ function TagsInput({ tagData }: TagProps) {
         setQuery('');
     }
 
-    function clickHandler(e: React.MouseEvent<HTMLUListElement>) {
+    function clickHandler(e: React.MouseEvent<HTMLLIElement>) {
         e.preventDefault();
         const newTag = e.currentTarget.innerText;
         if (!newTag) return;
         !newTags.includes(newTag) && setNewTags([...newTags, newTag]);
         setQuery('');
+        inputRef.current?.focus();
     }
 
     function removeTag(index: number) {
@@ -54,7 +62,7 @@ function TagsInput({ tagData }: TagProps) {
             <label htmlFor="tags" className="text-s font-600">
                 Tags
             </label>
-            <div className="flex items-center w-full flex-wrap gap-x-xs px-xxs bg-basicColors-dark bg-opacity-0 border focus-within:outline focus-within:outline-2 focus-within:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
+            <div className="flex w-full flex-wrap gap-x-xs px-xxs bg-basicColors-dark bg-opacity-0 border focus-within:outline focus-within:outline-2 focus-within:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
                 {newTags.map((tag, index) => (
                     <div
                         key={index}
@@ -72,9 +80,10 @@ function TagsInput({ tagData }: TagProps) {
                     onChange={e => {
                         setQuery(e.target.value);
                     }}
+                    ref={inputRef}
                     value={query}
                     type="text"
-                    placeholder="Add or search for tags"
+                    placeholder="Add/search tags"
                     id="tags"
                     name="tags"
                     autoComplete="off"
@@ -82,10 +91,14 @@ function TagsInput({ tagData }: TagProps) {
                 />
             </div>
             <ul className="flex flex-col w-full border rounded-[0.3125rem] empty:hidden bg-basicColors-dark border-borderColors-borderLight">
-                {fuzzyResults.slice(0, 8).map((tag, idx) => {
+                {filteredResults.slice(0, 8).map((tag, idx) => {
                     return (
-                        <li key={idx} onClick={clickHandler}>
-                            {tag.item}
+                        <li
+                            className="cursor-pointer px-xs py-xxs hover:font-600"
+                            key={idx}
+                            onClick={clickHandler}
+                        >
+                            {tag}
                         </li>
                     );
                 })}
