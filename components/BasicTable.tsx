@@ -33,8 +33,6 @@ export default function BasicTable({
 }: TableViewProps) {
     const data = useMemo(() => jobData, [jobData]);
 
-    console.log('data: ', data);
-
     //define cols
     const columns: ColumnDef<JobsWithCols>[] = [
         {
