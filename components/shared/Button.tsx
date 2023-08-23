@@ -1,14 +1,13 @@
 import clsx from 'clsx';
 
-type ButtonVariant = 'primary';
+type ButtonVariant = 'primary' | 'squareButton';
 type ButtonSize = 'default' | 'medium' | 'small' | 'tiny' | 'square';
 type ButtonText = 'default' | 'small';
 
 type ButtonProps = {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
+  variant: ButtonVariant;
+  size: ButtonSize;
   text?: ButtonText;
-  label?: string;
 } & React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
@@ -16,6 +15,7 @@ type ButtonProps = {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain focus:bg-basicColors-light focus:text-basicColors-dark focus:border-basicColors-light',
+  squareButton: 'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain focus:bg-basicColors-light focus:text-basicColors-dark focus:border-basicColors-dark',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -23,7 +23,7 @@ const sizeStyles: Record<ButtonSize, string> = {
   medium: 'h-[48px] w-[140px] rounded-[32px] border-2',
   small: 'h-[40px]  w-[124px] rounded-[32px] border',
   tiny: 'h-[32px] w-[90px] rounded-[32px] border',
-  square: 'w-[260px] h-45px] rounded-[4px]',
+  square: 'w-[240px] h-[45px] rounded-[4px] border-2',
 };
 
 const textStyles: Record<ButtonText, string> = {
@@ -38,8 +38,7 @@ export default function Button({
   size = 'default',
   className,
   disabled = false,
-  label = 'Button',
-  children = label,
+  children,
   ...props
 }: ButtonProps) {
   const variantStyle = variantStyles[variant];
@@ -61,4 +60,4 @@ export default function Button({
       {children}
     </button>
   );
-}
+      }

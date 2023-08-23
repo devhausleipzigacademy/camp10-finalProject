@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useColumnStore } from '@/store/columns';
 import DropdownMenu from './shared/DropdownMenu';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
+import Button from './shared/Button';
+import Link from 'next/link';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -162,7 +164,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     <DropdownMenu onDelete={() => deleteColumn.mutateAsync(column.id)} />
                 </button>
             </div>
-            <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto">
+            <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto"> 
+                <Link href='/new-job'>
+                    <Button size='square' variant='squareButton' >+</Button>
+                </Link>
                 {children}
             </div>
         </div>
