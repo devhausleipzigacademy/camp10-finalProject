@@ -8,7 +8,7 @@ import {
     getFilteredRowModel,
     ColumnDef,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 import {
@@ -19,14 +19,20 @@ import {
 } from 'react-icons/bs';
 import Button from './shared/Button';
 import { JobsWithCols } from '@/app/(dashboard)/getJobs';
-import { cn } from '@/lib/utils';
 
 type TableViewProps = {
     jobData: JobsWithCols[];
+    filter: string;
+    setFilter: Dispatch<SetStateAction<string>>;
 };
 
-export default function BasicTable({ jobData }: TableViewProps) {
+export default function BasicTable({
+    jobData,
+    filter,
+    setFilter,
+}: TableViewProps) {
     const data = useMemo(() => jobData, [jobData]);
+
     console.log('data: ', data);
 
     //define cols
@@ -53,14 +59,12 @@ export default function BasicTable({ jobData }: TableViewProps) {
         },
         {
             header: 'Status',
-            accessorKey: 'column.title',
+            accessorKey: 'column',
         },
-
         {
             header: 'Deadline',
             accessorKey: 'deadline',
             footer: 'Deadline',
-            // cell: cell => cell.getValue().split('/'),
         },
         {
             header: 'Actions',
@@ -70,7 +74,6 @@ export default function BasicTable({ jobData }: TableViewProps) {
     ];
     let sorting: any, setSorting: any;
     [sorting, setSorting] = useState([]);
-    const [filter, setFilter] = useState('');
 
     const exampleTable = useReactTable({
         data,
@@ -90,12 +93,6 @@ export default function BasicTable({ jobData }: TableViewProps) {
     return (
         <div className="ui-background border px-m pb-m">
             <div className="flex justify-between p-s">
-                {/* <input
-                    type="text"
-                    value={filter}
-                    onChange={e => setFilter(e.target.value)}
-                    className="border bg-transparent rounded-full outline-none py-xxs px-s"
-                /> */}
                 <div className="flex gap-s">
                     <Button
                         size="tiny"
@@ -183,43 +180,60 @@ export default function BasicTable({ jobData }: TableViewProps) {
                             key={row.id}
                             className="odd:bg-[#f2f2f2] odd:bg-opacity-5 "
                         >
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id} className="border px-m py-s">
-                                    {cell.column.columnDef.header ===
-                                    'Actions' ? (
-                                        <div className="flex gap-s cursor-pointer">
-                                            <HiArchive
-                                                size={20}
-                                                onClick={() =>
-                                                    console.log('blupp')
-                                                }
-                                            />{' '}
-                                            <HiPencil
-                                                size={20}
-                                                onClick={() =>
-                                                    console.log('foo')
-                                                }
-                                            />{' '}
-                                            <HiTrash
-                                                size={20}
-                                                onClick={() =>
-                                                    console.log('bar')
-                                                }
-                                            />{' '}
-                                        </div>
-                                    ) : null}
+                            {row.getVisibleCells().map(cell => {
+                                const values = cell.getValue() as {
+                                    title: string;
+                                    color: string;
+                                };
 
-                                    {cell.column.columnDef.footer ===
-                                    'check' ? (
-                                        <BsSquare size={21} />
-                                    ) : (
-                                        flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )
-                                    )}
-                                </td>
-                            ))}
+                                return (
+                                    <td
+                                        key={cell.id}
+                                        className="border px-m py-s"
+                                    >
+                                        {cell.column.columnDef.header ===
+                                        'Actions' ? (
+                                            <div className="flex gap-s cursor-pointer">
+                                                <HiArchive
+                                                    size={20}
+                                                    onClick={() =>
+                                                        console.log('blupp')
+                                                    }
+                                                />{' '}
+                                                <HiPencil
+                                                    size={20}
+                                                    onClick={() =>
+                                                        console.log('foo')
+                                                    }
+                                                />{' '}
+                                                <HiTrash
+                                                    size={20}
+                                                    onClick={() =>
+                                                        console.log('bar')
+                                                    }
+                                                />{' '}
+                                            </div>
+                                        ) : null}
+
+                                        {cell.column.columnDef.footer ===
+                                        'check' ? (
+                                            <BsSquare size={21} />
+                                        ) : cell.column.columnDef.header ===
+                                          'Status' ? (
+                                            <span
+                                                style={{ color: values.color }}
+                                            >
+                                                {values.title}
+                                            </span>
+                                        ) : (
+                                            flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )
+                                        )}
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>

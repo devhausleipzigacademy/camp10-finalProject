@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import SearchInput from './SearchInput';
 import dynamic from 'next/dynamic';
 import BasicTable from '../BasicTable';
@@ -11,19 +11,20 @@ import { cn } from '@/utils/cn';
 type Props = {
     onToggle: (value: boolean) => void;
     toggleViewMode: boolean;
+    filter: string;
+    setFilter: Dispatch<SetStateAction<string>>;
 };
 
-export default function DashboardHeader({ onToggle, toggleViewMode }: Props) {
-    const [searchValue, setSearchValue] = useState('');
-
-    const handleSearch = (value: string) => {
-        setSearchValue(value);
-    };
-
+export default function DashboardHeader({
+    onToggle,
+    toggleViewMode,
+    filter,
+    setFilter,
+}: Props) {
     return (
         <div className="">
             <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
-                <SearchInput onSearch={handleSearch} />
+                <SearchInput onSearch={setFilter} value={filter} />
 
                 <div
                     onClick={() => onToggle(!toggleViewMode)}

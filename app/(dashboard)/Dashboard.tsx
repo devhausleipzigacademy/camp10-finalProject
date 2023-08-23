@@ -16,10 +16,13 @@ const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 
 function Dashboard({ userColumns, userJobs }: Props) {
     const [toggleViewMode, setToggleViewMode] = useState(false);
+    const [filter, setFilter] = useState('');
     return (
         <>
             <div className="ml-xl">
                 <DashboardHeader
+                    filter={filter}
+                    setFilter={setFilter}
                     onToggle={setToggleViewMode}
                     toggleViewMode={toggleViewMode}
                 />
@@ -27,7 +30,11 @@ function Dashboard({ userColumns, userJobs }: Props) {
                     {toggleViewMode ? (
                         <BoardNoSSR columnData={userColumns} />
                     ) : (
-                        <BasicTable jobData={userJobs} />
+                        <BasicTable
+                            filter={filter}
+                            setFilter={setFilter}
+                            jobData={userJobs}
+                        />
                     )}
                 </div>
             </div>
