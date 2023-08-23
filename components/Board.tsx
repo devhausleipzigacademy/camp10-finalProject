@@ -10,7 +10,7 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiPlus } from 'react-icons/hi';
 import JobCard from './JobCard';
@@ -61,8 +61,8 @@ export default function Board({ columnData }: BoardProps) {
     }, []);
 
     const patchColumn = useMutation({
-        mutationFn: async (column: ColumnWithJobs) =>
-            axios
+        mutationFn: async (column: Partial<ColumnWithJobs>) =>
+            await axios
                 .patch(`/api/column/${column.id}`, {
                     positionInBoard: column.positionInBoard,
                 })
@@ -280,9 +280,17 @@ export default function Board({ columnData }: BoardProps) {
 
         setColumns(movedArray);
         movedArray.forEach(col => {
-            patchColumn.mutate(col);
+            patchColumn.mutate({id: col.id, positionInBoard: col.positionInBoard});
         });
     }
+
+    // const myRef = useRef<HTMLDivElement>(null);
+    // const executeScroll = () => {
+    //     if (myRef.current) {
+    //         console.log("Scroll!")
+    //         myRef.current.scrollIntoView()
+    //     }
+    // };
 
     return (
         <div className="flex w-auto overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
@@ -335,10 +343,12 @@ export default function Board({ columnData }: BoardProps) {
                                 isNewColumn: true,
                             } as ColumnWithJobs);
                         }}
-                        className="ui-background rounded-full flex my-auto relative -left-s w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
+
+                        className="ui-background rounded-full flex my-auto mr-xxxl relative -left-s w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
                     >
                         <HiPlus size={20} />
                     </button>
+                    <div className='h-full w-xxxl'></div>
                 </div>
                 {activeJob &&
                     createPortal(

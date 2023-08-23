@@ -51,13 +51,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     };
 
     const createNewColumn = useMutation({
-        mutationFn: (col: Partial<ColumnWithJobs>) =>
-            axios
-                .post('/api/column', { ...col } as Omit<
-                    ColumnWithJobs,
-                    'id' | 'createdAt' | 'jobs'
-                >)
-                .then(res => res.data),
+        mutationFn: (col: Partial<ColumnWithJobs>) => axios.post('/api/column', { ...col } as Omit<
+                ColumnWithJobs,
+                'id' | 'createdAt' | 'jobs'
+            >).then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
@@ -66,7 +63,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             removeColumn(column.positionInBoard);
             addColumn({
                 ...column,
-                id: res.data.id,
+                id: res.id,
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
 
@@ -75,6 +72,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             });
         },
         onError: error => {
+            console.log(error);
             if (error instanceof AxiosError) {
                 if (error.response?.status === 422) {
                     console.log(422);
@@ -87,8 +85,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const deleteColumn = useMutation({
-        mutationFn: (columnId: string) =>
-            axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) => axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -101,18 +98,40 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
+    const patchColumnTitle = useMutation({
+        mutationFn: (column: Partial<ColumnWithJobs>) => axios
+                .patch(`/api/column/${column.id}`, {
+                    title: column.title,
+                })
+                .then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            toast.success('Title is updated successfully')
+        },
+        onError: err => {
+            console.log(err);
+            toast.error('Something went wrong, refresh the page!');
+        },
+    });
+
     const onSumitHandler: React.FormEventHandler<
         HTMLFormElement
     > = async event => {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
-        const newTitle = data.get('title');
-        const { id, jobs, isNewColumn, ...newColumn } = column;
-        newColumn.title = newTitle as string;
-        column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
-        // const col = await axios.post('/api/column', newColumn);
-        newColumn.color = colorSet[column.positionInBoard % colorSet.length];
-        createNewColumn.mutate(newColumn);
+        const newTitle = data.get('title') as string;
+        if (column.isNewColumn) {
+            const { id, jobs, isNewColumn, ...newColumn } = column;
+            newColumn.title = newTitle;
+            column.title = newTitle;
+            newColumn.color =
+                colorSet[column.positionInBoard % colorSet.length];
+            createNewColumn.mutate(newColumn);
+        } else {
+            await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
+            column.title = newTitle;
+            setIsEditable(false)
+        }
     };
 
     return (
@@ -162,6 +181,9 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     <button className="rounded overflow-visible">
                         <DropdownMenu
                             onDelete={() => deleteColumn.mutate(column.id)}
+                            onEdit={() => {
+                                setIsEditable(true);
+                            }}
                         />
                     </button>
                 )}
