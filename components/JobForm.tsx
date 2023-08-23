@@ -138,7 +138,7 @@ function JobForm() {
             </div>
             <Button
                 className="ml-auto"
-                variant="hover"
+                variant="primary"
                 type="submit"
                 size="small"
             >

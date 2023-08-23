@@ -1,14 +1,13 @@
 'use client';
 
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { HiDotsHorizontal } from 'react-icons/hi';
+import { HiCube } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +16,7 @@ import DropdownMenu from './shared/DropdownMenu';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import Button from './shared/Button';
 import Link from 'next/link';
+import { HiCheck } from 'react-icons/hi';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -42,8 +42,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-
-    const { removeNewColumn, addColumn, removeColumn } = useColumnStore();
+    const { addColumn, removeColumn } = useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -54,19 +53,14 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     };
 
     const createNewColumn = useMutation({
-        mutationFn: async (col: Partial<ColumnWithJobs>) => {
-            const newCol = await axios
-                .post('/api/column', { ...col } as Omit<
-                    ColumnWithJobs,
-                    'id' | 'createdAt' | 'jobs'
-                >)
-                .then(res => res.data);
-            return newCol;
-        },
+        mutationFn: (col: Partial<ColumnWithJobs>) => axios.post('/api/column', { ...col } as Omit<
+                ColumnWithJobs,
+                'id' | 'createdAt' | 'jobs'
+            >).then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
-            queryClient.invalidateQueries(['columns']);
+            await queryClient.invalidateQueries(['columns']);
             // update local state
             removeColumn(column.positionInBoard);
             addColumn({
@@ -79,14 +73,21 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 toastId: 'succes1',
             });
         },
-        onError: err => {
-            toast.error('Something went wrong, try again.');
+        onError: error => {
+            console.log(error);
+            if (error instanceof AxiosError) {
+                if (error.response?.status === 422) {
+                    console.log(422);
+                    toast.error('The title needs at least 3 characters.');
+                    return;
+                }
+            }
+            toast.error('Something went wrong in the server!');
         },
     });
 
     const deleteColumn = useMutation({
-        mutationFn: async (columnId: string) =>
-            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) => axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -99,18 +100,40 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
+    const patchColumnTitle = useMutation({
+        mutationFn: (column: Partial<ColumnWithJobs>) => axios
+                .patch(`/api/column/${column.id}`, {
+                    title: column.title,
+                })
+                .then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            toast.success('Title is updated successfully')
+        },
+        onError: err => {
+            console.log(err);
+            toast.error('Something went wrong, refresh the page!');
+        },
+    });
+
     const onSumitHandler: React.FormEventHandler<
         HTMLFormElement
     > = async event => {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
-        const newTitle = data.get('title');
-        const { id, jobs, isNewColumn, ...newColumn } = column;
-        newColumn.title = newTitle as string;
-        column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
-        // const col = await axios.post('/api/column', newColumn);
-        newColumn.color = colorSet[column.positionInBoard % colorSet.length];
-        await createNewColumn.mutateAsync(newColumn);
+        const newTitle = data.get('title') as string;
+        if (column.isNewColumn) {
+            const { id, jobs, isNewColumn, ...newColumn } = column;
+            newColumn.title = newTitle;
+            column.title = newTitle;
+            newColumn.color =
+                colorSet[column.positionInBoard % colorSet.length];
+            createNewColumn.mutate(newColumn);
+        } else {
+            await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
+            column.title = newTitle;
+            setIsEditable(false)
+        }
     };
 
     return (
@@ -120,26 +143,26 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'bg-[#0D1117] border px-4 py-2 gap-3 w-[250px] h-[5500px] max-h-[560px] rounded-md flex flex-col',
+                'ui-background px-m py-s w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
             <div
                 style={{ borderColor: column.color }}
-                className="py-6 h-[50px] cursor-grab border-b-8 flex justify-between items-center"
+                className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
                 <div className="">
-                    <FcLikePlaceholder />
+                    <HiCube size={24} />
                 </div>
-                <div className="text-3xl font-medium text-[#F2F2F2]">
-                    {!isEditable && <h3> {column.title} </h3>}
+                <div className="text-basicColors-light">
+                    {!isEditable && <h4> {column.title} </h4>}
                     {isEditable && (
                         <form
-                            className="flex justify-around rounded"
+                            className="flex justify-around"
                             onSubmit={onSumitHandler}
                         >
                             <input
-                                className="w-3/4 px-xs rounded-md text-basicColors-dark"
+                                className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
                                 placeholder="confirm title"
                                 name="title"
                                 autoFocus
@@ -149,22 +172,25 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             />
                             <button
                                 type="submit"
-                                className="aspect-square bg-cardColors-yellow rounded-lg"
+                                className="aspect-square w-m flex justify-center items-center rounded-full hover:bg-basicColors-light hover:text-textColors-textBody"
                             >
-                                Add
+                                <HiCheck size={16} />
                             </button>
                         </form>
                     )}
                 </div>
-                <button
-                    // onClick={() => deleteColumn(column.id)}
-                    className="px-1 py-2 rounded text-colBorder stroke-gray-300 hover:stroke-white hover:bg-colBG"
-                >
-                    {/* <HiDotsHorizontal size={20} /> */}
-                    <DropdownMenu onDelete={() => deleteColumn.mutateAsync(column.id)} />
-                </button>
+                {!isEditable && (
+                    <button className="rounded overflow-visible">
+                        <DropdownMenu
+                            onDelete={() => deleteColumn.mutate(column.id)}
+                            onEdit={() => {
+                                setIsEditable(true);
+                            }}
+                        />
+                    </button>
+                )}
             </div>
-            <div className="flex flex-col gap-s py-s px-xxs overflow-x-hidden overflow-y-auto"> 
+            <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
                 <Link href='/new-job'>
                     <Button size='square' variant='squareButton' >+</Button>
                 </Link>
