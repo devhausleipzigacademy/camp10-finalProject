@@ -126,7 +126,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             column.title = newTitle;
             newColumn.color =
                 colorSet[column.positionInBoard % colorSet.length];
-            createNewColumn.mutate(newColumn);
+            const newCol = createNewColumn.mutate(newColumn);
+            console.log(newCol)
         } else {
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
@@ -180,7 +181,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 {!isEditable && (
                     <button className="rounded overflow-visible">
                         <DropdownMenu
-                            onDelete={() => deleteColumn.mutate(column.id)}
+                            onDelete={() => {
+                                if (column.jobs.length === 0) {
+                                    deleteColumn.mutate(column.id)
+                                    return
+                                }
+                                toast.info("You can't delete a column that has a job inside.")
+                            }}
                             onEdit={() => {
                                 setIsEditable(true);
                             }}
