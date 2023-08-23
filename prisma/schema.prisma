@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +5,43 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  userId    String
+  createdAt DateTime @default(now())
+  job       Job[]    @relation("JobToTag")
+}
+
+model Column {
+  id              String   @id @default(uuid())
+  userId          String
+  positionInBoard Int
+  color           String
+  title           String
+  createdAt       DateTime @default(now())
+  jobs            Job[]
+}
+
+model Job {
+  id               String      @id @default(uuid())
+  userId           String
+  columnId         String
+  title            String
+  url              String
+  companyName      String
+  companyWebsite   String?
+  location         String?
+  description      String?
+  deadline         DateTime?
+  positionInColumn Int
+  remoteType       remoteType?
+  priority         priority?
+  createdAt        DateTime    @default(now())
+  column           Column      @relation(fields: [columnId], references: [id])
+  tag              Tag[]       @relation("JobToTag")
 }
 
 enum remoteType {
@@ -20,43 +54,4 @@ enum priority {
   Low
   Medium
   High
-}
-
-// TODO: use Clerk's webwook to sync user data to the user model 
-
-model Tag {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  userId    String
-  job       Job[]
-  createdAt DateTime @default(now())
-}
-
-model Column {
-  id              String   @id @default(uuid())
-  userId          String
-  positionInBoard Int
-  color           String
-  title           String
-  jobs            Job[]
-  createdAt       DateTime @default(now())
-}
-
-model Job {
-  id               String      @id @default(uuid())
-  userId           String
-  columnId         String
-  column           Column      @relation(fields: [columnId], references: [id])
-  title            String
-  url              String
-  companyName      String
-  companyWebsite   String?
-  location         String?
-  description      String?
-  deadline         DateTime?
-  positionInColumn Int
-  remoteType       remoteType?
-  priority         priority?
-  tag              Tag[]
-  createdAt        DateTime    @default(now())
 }

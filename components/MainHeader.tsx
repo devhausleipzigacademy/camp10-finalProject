@@ -22,7 +22,7 @@ export function MainHeader() {
                             </Button>
                         </Link>
                         <Link href="/registration">
-                            <Button variant="active" size="tiny">
+                            <Button size="tiny">
                                 Register
                             </Button>
                         </Link>

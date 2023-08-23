@@ -10,9 +10,9 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { HiOutlinePlusCircle } from 'react-icons/hi';
+import { HiPlus } from 'react-icons/hi';
 import JobCard from './JobCard';
 import Column from './Column';
 import { Job, Column as ColumnType } from '@prisma/client';
@@ -61,7 +61,7 @@ export default function Board({ columnData }: BoardProps) {
     }, []);
 
     const patchColumn = useMutation({
-        mutationFn: async (column: ColumnWithJobs) =>
+        mutationFn: async (column: Partial<ColumnWithJobs>) =>
             await axios
                 .patch(`/api/column/${column.id}`, {
                     positionInBoard: column.positionInBoard,
@@ -79,12 +79,13 @@ export default function Board({ columnData }: BoardProps) {
 
     const patchJob = useMutation({
         mutationFn: async (job: Job) =>
-            await axios
+            axios
                 .patch(`/api/job/${job.id}`, {
                     positionInColumn: job.positionInColumn,
                     columnId: job.columnId,
                 })
                 .then(res => res.data),
+
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             console.log('patched job');
@@ -114,6 +115,16 @@ export default function Board({ columnData }: BoardProps) {
     function onDragOver(event: DragOverEvent) {
         const { active, over } = event;
         if (!over || over.id === active.id) return;
+
+        if (
+            active.data.current?.type === 'Job' &&
+            over.data.current?.type === 'Column'
+        ) {
+            if (over.data.current?.column.isNewColumn) {
+                toast("Your new column doesn't have a title yet.");
+                return;
+            }
+        }
 
         if (
             over.data.current?.type === 'Job' &&
@@ -146,13 +157,14 @@ export default function Board({ columnData }: BoardProps) {
                     ...existingColumns.slice(parentIndex + 1),
                 ]);
 
-                movedArray.forEach(async job => {
-                    patchJob.mutateAsync(job);
+                movedArray.forEach(job => {
+                    patchJob.mutate(job);
                 });
 
                 return;
             }
 
+            // move job to a different column
             const newColumns = existingColumns.map(column => {
                 if (column.id === over.data.current?.parent) {
                     const currentJob = active.data.current?.job;
@@ -198,7 +210,7 @@ export default function Board({ columnData }: BoardProps) {
             setColumns(newColumns);
             newColumns.forEach(col => {
                 col.jobs.forEach(job => {
-                    patchJob.mutateAsync(job);
+                    patchJob.mutate(job);
                 });
             });
         }
@@ -222,8 +234,8 @@ export default function Board({ columnData }: BoardProps) {
                             };
                         });
                     console.log('Switch column?', newJobs, column.id);
-                    newJobs.forEach(async job => {
-                        patchJob.mutateAsync(job);
+                    newJobs.forEach(job => {
+                        patchJob.mutate(job);
                     });
                     return {
                         ...column,
@@ -257,6 +269,9 @@ export default function Board({ columnData }: BoardProps) {
         setActiveJob(null);
         const { active, over } = event;
         if (!over || over.id === active.id) return;
+        if (over.data.current?.column.isNewColumn) {
+            return;
+        }
         const movedArray = arrayMove(
             existingColumns,
             existingColumns.findIndex(col => col.id === active.id),
@@ -264,13 +279,21 @@ export default function Board({ columnData }: BoardProps) {
         ).map((col, idx) => ({ ...col, positionInBoard: idx }));
 
         setColumns(movedArray);
-        movedArray.forEach(async col => {
-            await patchColumn.mutateAsync(col);
+        movedArray.forEach(col => {
+            patchColumn.mutate({id: col.id, positionInBoard: col.positionInBoard});
         });
     }
 
+    // const myRef = useRef<HTMLDivElement>(null);
+    // const executeScroll = () => {
+    //     if (myRef.current) {
+    //         console.log("Scroll!")
+    //         myRef.current.scrollIntoView()
+    //     }
+    // };
+
     return (
-        <div className="flex py-xl w-full overflow-x-scroll">
+        <div className="flex w-auto overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
@@ -320,10 +343,12 @@ export default function Board({ columnData }: BoardProps) {
                                 isNewColumn: true,
                             } as ColumnWithJobs);
                         }}
-                        className="ring-rose-500 text-colBorder rounded-lg flex h-[60px] min-w-[60px] cursor-pointer items-center justify-center border-2 border-colBG bg-[#0D1117] p-4 hover:ring-2"
+
+                        className="ui-background rounded-full flex my-auto mr-xxxl relative -left-s w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
                     >
-                        <HiOutlinePlusCircle size={30} />
+                        <HiPlus size={20} />
                     </button>
+                    <div className='h-full w-xxxl'></div>
                 </div>
                 {activeJob &&
                     createPortal(
