@@ -67,9 +67,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
 
-            toast.success('Created a new column successfully.', {
-                toastId: 'succes1',
-            });
+            toast.success('Created a new column successfully.');
         },
         onError: error => {
             console.log(error);
