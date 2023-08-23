@@ -50,7 +50,7 @@ export default function Board({ columnData }: BoardProps) {
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
         queryFn: () =>
-            axios.get(`/api/column?userId=${userId}`).then(res => res.data),
+            axios.get(`/api/column`).then(res => res.data),
         initialData: columnData,
         refetchInterval: 3000,
     });
@@ -337,7 +337,7 @@ export default function Board({ columnData }: BoardProps) {
                                 title: '',
                                 positionInBoard: existingColumns.length,
                                 color: '#AAAAAA',
-                                userId: userId?.toString(),
+                                userId: '',
                                 createdAt: new Date(),
                                 jobs: [] as Job[],
                                 isNewColumn: true,
