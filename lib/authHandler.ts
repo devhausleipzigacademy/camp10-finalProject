@@ -12,7 +12,7 @@ type CallBackFunct = ({
     req: NextRequest;
     params?: any;
     body?: any;
-    userId: string;
+    userId?: string;
 }) => void;
 
 export function authHandler(cb: CallBackFunct, schema?: Schema) {
@@ -27,8 +27,9 @@ export function authHandler(cb: CallBackFunct, schema?: Schema) {
 
         switch (req.method) {
             case 'GET':
+                return cb({ req, userId });
             case 'DELETE':
-                return cb({ req, params, userId });
+                return cb({ req, params });
             case 'POST':
             case 'PATCH':
                 try {
@@ -36,11 +37,11 @@ export function authHandler(cb: CallBackFunct, schema?: Schema) {
                     const body = await req.json();
                     if (body.userId) {
                         const parsedBody = schema?.parse({ ...body, userId });
-                        return cb({ req, userId, body: parsedBody });
+                        return cb({ req, body: parsedBody });
                     }
                     console.log('patch request');
                     const parsedBody = schema?.parse(body);
-                    return cb({ req, userId, params, body: parsedBody });
+                    return cb({ req, params, body: parsedBody });
                 } catch (err) {
                     if (err instanceof ZodError) {
                         console.log('invalid data:', err);
