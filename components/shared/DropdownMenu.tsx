@@ -3,40 +3,45 @@ import { HiDotsHorizontal } from 'react-icons/hi';
 
 type Props = {
     onDelete: () => void;
+    onEdit: () => void;
 };
 
-export default function DropdownMenu({ onDelete }: Props) {
+export default function DropdownMenu({ onDelete, onEdit }: Props) {
     const [open, setOpen] = useState<boolean>(false);
 
     const dropdownMenuRef = useRef<HTMLDivElement>(null);
     const DropdownMenuHandler = (state: boolean) => {
         setOpen(!state);
     };
-    const handleClickDropdown = (event: MouseEvent) => {
-        if (open && !dropdownMenuRef.current?.contains(event.target as Node)) {
+    // close the dropdown by clicking outside of it. 
+    window.addEventListener('click', e => {
+        console.log(!(e.target instanceof SVGElement) && open);
+        if (!(e.target instanceof SVGElement) && open) {
             setOpen(false);
         }
-    };
-    window.addEventListener('click', handleClickDropdown);
+    });
 
     return (
         <div className="relative" ref={dropdownMenuRef}>
-            <button onClick={() => DropdownMenuHandler(open)}>
+            <div onClick={() => DropdownMenuHandler(open)}>
                 <HiDotsHorizontal size={20} />
-            </button>
+            </div>
             {open && (
-                <div className=" border bg-basicColors-dark text-basicColors-light w-[120px] h-[120px] rounded-lg absolute text-s text-left px-s py-xs z-[100]">
-                    <ul className="relative">
-                        <li className="hover:bg-hoverColors-hover rounded-sm py-xxs">
+                <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-50">
+                    <ul className="relative w-full">
+                        <li
+                            className="hover:bg-hoverColors-hover rounded-sm p-xxs"
+                            onClick={onEdit}
+                        >
                             edit
                         </li>
                         <li
-                            className="hover:bg-hoverColors-hover rounded-sm py-xxs"
+                            className="hover:bg-hoverColors-hover rounded-sm p-xxs"
                             onClick={onDelete}
                         >
                             delete
                         </li>
-                        <li className="hover:bg-hoverColors-hover rounded-sm py-xxs">
+                        <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
                             color
                         </li>
                     </ul>

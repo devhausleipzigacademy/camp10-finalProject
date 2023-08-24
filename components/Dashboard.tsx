@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { ColumnWithJobs } from './getColumns';
-
+import { ColumnWithJobs } from '../app/(dashboard)/getColumns';
+import { JobsWithCols } from '../app/(dashboard)/getJobs';
 import dynamic from 'next/dynamic';
 import BasicTable from '@/components/BasicTable';
 import DashboardHeader from '@/components/shared/DashboardHeader';
-import { JobsWithCols } from './getJobs';
 
 type Props = {
     userColumns: ColumnWithJobs[];

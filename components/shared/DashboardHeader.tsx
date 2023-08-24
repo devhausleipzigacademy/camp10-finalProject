@@ -2,8 +2,6 @@
 
 import { Dispatch, SetStateAction, useState } from 'react';
 import SearchInput from './SearchInput';
-import dynamic from 'next/dynamic';
-import BasicTable from '../BasicTable';
 import { HiOutlineListBullet } from 'react-icons/hi2';
 import { SlGrid } from 'react-icons/sl';
 import { cn } from '@/utils/cn';
@@ -28,7 +26,7 @@ export default function DashboardHeader({
 
                 <div
                     onClick={() => onToggle(!toggleViewMode)}
-                    className=" flex items-center justify-center  border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
+                    className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
                 >
                     <div
                         className={cn(

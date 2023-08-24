@@ -1,14 +1,13 @@
 'use client';
 
-import { FcLikePlaceholder } from 'react-icons/fc';
-import { HiCube, HiDotsHorizontal } from 'react-icons/hi';
+import { HiCube } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
 import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -41,7 +40,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-    const { removeNewColumn, addColumn, removeColumn } = useColumnStore();
+    const { addColumn, removeColumn } = useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -52,19 +51,14 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     };
 
     const createNewColumn = useMutation({
-        mutationFn: async (col: Partial<ColumnWithJobs>) => {
-            const newCol = await axios
-                .post('/api/column', { ...col } as Omit<
-                    ColumnWithJobs,
-                    'id' | 'createdAt' | 'jobs'
-                >)
-                .then(res => res.data);
-            return newCol;
-        },
+        mutationFn: (col: Partial<ColumnWithJobs>) => axios.post('/api/column', { ...col } as Omit<
+                ColumnWithJobs,
+                'id' | 'createdAt' | 'jobs'
+            >).then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
-            queryClient.invalidateQueries(['columns']);
+            await queryClient.invalidateQueries(['columns']);
             // update local state
             removeColumn(column.positionInBoard);
             addColumn({
@@ -77,14 +71,21 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 toastId: 'succes1',
             });
         },
-        onError: err => {
-            toast.error('Something went wrong, try again.');
+        onError: error => {
+            console.log(error);
+            if (error instanceof AxiosError) {
+                if (error.response?.status === 422) {
+                    console.log(422);
+                    toast.error('The title needs at least 3 characters.');
+                    return;
+                }
+            }
+            toast.error('Something went wrong in the server!');
         },
     });
 
     const deleteColumn = useMutation({
-        mutationFn: async (columnId: string) =>
-            await axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) => axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -97,18 +98,40 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
+    const patchColumnTitle = useMutation({
+        mutationFn: (column: Partial<ColumnWithJobs>) => axios
+                .patch(`/api/column/${column.id}`, {
+                    title: column.title,
+                })
+                .then(res => res.data),
+        onSuccess: async res => {
+            await queryClient.invalidateQueries(['columns']);
+            toast.success('Title is updated successfully')
+        },
+        onError: err => {
+            console.log(err);
+            toast.error('Something went wrong, refresh the page!');
+        },
+    });
+
     const onSumitHandler: React.FormEventHandler<
         HTMLFormElement
     > = async event => {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
-        const newTitle = data.get('title');
-        const { id, jobs, isNewColumn, ...newColumn } = column;
-        newColumn.title = newTitle as string;
-        column.title = newTitle as string; // Note: this line can be deleted after react query is fully implemented
-        // const col = await axios.post('/api/column', newColumn);
-        newColumn.color = colorSet[column.positionInBoard % colorSet.length];
-        await createNewColumn.mutateAsync(newColumn);
+        const newTitle = data.get('title') as string;
+        if (column.isNewColumn) {
+            const { id, jobs, isNewColumn, ...newColumn } = column;
+            newColumn.title = newTitle;
+            column.title = newTitle;
+            newColumn.color =
+                colorSet[column.positionInBoard % colorSet.length];
+            createNewColumn.mutate(newColumn);
+        } else {
+            await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
+            column.title = newTitle;
+            setIsEditable(false)
+        }
     };
 
     return (
@@ -155,9 +178,12 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 {!isEditable && (
-                    <button className="rounded">
+                    <button className="rounded overflow-visible">
                         <DropdownMenu
-                            onDelete={() => deleteColumn.mutateAsync(column.id)}
+                            onDelete={() => deleteColumn.mutate(column.id)}
+                            onEdit={() => {
+                                setIsEditable(true);
+                            }}
                         />
                     </button>
                 )}
