@@ -35,6 +35,7 @@ export const POST = async (req: NextRequest) => {
 
 export const GET = async (req: NextRequest) => {
     const { userId } = auth();
+    console.log(userId);
     if (!userId) {
         return new Response('Unauthorized', { status: 401 });
     }

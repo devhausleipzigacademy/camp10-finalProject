@@ -28,7 +28,8 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-    const { userId } = useAuth();
+    // const { userId } = useAuth();
+    // console.log(userId)
 
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
@@ -58,7 +59,7 @@ export default function Board({ columnData }: BoardProps) {
     const { existingColumns, setColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
-    }, []);
+    }, [columnsData]);
 
     const patchColumn = useMutation({
         mutationFn: async (column: Partial<ColumnWithJobs>) =>
