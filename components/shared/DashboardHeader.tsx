@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import SearchInput from './SearchInput';
 import { HiOutlineListBullet } from 'react-icons/hi2';
 import { SlGrid } from 'react-icons/sl';
@@ -9,50 +9,53 @@ import { cn } from '@/utils/cn';
 type Props = {
     onToggle: (value: boolean) => void;
     toggleViewMode: boolean;
+    filter: string;
+    setFilter: Dispatch<SetStateAction<string>>;
 };
 
-export default function DashboardHeader({ onToggle, toggleViewMode }: Props) {
-    const [searchValue, setSearchValue] = useState('');
-
-    const handleSearch = (value: string) => {
-        setSearchValue(value);
-    };
-
+export default function DashboardHeader({
+    onToggle,
+    toggleViewMode,
+    filter,
+    setFilter,
+}: Props) {
     return (
-        <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
-            <SearchInput onSearch={handleSearch} />
+        <div className="">
+            <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
+                <SearchInput onSearch={setFilter} value={filter} />
 
-            <div
-                onClick={() => onToggle(!toggleViewMode)}
-                className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
-            >
                 <div
-                    className={cn(
-                        'w-1/2 h-full flex justify-center items-center',
-                        toggleViewMode
-                            ? 'bg-basicColors-light'
-                            : 'bg-basicColors-dark'
-                    )}
+                    onClick={() => onToggle(!toggleViewMode)}
+                    className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
                 >
-                    <SlGrid
-                        size={20}
-                        color={!toggleViewMode ? '#F5F7FE' : '#3D3D3D'}
-                    />
+                    <div
+                        className={cn(
+                            'w-1/2 h-full flex justify-center items-center',
+                            toggleViewMode
+                                ? 'bg-basicColors-light'
+                                : 'bg-basicColors-dark'
+                        )}
+                    >
+                        <SlGrid
+                            size={20}
+                            color={!toggleViewMode ? '#F5F7FE' : '#3D3D3D'}
+                        />
+                    </div>
+                    <div
+                        className={cn(
+                            'w-1/2 h-full flex justify-center items-center',
+                            !toggleViewMode
+                                ? 'bg-basicColors-light'
+                                : 'bg-basicColors-dark'
+                        )}
+                    >
+                        <HiOutlineListBullet
+                            size={20}
+                            color={toggleViewMode ? '#F5F7FE' : '#3D3D3D'}
+                        />
+                    </div>
                 </div>
-                <div
-                    className={cn(
-                        'w-1/2 h-full flex justify-center items-center',
-                        !toggleViewMode
-                            ? 'bg-basicColors-light'
-                            : 'bg-basicColors-dark'
-                    )}
-                >
-                    <HiOutlineListBullet
-                        size={20}
-                        color={toggleViewMode ? '#F5F7FE' : '#3D3D3D'}
-                    />
-                </div>
-            </div>
-        </header>
+            </header>
+        </div>
     );
 }
