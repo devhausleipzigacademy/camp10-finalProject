@@ -307,7 +307,6 @@ export default function Board({ columnData }: BoardProps) {
                     <div className="flex gap-2">
                         <SortableContext
                             items={existingColumns.map(col => col.id)}
-                            // [col_1, col_2,...]
                         >
                             {existingColumns.map(col => (
                                 <Column
