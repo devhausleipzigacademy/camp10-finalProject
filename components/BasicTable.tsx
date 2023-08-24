@@ -89,8 +89,8 @@ export default function BasicTable({
     });
 
     return (
-        <div className="ui-background h-[550px] border px-m pb-m">
-            <div className="flex justify-between p-s">
+        <div className="ui-background border px-m py-m space-y-s min-h-[550px]">
+            <div className="flex justify-between">
                 <div className="flex gap-s">
                     <Button
                         size="tiny"
@@ -132,7 +132,7 @@ export default function BasicTable({
                     </Button>
                 </div>
             </div>
-            <table className="container ">
+            <table className="container">
                 <thead className="">
                     {exampleTable.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>

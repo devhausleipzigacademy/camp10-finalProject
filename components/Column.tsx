@@ -140,7 +140,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s w-[250px] h-[550px] max-h-[560px] border flex flex-col',
+                'ui-background px-m py-s w-[250px] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >

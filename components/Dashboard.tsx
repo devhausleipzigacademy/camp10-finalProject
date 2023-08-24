@@ -17,14 +17,14 @@ function Dashboard({ userColumns, userJobs }: Props) {
     const [toggleViewMode, setToggleViewMode] = useState(false);
     const [filter, setFilter] = useState('');
     return (
-        <div>
+        <div className='w-full'>
             <DashboardHeader
                 filter={filter}
                 setFilter={setFilter}
                 onToggle={setToggleViewMode}
                 toggleViewMode={toggleViewMode}
             />
-            <div>
+            <div className='h-full w-full'>
                 {toggleViewMode ? (
                     <BoardNoSSR columnData={userColumns} />
                 ) : (
