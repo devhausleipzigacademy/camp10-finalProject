@@ -6,10 +6,10 @@ import { auth } from '@clerk/nextjs';
 import { authHandler } from '@/lib/authHandler';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-export const POST = authHandler(async ({ req, userId, body }) => {
+export const POST = authHandler(async ({ body }) => {
     try {
         const newColumn = await prisma.column.create({
-            data: { ...body, userId },
+            data: body,
         });
         return NextResponse.json(newColumn, { status: 201 });
     } catch (err) {
@@ -52,29 +52,3 @@ export const GET = authHandler(async ({ userId }) => {
         );
     }
 });
-
-// export const GET = async (req: NextRequest) => {
-//     const { userId } = auth();
-//     console.log(userId);
-//     if (!userId) {
-//         return new Response('Unauthorized', { status: 401 });
-//     }
-
-//     const columns = await prisma.column.findMany({
-//         where: {
-//             userId,
-//         },
-//         include: {
-//             jobs: {
-//                 orderBy: {
-//                     positionInColumn: 'asc',
-//                 },
-//             },
-//         },
-//         orderBy: {
-//             positionInBoard: 'asc',
-//         },
-//     });
-
-//     return NextResponse.json(columns);
-// };
