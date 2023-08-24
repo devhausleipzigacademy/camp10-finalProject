@@ -1,13 +1,18 @@
 import { useRef, useState } from 'react';
 import { HiDotsHorizontal, HiOutlineChevronRight } from 'react-icons/hi';
+const axios = require('axios').default;
 
 type Props = {
     onDelete: () => void;
     onEdit: () => void;
-    onColor: () => void;
+    onChangeColor: (color: string) => void;
 };
 
-export default function DropdownMenu({ onDelete, onEdit, onColor }: Props) {
+export default function DropdownMenu({
+    onDelete,
+    onEdit,
+    onChangeColor,
+}: Props) {
     const [open, setOpen] = useState<boolean>(false);
 
     const dropdownMenuRef = useRef<HTMLDivElement>(null);
@@ -15,24 +20,10 @@ export default function DropdownMenu({ onDelete, onEdit, onColor }: Props) {
         setOpen(!state);
     };
 
-    const [openSubMenu, setOpenSubMenu] = useState<boolean>(false);
-    const subMenuRef = useRef<HTMLDivElement>(null);
-    const SubMenuHandler = (state: boolean) => {
-        setOpenSubMenu(!state);
-    };
-
     // close the dropdown by clicking outside of it.
     window.addEventListener('click', e => {
-        console.log(!(e.target instanceof SVGElement) && open);
         if (!(e.target instanceof SVGElement) && open) {
             setOpen(false);
-        }
-    });
-
-    window.addEventListener('click', e => {
-        console.log(!(e.target instanceof SVGElement) && openSubMenu);
-        if (!(e.target instanceof SVGElement) && openSubMenu) {
-            setOpenSubMenu(false);
         }
     });
 
@@ -56,33 +47,32 @@ export default function DropdownMenu({ onDelete, onEdit, onColor }: Props) {
                         >
                             delete
                         </li>
-                        <li
-                            className="hover:bg-hoverColors-hover rounded-sm p-xxs"
-                            onClick={onColor}
-                        >
-                            color
-                            <div className="relative" ref={subMenuRef}>
+                        <li className=" rounded-sm p-xxs">
+                            <div className="flex flex-row gap-xxs p-xxs ">
                                 <div
-                                    className="flex justify-end py--xl"
-                                    onClick={() => SubMenuHandler(openSubMenu)}
-                                >
-                                    <HiOutlineChevronRight size={15} />
-                                </div>
-                                {openSubMenu && (
-                                    <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-50">
-                                        <ul>
-                                            <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                                <div className="w-m h-m rounded-full bg-cardColors-red" />
-                                            </li>
-                                            <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                                <div className="w-m h-m rounded-full bg-cardColors-green" />
-                                            </li>
-                                            <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                                <div className="w-m h-m rounded-full bg-cardColors-blue" />
-                                            </li>
-                                        </ul>
-                                    </div>
-                                )}
+                                    onClick={() => onChangeColor('#FE5A35')}
+                                    className="w-xs h-xs rounded-full bg-cardColors-red hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => onChangeColor('#CBE87E')}
+                                    className="w-xs h-xs rounded-full bg-cardColors-green hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => onChangeColor('#DAEDEB')}
+                                    className="w-xs h-xs rounded-full bg-cardColors-blue hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => onChangeColor('#B4A0D1')}
+                                    className="w-xs h-xs rounded-full bg-cardColors-purple hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => onChangeColor('#FDC959')}
+                                    className="w-xs h-xs rounded-full bg-cardColors-yellow hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => onChangeColor('#3D3D3D')}
+                                    className="w-xs h-xs rounded-full bg-cardColors-black hover:scale-150"
+                                />
                             </div>
                         </li>
                     </ul>
