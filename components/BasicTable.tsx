@@ -89,7 +89,7 @@ export default function BasicTable({
     });
 
     return (
-        <div className="ui-background border px-m pb-m">
+        <div className="ui-background h-[550px] border px-m pb-m">
             <div className="flex justify-between p-s">
                 <div className="flex gap-s">
                     <Button
