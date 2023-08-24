@@ -3,21 +3,13 @@ import prisma from '@/utils/prismaClient';
 import { ColumnSchema } from '@/schema/column';
 import { ZodError } from 'zod';
 import { auth } from '@clerk/nextjs';
+import { authHandler } from '@/lib/authHandler';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-// TODO: can we use middleware to validate user 
-
-export const POST = async (req: NextRequest) => {
-    const { userId } = auth();
-    if (!userId) {
-        return new Response('Unauthorized', { status: 401 });
-    }
-
-    const body = await req.json();
-
+export const POST = authHandler(async ({ req, userId, body }) => {
     try {
-        const col = ColumnSchema.parse({ ...body, userId });
         const newColumn = await prisma.column.create({
-            data: col,
+            data: { ...body, userId },
         });
         return NextResponse.json(newColumn, { status: 201 });
     } catch (err) {
@@ -29,32 +21,60 @@ export const POST = async (req: NextRequest) => {
                 { status: 422 }
             );
         }
+        console.log(err);
         return NextResponse.error();
     }
-};
+}, ColumnSchema);
 
-export const GET = async (req: NextRequest) => {
-    const { userId } = auth();
-    console.log(userId);
-    if (!userId) {
-        return new Response('Unauthorized', { status: 401 });
-    }
-
-    const columns = await prisma.column.findMany({
-        where: {
-            userId,
-        },
-        include: {
-            jobs: {
-                orderBy: {
-                    positionInColumn: 'asc',
+export const GET = authHandler(async ({ userId }) => {
+    try {
+        const columns = await prisma.column.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                jobs: {
+                    orderBy: {
+                        positionInColumn: 'asc',
+                    },
                 },
             },
-        },
-        orderBy: {
-            positionInBoard: 'asc',
-        },
-    });
+            orderBy: {
+                positionInBoard: 'asc',
+            },
+        });
+        return NextResponse.json(columns);
+    } catch (err) {
+        console.log(err);
+        return NextResponse.json(
+            { message: 'Something went wrong in Prisma' },
+            { status: 500 }
+        );
+    }
+});
 
-    return NextResponse.json(columns);
-};
+// export const GET = async (req: NextRequest) => {
+//     const { userId } = auth();
+//     console.log(userId);
+//     if (!userId) {
+//         return new Response('Unauthorized', { status: 401 });
+//     }
+
+//     const columns = await prisma.column.findMany({
+//         where: {
+//             userId,
+//         },
+//         include: {
+//             jobs: {
+//                 orderBy: {
+//                     positionInColumn: 'asc',
+//                 },
+//             },
+//         },
+//         orderBy: {
+//             positionInBoard: 'asc',
+//         },
+//     });
+
+//     return NextResponse.json(columns);
+// };

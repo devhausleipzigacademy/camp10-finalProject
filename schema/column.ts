@@ -6,3 +6,5 @@ export const ColumnSchema = z.object({
   color: z.string().optional().default("#ffffff"),
   userId: z.string().startsWith("user_")
 })
+
+export const ColumnSchemaPartial = ColumnSchema.partial().omit({ userId: true })
