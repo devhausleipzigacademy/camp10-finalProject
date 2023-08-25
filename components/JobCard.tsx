@@ -18,7 +18,7 @@ export default function JobCard({
     parent,
     setDndToggle,
 }: JobCardProps) {
-    const [cardSize, setCardSize] = useState<boolean>(true);
+    const [cardSize, setCardSize] = useState<boolean>(false);
     const [mouseHover, setMouseHover] = useState<boolean>(false);
 
     function cardSizeHandler(b: boolean) {

@@ -23,7 +23,7 @@ const sizeStyles: Record<ButtonSize, string> = {
     medium: 'h-[48px] w-[140px] rounded-[32px] border-2',
     small: 'h-[40px]  w-[124px] rounded-[32px] border',
     tiny: 'h-[32px] w-[90px] rounded-[32px] border',
-    square: 'w-[260px] h-[45px] rounded-[4px]',
+    square: 'w-full h-[45px] rounded-[4px]',
 };
 
 const textStyles: Record<ButtonText, string> = {

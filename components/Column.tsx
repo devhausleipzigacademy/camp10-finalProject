@@ -14,7 +14,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useColumnStore } from '@/store/columns';
 import DropdownMenu from './shared/DropdownMenu';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
+import Button from './shared/Button';
+import Link from 'next/link';
 import { HiCheck } from 'react-icons/hi';
+import { useParams } from 'next/navigation';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -224,6 +227,13 @@ export default function Column({
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
+                <Link
+                    href={`/new-job?columnId=${column.id}&name=${column.title}`}
+                >
+                    <Button size="square" variant="primary">
+                        +
+                    </Button>
+                </Link>
                 {children}
             </div>
         </div>
