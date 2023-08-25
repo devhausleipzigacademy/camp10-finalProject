@@ -1,11 +1,11 @@
 import React from 'react';
+import NavLink from './NavLink';
 import Link from 'next/link';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { auth, UserButton, SignOutButton } from '@clerk/nextjs';
-import Button from './shared/Button';
+import Button from '../shared/Button';
 
 export function MainHeader() {
-
     const { userId } = auth();
     return (
         <header className={`flex justify-between py-m`}>
@@ -16,24 +16,15 @@ export function MainHeader() {
                 <HiArrowNarrowRight className="text-xl" />
                 {!userId && (
                     <>
-                        <Link href="/login">
-                            <Button variant="primary" size="tiny">
-                                Login
-                            </Button>
-                        </Link>
-                        <Link href="/registration">
-                            <Button size="tiny">
-                                Register
-                            </Button>
-                        </Link>
+                        <NavLink href="/login">Login</NavLink>
+                        <NavLink href="/registration">Register</NavLink>
                     </>
                 )}
                 {userId && (
                     <>
                         <UserButton afterSignOutUrl="/" />
-                        <SignOutButton/>
+                        <SignOutButton />
                     </>
-
                 )}
             </nav>
         </header>

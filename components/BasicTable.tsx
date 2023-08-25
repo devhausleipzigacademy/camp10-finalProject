@@ -8,99 +8,70 @@ import {
     getFilteredRowModel,
     ColumnDef,
 } from '@tanstack/react-table';
-import testDataTable from '@/app/(dashboard)/testDataTable.json';
-import { useMemo, useState } from 'react';
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
-import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
+import { BiPlus, BiMinus } from 'react-icons/bi';
+import {
+    BsArrowDownShort,
+    BsArrowUpShort,
+    BsCheckSquare,
+    BsSquare,
+} from 'react-icons/bs';
+import Button from './shared/Button';
+import { JobsWithCols } from '@/app/(dashboard)/getJobs';
 
-type Job = {
-    id: number;
-    job_title: string;
-    company_name: string;
-    priority: string;
-    deadline: string;
-    status: string;
+type TableViewProps = {
+    jobData: JobsWithCols[];
+    filter: string;
+    setFilter: Dispatch<SetStateAction<string>>;
 };
 
-export default function BasicTable() {
-    const data = useMemo(() => testDataTable, []);
+export default function BasicTable({
+    jobData,
+    filter,
+    setFilter,
+}: TableViewProps) {
+    const data = useMemo(() => jobData, [jobData]);
 
     //define cols
-    const columns: ColumnDef<Job>[] = [
+    const columns: ColumnDef<JobsWithCols>[] = [
         {
-            header: 'ID',
-            accessorKey: 'id',
-            footer: 'ID',
+            header: 'check',
+            accessorKey: 'checked',
+            footer: 'check',
         },
         {
             header: 'Job',
-            accessorKey: 'job_title',
+            accessorKey: 'title',
             footer: 'Job',
         },
         {
             header: 'Company',
-            accessorKey: 'company_name',
+            accessorKey: 'companyName',
             footer: 'Company',
         },
         {
-            header: 'Priority',
-            accessorKey: 'priority',
-            footer: 'Priority',
+            header: 'Location',
+            accessorKey: 'location',
+            footer: 'Location',
         },
         {
             header: 'Status',
-            accessorKey: 'status',
-            footer: 'Status',
+            accessorKey: 'column',
         },
         {
             header: 'Deadline',
             accessorKey: 'deadline',
             footer: 'Deadline',
-            cell: cell => cell.getValue().split('/'), // An example to format a col
         },
-
-        // Combine 2 cols example:
-        // {
-        //   header: "First Name",
-        //   accessorKey: "first_name",
-        //   footer: "First Name",
-        // },
-        // {
-        //   header: "Last Name",
-        //   accessorKey: "last_name",
-        //   footer: "Last Name",
-        // },
-        // {
-        //   header: "Name",
-        //   accessorFn: (row) => ` ${row.first_name}  ${row.last_name}`,  // accessorFn: (callback)
-        //   footer: "Name",
-        // },
-
-        // nested headerGroups example.
-        // Note: You need to add 'header.isPlaceholder ? null : flexRender()' ternary to header flexRender.
-        // {
-        //   header: "Positions",
-        //   columns: [
-        //     {
-        //       header: "Job Title",
-        //       accessorKey: "first_name",
-        //       footer: "Job Title",
-        //     },
-        //     {
-        //       header: "Company",
-        //       accessorKey: "last_name",
-        //       footer: "Company",
-        //     },
-        //   ],
-        // },
-        // {
-        //   header: "Mail",
-        //   accessorKey: "email",
-        //   footer: "Mail",
-        // },
+        {
+            header: 'Actions',
+            accessorKey: 'actions',
+            footer: 'Actions',
+        },
     ];
-    const [sorting, setSorting] = useState([]);
-    const [filter, setFilter] = useState('');
+    let sorting: any, setSorting: any;
+    [sorting, setSorting] = useState([]);
 
     const exampleTable = useReactTable({
         data,
@@ -118,33 +89,84 @@ export default function BasicTable() {
     });
 
     return (
-        <div className="w3-container">
-            <input
-                type="text"
-                value={filter}
-                onChange={e => setFilter(e.target.value)}
-            />
-            <table className="w3-table-all w3-hoverable">
-                <thead>
+        <div className="ui-background border px-m py-m space-y-s min-h-[550px]">
+            <div className="flex justify-between">
+                <div className="flex gap-s">
+                    <Button
+                        size="tiny"
+                        onClick={() => exampleTable.setPageIndex(0)}
+                    >
+                        {' '}
+                        First Page
+                    </Button>
+                    <button
+                        onClick={() => exampleTable.previousPage()}
+                        disabled={!exampleTable.getCanPreviousPage()}
+                        className=" disabled:hover:bg-transparent disabled:opacity-30"
+                    >
+                        <BiMinus
+                            size={26}
+                            className=" border transition-colors ease-in-out bg-transparent rounded-full   text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain"
+                        />
+                    </button>
+                    <button
+                        className="disabled:hover:bg-transparent disabled:opacity-30  "
+                        onClick={() => exampleTable.nextPage()}
+                        disabled={!exampleTable.getCanNextPage()}
+                    >
+                        <BiPlus
+                            size={26}
+                            className="border transition-colors ease-in-out bg-transparent rounded-full  text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain"
+                        />
+                    </button>
+                    <Button
+                        size="tiny"
+                        onClick={() =>
+                            exampleTable.setPageIndex(
+                                exampleTable.getPageCount() - 1
+                            )
+                        }
+                    >
+                        {' '}
+                        Last Page{' '}
+                    </Button>
+                </div>
+            </div>
+            <table className="container">
+                <thead className="">
                     {exampleTable.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
+                                    className="border px-m py-s text-left font-600"
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext()
-                                          )}
-                                    {
-                                        {
-                                            asc: <BsArrowUpShort />,
-                                            desc: <BsArrowDownShort />,
-                                        }[header.column.getIsSorted() ?? null]
-                                    }
+                                    {header.column.columnDef.footer ===
+                                    'check' ? (
+                                        <BsSquare
+                                            size={21}
+                                            className="inline-block"
+                                        />
+                                    ) : (
+                                        flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )
+                                    )}
+                                    {header.column.getIsSorted() ===
+                                    false ? null : header.column.getIsSorted() ===
+                                      'asc' ? (
+                                        <BsArrowUpShort
+                                            size={18}
+                                            className="inline-block ml-xs"
+                                        />
+                                    ) : (
+                                        <BsArrowDownShort
+                                            size={18}
+                                            className="inline-block ml-xs"
+                                        />
+                                    )}
                                 </th>
                             ))}
                         </tr>
@@ -152,47 +174,68 @@ export default function BasicTable() {
                 </thead>
                 <tbody>
                     {exampleTable.getRowModel().rows.map(row => (
-                        <tr key={row.id} draggable>
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                    )}
-                                </td>
-                            ))}
+                        <tr
+                            key={row.id}
+                            className="odd:bg-[#f2f2f2] odd:bg-opacity-5 "
+                        >
+                            {row.getVisibleCells().map(cell => {
+                                const values = cell.getValue() as {
+                                    title: string;
+                                    color: string;
+                                };
+
+                                return (
+                                    <td
+                                        key={cell.id}
+                                        className="border px-m py-s"
+                                    >
+                                        {cell.column.columnDef.header ===
+                                        'Actions' ? (
+                                            <div className="flex gap-s cursor-pointer">
+                                                <HiArchive
+                                                    size={20}
+                                                    onClick={() =>
+                                                        console.log('blupp')
+                                                    }
+                                                />{' '}
+                                                <HiPencil
+                                                    size={20}
+                                                    onClick={() =>
+                                                        console.log('foo')
+                                                    }
+                                                />{' '}
+                                                <HiTrash
+                                                    size={20}
+                                                    onClick={() =>
+                                                        console.log('bar')
+                                                    }
+                                                />{' '}
+                                            </div>
+                                        ) : null}
+
+                                        {cell.column.columnDef.footer ===
+                                        'check' ? (
+                                            <BsSquare size={21} />
+                                        ) : cell.column.columnDef.header ===
+                                          'Status' ? (
+                                            <span
+                                                style={{ color: values.color }}
+                                            >
+                                                {values.title}
+                                            </span>
+                                        ) : (
+                                            flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )
+                                        )}
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div>
-                <button onClick={() => exampleTable.setPageIndex(0)}>
-                    {' '}
-                    First Page
-                </button>
-                <button
-                    onClick={() => exampleTable.previousPage()}
-                    disabled={!exampleTable.getCanPreviousPage()}
-                >
-                    <AiOutlineMinusCircle />
-                </button>
-                <button
-                    onClick={() => exampleTable.nextPage()}
-                    disabled={!exampleTable.getCanNextPage()}
-                >
-                    <AiOutlinePlusCircle />
-                </button>
-                <button
-                    onClick={() =>
-                        exampleTable.setPageIndex(
-                            exampleTable.getPageCount() - 1
-                        )
-                    }
-                >
-                    {' '}
-                    Last Page{' '}
-                </button>
-            </div>
         </div>
     );
 }

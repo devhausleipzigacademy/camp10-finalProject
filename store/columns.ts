@@ -3,17 +3,16 @@ import { create } from 'zustand';
 
 type ColumnStore = {
     existingColumns: ColumnWithJobs[];
-    newColumns: ColumnWithJobs[];
+
     setColumns: (columns: ColumnWithJobs[]) => void;
     addColumn: (newCol: ColumnWithJobs) => void;
     removeColumn: (columnPosition: number) => void;
-    addNewColumn: (newCol: ColumnWithJobs) => void;
-    removeNewColumn: (columnPosition: number) => void;
+    setColumnColor: (columnId:string, color:string) => void;
+ 
 };
 
 export const useColumnStore = create<ColumnStore>()(set => ({
     existingColumns: [] as ColumnWithJobs[],
-    newColumns: [] as ColumnWithJobs[],
     setColumns: (columns: ColumnWithJobs[]) =>
         set({ existingColumns: columns }),
     addColumn: (newCol: ColumnWithJobs) =>
@@ -24,12 +23,7 @@ export const useColumnStore = create<ColumnStore>()(set => ({
                 col => col.positionInBoard !== columnPosition
             ),
         })),
-    addNewColumn: (newCol: ColumnWithJobs) =>
-        set(state => ({ newColumns: [...state.existingColumns, newCol] })),
-    removeNewColumn: (columnPosition: number) =>
-        set(state => ({
-            newColumns: state.newColumns.filter(
-                col => col.positionInBoard !== columnPosition
-            ),
-        })),
-}));
+    setColumnColor: (columnId:string, color:string) =>
+        set (state => ({existingColumns: state.existingColumns.map(column => columnId === column.id? {...column, color} : column) }))
+})); 
+

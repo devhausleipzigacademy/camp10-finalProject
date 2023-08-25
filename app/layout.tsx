@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Footer } from '@/components/shared/Footer';
-import { MainHeader } from '@/components/MainHeader';
+import { MainHeader } from '@/components/header/MainHeader';
 import Providers from '@/utils/provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ToastContainer } from 'react-toastify';

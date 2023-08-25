@@ -21,14 +21,11 @@ export default function JobCard({
     colColor,
     parent,
 }: JobCardProps) {
+    const [cardSize, setCardSize] = useState<boolean>(true);
     const [mouseHover, setMouseHover] = useState<boolean>(false);
-    const [cardSize, setCardSize] = useState<boolean>(false);
-
-    // console.log(colColor);
 
     const toggleCardSize = () => {
         setCardSize(size => !size);
-        setMouseHover(false);
     };
     const {
         setNodeRef,
@@ -53,43 +50,52 @@ export default function JobCard({
         backgroundColor: colColor,
     };
 
-    // if (cardSize) {
-    //     return (
-    //         <div
-    //             ref={setNodeRef}
-    //             {...attributes}
-    //             {...listeners}
-    //             onClick={() => toggleCardSize()}
-    //             className="p-2.5 cursor-grab relative rounded-md rounded-tr-none"
-    //             style={style}
-    //         >
-    //             <button
-    //                 style={{ backgroundColor: colColor }}
-    //                 className="absolute right-0 flex justify-center w-16 h-6 rounded-lg rounded-bl-none top-[-7px] text-mainBG "
-    //                 // onClick={() => editJob(job.id)}
-    //             >
-    //                 <HiDotsHorizontal
-    //                     size={15}
-    //                     className="hover:opacity-100 opacity-80"
-    //                 />
-    //             </button>
-    //             <div className="flex flex-col">
-    //                 <div>
-    //                     <p className="text-xl font-semibold">{job.job_title}</p>
-    //                     <p className="font-medium text-md"> {job.company} </p>
-    //                 </div>
-    //                 <div className="pt-6">
-    //                     <p className="font-medium text-md">{job.city}</p>
-    //                     <p className="font-medium text-md"> {job.location} </p>
-    //                 </div>
-
-    //                 <p className="self-end pr-2 text-xs place-self-end">
-    //                     {job.deadline}
-    //                 </p>
-    //             </div>
-    //         </div>
-    //     );
-    // }
+    if (cardSize) {
+        return (
+            <div
+                ref={setNodeRef}
+                {...attributes}
+                {...listeners}
+                onClick={() => toggleCardSize()}
+                onMouseOver={() => setMouseHover(true)}
+                onMouseLeave={() => setMouseHover(false)}
+                className="text-left text-textColors-textBody cursor-grab rounded-xl rounded-tr-none relative"
+                style={style}
+            >
+                <button
+                    style={{ backgroundColor: colColor }}
+                    className="absolute right-[0px] flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none top-[-6px] hover:text-hoverColors-hoverMain text-mainBG "
+                >
+                    {mouseHover && (
+                        <HiDotsHorizontal
+                            size={13}
+                            className="hover:opacity-100 opacity-80"
+                        />
+                    )}
+                </button>
+                <div className="flex flex-col px-xs py-xxs gap-xs w-full h-full">
+                    <p className="text-m font-600 flex-1 leading-l truncate">
+                        {job.title}
+                    </p>
+                    <p className="text-xs leading-xxs flex-1 font-500">
+                        {job.companyName}{' '}
+                    </p>
+                    <p className="text-xs leading-xxs pt-m font-500">
+                        Location {job.location}
+                    </p>
+                    <a
+                        href={job.url}
+                        className="text-xxs leading-xxs border-b border-b-transparent hover:border-b-hoverColors-hoverMain w-fit font-500"
+                    >
+                        Link to job offer
+                    </a>
+                    <p className="self-end font-[300] leading-s text-xxs">
+                        32.13.22
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     
 
@@ -98,31 +104,36 @@ export default function JobCard({
             ref={setNodeRef}
             {...attributes}
             {...listeners}
-            // onClick={() => toggleCardSize()}
+            onMouseOver={() => setMouseHover(true)}
+            onMouseLeave={() => setMouseHover(false)}
+            onClick={() => toggleCardSize()}
             style={style}
             className={cn(
-                'h-[110px] items-center flex text-left cursor-grab rounded-md rounded-tr-none relative',
+                'h-[5.25rem] text-left text-textColors-textBody cursor-grab rounded-xl rounded-tr-none relative',
                 isDragging && 'opacity-25'
             )}
         >
             <button
                 style={{ backgroundColor: colColor }}
-                className="absolute right-0 flex justify-center w-16 h-6 rounded-lg rounded-bl-none top-[-7px] text-mainBG"
-                // onClick={() => editJob(job.id)}
+                className="absolute right-[0px] flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none top-[-6px] text-mainBG"
             >
-                {/* {mouseHover && ( */}
-                <HiDotsHorizontal
-                    size={15}
-                    className=" hover:opacity-100 opacity-80"
-                />
-                {/* )} */}
+                {mouseHover && (
+                    <HiDotsHorizontal
+                        size={13}
+                        className=" hover:opacity-100 opacity-80"
+                    />
+                )}
             </button>
-            <div className="flex flex-col w-full h-full text-white">
-                <p className="text-xl font-semibold truncate">
+            <div className="flex flex-col px-xs py-xxs w-full h-full">
+                <p className="text-m font-600 flex-1 leading-l truncate">
                     {job.title}
                 </p>
-                <p className="text-sm font-medium"> {job.companyName} </p>
-                <p className="self-end pt-4 pr-2 text-xs">{job.deadline?.toISOString()}</p>
+                <p className="text-xs leading-xxs flex-1 font-500">
+                    {job.companyName}{' '}
+                </p>
+                <p className="self-end font-[300] leading-s text-xxs">
+                    32.13.22
+                </p>
             </div>
         </div>
     );

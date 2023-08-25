@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prismaClient';
 import { ColumnSchema } from '@/schema/column';
 import { ZodError } from 'zod';
+import { auth } from '@clerk/nextjs';
+import { authHandler } from '@/lib/authHandler';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-export const POST = async (req: NextRequest) => {
-    const body = await req.json();
+export const POST = authHandler(async ({ body }) => {
     try {
-        const col = ColumnSchema.parse(body);
         const newColumn = await prisma.column.create({
-            data: col,
+            data: body,
         });
         return NextResponse.json(newColumn, { status: 201 });
     } catch (err) {
@@ -20,27 +21,34 @@ export const POST = async (req: NextRequest) => {
                 { status: 422 }
             );
         }
+        console.log(err);
         return NextResponse.error();
     }
-};
+}, ColumnSchema);
 
-export const GET = async (req: NextRequest) => {
-    const userId = req.nextUrl.searchParams.get('userId') as string;
-    const columns = await prisma.column.findMany({
-        where: {
-            userId: userId,
-        },
-        include: {
-            jobs: {
-                orderBy: {
-                    positionInColumn: 'asc',
+export const GET = authHandler(async ({ userId }) => {
+    try {
+        const columns = await prisma.column.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                jobs: {
+                    orderBy: {
+                        positionInColumn: 'asc',
+                    },
                 },
             },
-        },
-        orderBy: {
-            positionInBoard: 'asc',
-        },
-    });
-
-    return NextResponse.json(columns);
-};
+            orderBy: {
+                positionInBoard: 'asc',
+            },
+        });
+        return NextResponse.json(columns);
+    } catch (err) {
+        console.log(err);
+        return NextResponse.json(
+            { message: 'Something went wrong in Prisma' },
+            { status: 500 }
+        );
+    }
+});

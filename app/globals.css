@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,7 +27,6 @@
         /* background-color: rgba(80, 80, 80, 0.7); */
         background: linear-gradient(#848484b4, #3d3d3d8d);
     }
-
 
     :root {
         --background: 0 0% 100%;
@@ -93,7 +93,7 @@
 
 @layer base {
     * {
-        @apply border-border;
+        @apply border-border box-border;
     }
     body {
         @apply bg-background text-foreground;
