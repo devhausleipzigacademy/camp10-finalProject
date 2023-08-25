@@ -49,12 +49,26 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         transition,
         transform: CSS.Transform.toString(transform),
     };
+    const updateColor = useMutation({
+        mutationFn: (color: string) =>
+            axios
+                .patch(`/api/column/${column.id}`, {
+                    color,
+                })
+                .then(res => res.data),
+        onSuccess: res => {
+            queryClient.invalidateQueries(['columns']);
+        },
+    });
 
     const createNewColumn = useMutation({
-        mutationFn: (col: Partial<ColumnWithJobs>) => axios.post('/api/column', { ...col } as Omit<
-                ColumnWithJobs,
-                'id' | 'createdAt' | 'jobs'
-            >).then(res => res.data),
+        mutationFn: (col: Partial<ColumnWithJobs>) =>
+            axios
+                .post('/api/column', { ...col } as Omit<
+                    ColumnWithJobs,
+                    'id' | 'createdAt' | 'jobs'
+                >)
+                .then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
@@ -85,7 +99,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const deleteColumn = useMutation({
-        mutationFn: (columnId: string) => axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) =>
+            axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -99,14 +114,15 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const patchColumnTitle = useMutation({
-        mutationFn: (column: Partial<ColumnWithJobs>) => axios
+        mutationFn: (column: Partial<ColumnWithJobs>) =>
+            axios
                 .patch(`/api/column/${column.id}`, {
                     title: column.title,
                 })
                 .then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Title is updated successfully')
+            toast.success('Title is updated successfully');
         },
         onError: err => {
             console.log(err);
@@ -130,7 +146,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         } else {
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
-            setIsEditable(false)
+            setIsEditable(false);
         }
     };
 
@@ -184,6 +200,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             onEdit={() => {
                                 setIsEditable(true);
                             }}
+                            onChangeColor={color => updateColor.mutate(color)}
                         />
                     </button>
                 )}
