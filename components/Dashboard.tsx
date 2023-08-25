@@ -14,7 +14,7 @@ type Props = {
 const BoardNoSSR = dynamic(() => import('@/components/Board'), { ssr: false });
 
 function Dashboard({ userColumns, userJobs }: Props) {
-    const [toggleViewMode, setToggleViewMode] = useState(false);
+    const [toggleViewMode, setToggleViewMode] = useState(true);
     const [filter, setFilter] = useState('');
     return (
         <div className='w-full'>
