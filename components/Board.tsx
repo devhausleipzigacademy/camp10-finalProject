@@ -28,7 +28,8 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-    const { userId } = useAuth();
+    // const { userId } = useAuth();
+    // console.log(userId)
 
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
@@ -50,15 +51,15 @@ export default function Board({ columnData }: BoardProps) {
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
         queryFn: () =>
-            axios.get(`/api/column?userId=${userId}`).then(res => res.data),
+            axios.get(`/api/column`).then(res => res.data),
         initialData: columnData,
-        refetchInterval: 3000,
+        // refetchInterval: 3000,
     });
-
+    console.log(columnsData);
     const { existingColumns, setColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
-    }, []);
+    }, [columnsData]);
 
     const patchColumn = useMutation({
         mutationFn: async (column: Partial<ColumnWithJobs>) =>
@@ -280,7 +281,10 @@ export default function Board({ columnData }: BoardProps) {
 
         setColumns(movedArray);
         movedArray.forEach(col => {
-            patchColumn.mutate({id: col.id, positionInBoard: col.positionInBoard});
+            patchColumn.mutate({
+                id: col.id,
+                positionInBoard: col.positionInBoard,
+            });
         });
     }
 
@@ -293,7 +297,7 @@ export default function Board({ columnData }: BoardProps) {
     // };
 
     return (
-        <div className="flex w-auto overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
+        <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
@@ -336,18 +340,17 @@ export default function Board({ columnData }: BoardProps) {
                                 title: '',
                                 positionInBoard: existingColumns.length,
                                 color: '#AAAAAA',
-                                userId: userId?.toString(),
+                                userId: '',
                                 createdAt: new Date(),
                                 jobs: [] as Job[],
                                 isNewColumn: true,
                             } as ColumnWithJobs);
                         }}
-
                         className="ui-background rounded-full flex my-auto mr-xxxl relative -left-s w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
                     >
                         <HiPlus size={20} />
                     </button>
-                    <div className='h-full w-xxxl'></div>
+                    <div className="h-full w-xxxl"></div>
                 </div>
                 {activeJob &&
                     createPortal(

@@ -49,6 +49,7 @@ export const getColumns = async (
             positionInBoard: 'asc',
         },
     });
+
     // if response if null, create new columns and job for the user.
     if (res.length === 0 && userId) {
         const res = await prisma.column.createMany({

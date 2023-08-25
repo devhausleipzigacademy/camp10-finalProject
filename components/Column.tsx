@@ -49,12 +49,26 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         transition,
         transform: CSS.Transform.toString(transform),
     };
+    const updateColor = useMutation({
+        mutationFn: (color: string) =>
+            axios
+                .patch(`/api/column/${column.id}`, {
+                    color,
+                })
+                .then(res => res.data),
+        onSuccess: res => {
+            queryClient.invalidateQueries(['columns']);
+        },
+    });
 
     const createNewColumn = useMutation({
-        mutationFn: (col: Partial<ColumnWithJobs>) => axios.post('/api/column', { ...col } as Omit<
-                ColumnWithJobs,
-                'id' | 'createdAt' | 'jobs'
-            >).then(res => res.data),
+        mutationFn: (col: Partial<ColumnWithJobs>) =>
+            axios
+                .post('/api/column', { ...col } as Omit<
+                    ColumnWithJobs,
+                    'id' | 'createdAt' | 'jobs'
+                >)
+                .then(res => res.data),
         onSuccess: async res => {
             setIsEditable(false);
             column.isNewColumn = false;
@@ -66,10 +80,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 id: res.id,
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
-
-            toast.success('Created a new column successfully.', {
-                toastId: 'succes1',
-            });
+            toast.success('Created a new column successfully.');
         },
         onError: error => {
             console.log(error);
@@ -85,7 +96,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
     });
 
     const deleteColumn = useMutation({
-        mutationFn: (columnId: string) => axios.delete(`/api/column/${columnId}`).then(res => res.data),
+        mutationFn: (columnId: string) =>
+            axios.delete(`/api/column/${columnId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
             removeColumn(column.positionInBoard);
@@ -94,19 +106,21 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             });
         },
         onError: err => {
+            console.log(err)
             toast.error('Something went wrong, try again!');
         },
     });
 
     const patchColumnTitle = useMutation({
-        mutationFn: (column: Partial<ColumnWithJobs>) => axios
+        mutationFn: (column: Partial<ColumnWithJobs>) =>
+            axios
                 .patch(`/api/column/${column.id}`, {
                     title: column.title,
                 })
                 .then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Title is updated successfully')
+            toast.success('Title is updated successfully');
         },
         onError: err => {
             console.log(err);
@@ -126,11 +140,12 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             column.title = newTitle;
             newColumn.color =
                 colorSet[column.positionInBoard % colorSet.length];
-            createNewColumn.mutate(newColumn);
+            const newCol = createNewColumn.mutate(newColumn);
+            console.log(newCol)
         } else {
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
-            setIsEditable(false)
+            setIsEditable(false);
         }
     };
 
@@ -141,7 +156,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
+                'ui-background px-m py-s w-[250px] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -180,10 +195,17 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 {!isEditable && (
                     <button className="rounded overflow-visible">
                         <DropdownMenu
-                            onDelete={() => deleteColumn.mutate(column.id)}
+                            onDelete={() => {
+                                if (column.jobs.length === 0) {
+                                    deleteColumn.mutate(column.id)
+                                    return
+                                }
+                                toast.info("You can't delete a column that has a job inside.")
+                            }}
                             onEdit={() => {
                                 setIsEditable(true);
                             }}
+                            onChangeColor={color => updateColor.mutate(color)}
                         />
                     </button>
                 )}

@@ -1,5 +1,4 @@
-import clsx from 'clsx';
-
+import { cn } from '@/lib/utils';
 type ButtonVariant = 'primary';
 type ButtonSize = 'default' | 'medium' | 'small' | 'tiny' | 'square';
 type ButtonText = 'default' | 'small';
@@ -15,8 +14,7 @@ type ButtonProps = {
 >;
 
 const variantStyles: Record<ButtonVariant, string> = {
-    primary:
-        'bg-transparent text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain focus:bg-basicColors-light focus:text-basicColors-dark focus:border-basicColors-light',
+  primary: 'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -47,19 +45,19 @@ export default function Button({
     const sizeStyle = sizeStyles[size];
     const disabledStyle = disabled ? disabledStyles : '';
 
-    return (
-        <button
-            className={clsx(
-                'leading-m',
-                sizeStyle,
-                disabledStyle,
-                variantStyle,
-                className
-            )}
-            disabled={disabled}
-            {...props}
-        >
-            {children}
-        </button>
-    );
+  return (
+    <button
+      className={cn(
+        'leading-m',
+        sizeStyle,
+        disabledStyle,
+        variantStyle,
+        className
+      )}
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  );
 }
