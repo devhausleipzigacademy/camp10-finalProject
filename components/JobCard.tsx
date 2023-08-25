@@ -21,7 +21,7 @@ export default function JobCard({
     colColor,
     parent,
 }: JobCardProps) {
-    const [cardSize, setCardSize] = useState<boolean>(true);
+    const [cardSize, setCardSize] = useState<boolean>(false);
     const [mouseHover, setMouseHover] = useState<boolean>(false);
 
     const toggleCardSize = () => {
