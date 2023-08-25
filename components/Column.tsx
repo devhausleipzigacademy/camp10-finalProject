@@ -27,7 +27,7 @@ type ColumnProps = {
 
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
-export default function Column({ column, children, isNewColumn }: ColumnProps) {
+export default function Column({ column, children, isNewColumn }: ColumnProps) { 
     const {
         setNodeRef,
         attributes,
@@ -192,7 +192,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
-                <Link href={`/new-job?status=${column.title}`}>
+                <Link href={`/new-job?columnId=${column.id}`}>
                     <Button size='square' variant='squareButton' >+</Button>
                 </Link>
                 {children}

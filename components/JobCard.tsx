@@ -91,6 +91,8 @@ export default function JobCard({
     //     );
     // }
 
+    
+
     return (
         <div
             ref={setNodeRef}

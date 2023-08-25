@@ -12,6 +12,5 @@ export const PATCH = async (req: NextRequest, { params }: Params) => {
       },
       data: data as Partial<Job>,
   });
-  console.log(data)
   return NextResponse.json(updatedJob);
 }
