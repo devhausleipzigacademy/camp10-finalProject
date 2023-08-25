@@ -40,7 +40,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-    const { addColumn, removeColumn } = useColumnStore();
+    const { addColumn, removeColumn, setColumnColor } = useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
     const queryClient = useQueryClient();
@@ -106,7 +106,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             });
         },
         onError: err => {
-            console.log(err)
+            console.log(err);
             toast.error('Something went wrong, try again!');
         },
     });
@@ -141,7 +141,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             newColumn.color =
                 colorSet[column.positionInBoard % colorSet.length];
             const newCol = createNewColumn.mutate(newColumn);
-            console.log(newCol)
+            console.log(newCol);
         } else {
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
@@ -197,15 +197,20 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                         <DropdownMenu
                             onDelete={() => {
                                 if (column.jobs.length === 0) {
-                                    deleteColumn.mutate(column.id)
-                                    return
+                                    deleteColumn.mutate(column.id);
+                                    return;
                                 }
-                                toast.info("You can't delete a column that has a job inside.")
+                                toast.info(
+                                    "You can't delete a column that has a job inside."
+                                );
                             }}
                             onEdit={() => {
                                 setIsEditable(true);
                             }}
-                            onChangeColor={color => updateColor.mutate(color)}
+                            onChangeColor={color => {
+                                updateColor.mutate(color);
+                                setColumnColor(column.id, color);
+                            }}
                         />
                     </button>
                 )}
