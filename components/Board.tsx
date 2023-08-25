@@ -374,10 +374,12 @@ export default function Board({ columnData }: BoardProps) {
                                 children={[]}
                             />
                         </DragOverlay>,
+                        
 
                         document.body
                     )}
             </DndContext>
+            
         </div>
     );
 }
