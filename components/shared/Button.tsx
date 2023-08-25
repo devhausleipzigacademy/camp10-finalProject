@@ -14,7 +14,8 @@ type ButtonProps = {
 >;
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
+    primary:
+        'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -22,7 +23,7 @@ const sizeStyles: Record<ButtonSize, string> = {
     medium: 'h-[48px] w-[140px] rounded-[32px] border-2',
     small: 'h-[40px]  w-[124px] rounded-[32px] border',
     tiny: 'h-[32px] w-[90px] rounded-[32px] border',
-    square: 'w-[260px] h-45px] rounded-[4px]',
+    square: 'w-[260px] h-[45px] rounded-[4px]',
 };
 
 const textStyles: Record<ButtonText, string> = {
@@ -45,19 +46,19 @@ export default function Button({
     const sizeStyle = sizeStyles[size];
     const disabledStyle = disabled ? disabledStyles : '';
 
-  return (
-    <button
-      className={cn(
-        'leading-m',
-        sizeStyle,
-        disabledStyle,
-        variantStyle,
-        className
-      )}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+    return (
+        <button
+            className={cn(
+                'leading-m',
+                sizeStyle,
+                disabledStyle,
+                variantStyle,
+                className
+            )}
+            disabled={disabled}
+            {...props}
+        >
+            {children}
+        </button>
+    );
 }
