@@ -17,27 +17,25 @@ function Dashboard({ userColumns, userJobs }: Props) {
     const [toggleViewMode, setToggleViewMode] = useState(false);
     const [filter, setFilter] = useState('');
     return (
-        <>
-            <div className="ml-xl">
-                <DashboardHeader
-                    filter={filter}
-                    setFilter={setFilter}
-                    onToggle={setToggleViewMode}
-                    toggleViewMode={toggleViewMode}
-                />
-                <div>
-                    {toggleViewMode ? (
-                        <BoardNoSSR columnData={userColumns} />
-                    ) : (
-                        <BasicTable
-                            filter={filter}
-                            setFilter={setFilter}
-                            jobData={userJobs}
-                        />
-                    )}
-                </div>
+        <div className='w-full'>
+            <DashboardHeader
+                filter={filter}
+                setFilter={setFilter}
+                onToggle={setToggleViewMode}
+                toggleViewMode={toggleViewMode}
+            />
+            <div className='h-full w-full'>
+                {toggleViewMode ? (
+                    <BoardNoSSR columnData={userColumns} />
+                ) : (
+                    <BasicTable
+                        filter={filter}
+                        setFilter={setFilter}
+                        jobData={userJobs}
+                    />
+                )}
             </div>
-        </>
+        </div>
     );
 }
 

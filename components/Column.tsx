@@ -80,10 +80,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 id: res.id,
                 color: colorSet[column.positionInBoard % colorSet.length],
             });
-
-            toast.success('Created a new column successfully.', {
-                toastId: 'succes1',
-            });
+            toast.success('Created a new column successfully.');
         },
         onError: error => {
             console.log(error);
@@ -109,6 +106,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             });
         },
         onError: err => {
+            console.log(err)
             toast.error('Something went wrong, try again!');
         },
     });
@@ -142,7 +140,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             column.title = newTitle;
             newColumn.color =
                 colorSet[column.positionInBoard % colorSet.length];
-            createNewColumn.mutate(newColumn);
+            const newCol = createNewColumn.mutate(newColumn);
+            console.log(newCol)
         } else {
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
@@ -157,7 +156,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s w-[250px] h-[5500px] max-h-[560px] border flex flex-col',
+                'ui-background px-m py-s w-[250px] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -196,7 +195,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 {!isEditable && (
                     <button className="rounded overflow-visible">
                         <DropdownMenu
-                            onDelete={() => deleteColumn.mutate(column.id)}
+                            onDelete={() => {
+                                if (column.jobs.length === 0) {
+                                    deleteColumn.mutate(column.id)
+                                    return
+                                }
+                                toast.info("You can't delete a column that has a job inside.")
+                            }}
                             onEdit={() => {
                                 setIsEditable(true);
                             }}

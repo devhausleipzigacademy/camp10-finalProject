@@ -28,7 +28,8 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-    const { userId } = useAuth();
+    // const { userId } = useAuth();
+    // console.log(userId)
 
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
@@ -50,7 +51,7 @@ export default function Board({ columnData }: BoardProps) {
     const { data: columnsData }: { data: ColumnWithJobs[] } = useQuery({
         queryKey: ['columns'],
         queryFn: () =>
-            axios.get(`/api/column?userId=${userId}`).then(res => res.data),
+            axios.get(`/api/column`).then(res => res.data),
         initialData: columnData,
         // refetchInterval: 3000,
     });
@@ -296,7 +297,7 @@ export default function Board({ columnData }: BoardProps) {
     // };
 
     return (
-        <div className="flex w-auto overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
+        <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
@@ -339,7 +340,7 @@ export default function Board({ columnData }: BoardProps) {
                                 title: '',
                                 positionInBoard: existingColumns.length,
                                 color: '#AAAAAA',
-                                userId: userId?.toString(),
+                                userId: '',
                                 createdAt: new Date(),
                                 jobs: [] as Job[],
                                 isNewColumn: true,
