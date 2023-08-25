@@ -48,30 +48,30 @@ export default function DropdownMenu({
                             delete
                         </li>
                         <li className=" rounded-sm p-xxs">
-                            <div className="flex flex-row gap-xxs p-xxs ">
+                            <div className="flex flex-row flex-wrap gap-xs p-xxs ">
                                 <div
                                     onClick={() => onChangeColor('#FE5A35')}
-                                    className="w-xs h-xs rounded-full bg-cardColors-red hover:scale-150"
+                                    className="w-s h-s rounded-full bg-cardColors-red hover:scale-150"
                                 />
                                 <div
                                     onClick={() => onChangeColor('#CBE87E')}
-                                    className="w-xs h-xs rounded-full bg-cardColors-green hover:scale-150"
+                                    className="w-s h-s rounded-full bg-cardColors-green hover:scale-150"
                                 />
                                 <div
                                     onClick={() => onChangeColor('#DAEDEB')}
-                                    className="w-xs h-xs rounded-full bg-cardColors-blue hover:scale-150"
+                                    className="w-s h-s rounded-full bg-cardColors-blue hover:scale-150"
                                 />
                                 <div
                                     onClick={() => onChangeColor('#B4A0D1')}
-                                    className="w-xs h-xs rounded-full bg-cardColors-purple hover:scale-150"
+                                    className="w-s h-s rounded-full bg-cardColors-purple hover:scale-150"
                                 />
                                 <div
                                     onClick={() => onChangeColor('#FDC959')}
-                                    className="w-xs h-xs rounded-full bg-cardColors-yellow hover:scale-150"
+                                    className="w-s h-s rounded-full bg-cardColors-yellow hover:scale-150"
                                 />
                                 <div
                                     onClick={() => onChangeColor('#3D3D3D')}
-                                    className="w-xs h-xs rounded-full bg-cardColors-black hover:scale-150"
+                                    className="w-s h-s rounded-full bg-cardColors-black hover:scale-150"
                                 />
                             </div>
                         </li>
