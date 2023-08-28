@@ -70,7 +70,7 @@ function JobForm() {
             className="flex flex-col gap-xl border px-xxxl py-xl ui-background"
             onSubmit={handleSubmit(onSubmitHandler)}
         >
-            <div className='flex gap-xxl'>
+            <div className="flex gap-xxl">
                 <div className="flex flex-col w-1/2 gap-s text-s">
                     <Input
                         label="Job Title"

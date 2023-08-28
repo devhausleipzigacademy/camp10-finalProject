@@ -4,7 +4,7 @@ import { HiCube } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
@@ -23,11 +23,17 @@ type ColumnProps = {
     column: ColumnWithJobs;
     children: React.ReactNode;
     isNewColumn: boolean;
+    dndToggle: boolean;
 };
 
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
-export default function Column({ column, children, isNewColumn }: ColumnProps) { 
+export default function Column({
+    column,
+    children,
+    isNewColumn,
+    dndToggle,
+}: ColumnProps) {
     const {
         setNodeRef,
         attributes,
@@ -41,11 +47,13 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             type: 'Column',
             column,
         },
+        disabled: !dndToggle,
     });
 
     const { addColumn, removeColumn, setColumnColor } = useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
+
     const queryClient = useQueryClient();
 
     const style = {
@@ -219,8 +227,12 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto">
-                <Link href={`/new-job?columnId=${column.id}&name=${column.title}`}>
-                    <Button size='square' variant='primary' >+</Button>
+                <Link
+                    href={`/new-job?columnId=${column.id}&name=${column.title}`}
+                >
+                    <Button size="square" variant="primary">
+                        +
+                    </Button>
                 </Link>
                 {children}
             </div>

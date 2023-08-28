@@ -1,32 +1,31 @@
 import { HiDotsHorizontal } from 'react-icons/hi';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
-// import { Job } from './Board';
 import { Job } from '@prisma/client';
 
 type JobCardProps = {
     job: Job;
-    editJob?: (id: string) => void;
-    updateJob?: (id: string, content: string) => void;
+    setDndToggle: Dispatch<SetStateAction<boolean>>;
     colColor?: string;
     parent?: string;
 };
 
 export default function JobCard({
     job,
-    editJob,
-    updateJob,
     colColor,
     parent,
+    setDndToggle,
 }: JobCardProps) {
     const [cardSize, setCardSize] = useState<boolean>(false);
     const [mouseHover, setMouseHover] = useState<boolean>(false);
 
-    const toggleCardSize = () => {
-        setCardSize(size => !size);
-    };
+    function cardSizeHandler(b: boolean) {
+        setCardSize(b);
+        setDndToggle(b);
+    }
+
     const {
         setNodeRef,
         attributes,
@@ -41,7 +40,7 @@ export default function JobCard({
             job,
             parent,
         },
-        disabled: cardSize,
+        disabled: !cardSize,
     });
 
     const style = {
@@ -50,54 +49,55 @@ export default function JobCard({
         backgroundColor: colColor,
     };
 
-    if (cardSize) {
+    if (!cardSize) {
         return (
             <div
                 ref={setNodeRef}
                 {...attributes}
                 {...listeners}
-                onClick={() => toggleCardSize()}
+                onClick={() => cardSizeHandler(true)}
                 onMouseOver={() => setMouseHover(true)}
                 onMouseLeave={() => setMouseHover(false)}
-                className="text-left text-textColors-textBody cursor-grab rounded-xl rounded-tr-none relative"
+                className="text-left text-textColors-textBody cursor-pointer rounded-xl rounded-tr-none relative"
                 style={style}
             >
                 <button
                     style={{ backgroundColor: colColor }}
-                    className="absolute right-[0px] flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none top-[-6px] hover:text-hoverColors-hoverMain text-mainBG "
+                    className="absolute right-[0px] flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none top-[-6px] "
                 >
                     {mouseHover && (
                         <HiDotsHorizontal
-                            size={13}
+                            size={15}
                             className="hover:opacity-100 opacity-80"
                         />
                     )}
                 </button>
-                <div className="flex flex-col px-xs py-xxs gap-xs w-full h-full">
-                    <p className="text-m font-600 flex-1 leading-l truncate">
+                <div className="flex flex-col px-xs py-xs h-full">
+                    <p className="text-m font-600 leading-m truncate">
                         {job.title}
                     </p>
-                    <p className="text-xs leading-xxs flex-1 font-500">
-                        {job.companyName}{' '}
+                    <p className="text-xs font-500">{job.companyName} </p>
+
+                    <p className="text-xs pt-l font-500">
+                        {job.location ?? 'Location'}
                     </p>
-                    <p className="text-xs leading-xxs pt-m font-500">
-                        Location {job.location}
+                    <p className="text-xs font-600 truncate">
+                        {job.description ?? ' description.. '}
                     </p>
                     <a
                         href={job.url}
-                        className="text-xxs leading-xxs border-b border-b-transparent hover:border-b-hoverColors-hoverMain w-fit font-500"
+                        className="text-xxs border-b border-b-transparent hover:border-b-hoverColors-hoverMain w-fit font-500"
                     >
                         Link to job offer
                     </a>
-                    <p className="self-end font-[300] leading-s text-xxs">
-                        32.13.22
+                    <p className="self-end font-400 text-xxs">
+                        {' '}
+                        {job.deadline ?? 'unknown'}{' '}
                     </p>
                 </div>
             </div>
         );
     }
-
-    
 
     return (
         <div
@@ -106,7 +106,7 @@ export default function JobCard({
             {...listeners}
             onMouseOver={() => setMouseHover(true)}
             onMouseLeave={() => setMouseHover(false)}
-            onClick={() => toggleCardSize()}
+            onClick={() => cardSizeHandler(false)}
             style={style}
             className={cn(
                 'h-[5.25rem] text-left text-textColors-textBody cursor-grab rounded-xl rounded-tr-none relative',
@@ -119,20 +119,18 @@ export default function JobCard({
             >
                 {mouseHover && (
                     <HiDotsHorizontal
-                        size={13}
+                        size={15}
                         className=" hover:opacity-100 opacity-80"
                     />
                 )}
             </button>
-            <div className="flex flex-col px-xs py-xxs w-full h-full">
-                <p className="text-m font-600 flex-1 leading-l truncate">
+            <div className="flex flex-col px-xs py-xs w-full h-full">
+                <p className="text-m font-600 leading-m truncate">
                     {job.title}
                 </p>
-                <p className="text-xs leading-xxs flex-1 font-500">
-                    {job.companyName}{' '}
-                </p>
+                <p className="text-xs font-500">{job.companyName} </p>
                 <p className="self-end font-[300] leading-s text-xxs">
-                    32.13.22
+                    {job.deadline ?? 'unknown'}
                 </p>
             </div>
         </div>
