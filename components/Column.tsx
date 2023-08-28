@@ -23,17 +23,11 @@ type ColumnProps = {
     column: ColumnWithJobs;
     children: React.ReactNode;
     isNewColumn: boolean;
-    dndToggle: boolean;
 };
 
 const colorSet = ['#B4A0D1', '#CBD87E', '#FDC959', '#FE5A35', '#4C9A2A'];
 
-export default function Column({
-    column,
-    children,
-    isNewColumn,
-    dndToggle,
-}: ColumnProps) {
+export default function Column({ column, children, isNewColumn }: ColumnProps) {
     const {
         setNodeRef,
         attributes,
@@ -47,7 +41,6 @@ export default function Column({
             type: 'Column',
             column,
         },
-        disabled: !dndToggle,
     });
 
     const { addColumn, removeColumn, setColumnColor } = useColumnStore();
