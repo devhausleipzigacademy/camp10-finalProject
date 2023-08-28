@@ -14,7 +14,6 @@ import { BiPlus, BiMinus } from 'react-icons/bi';
 import {
     BsArrowDownShort,
     BsArrowUpShort,
-    BsCheckSquare,
     BsSquare,
 } from 'react-icons/bs';
 import Button from './shared/Button';
@@ -32,7 +31,6 @@ export default function BasicTable({
     setFilter,
 }: TableViewProps) {
     const data = useMemo(() => jobData, [jobData]);
-
     //define cols
     const columns: ColumnDef<JobsWithCols>[] = [
         {
