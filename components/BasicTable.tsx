@@ -11,11 +11,7 @@ import {
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BiPlus, BiMinus } from 'react-icons/bi';
-import {
-    BsArrowDownShort,
-    BsArrowUpShort,
-    BsSquare,
-} from 'react-icons/bs';
+import { BsArrowDownShort, BsArrowUpShort, BsSquare } from 'react-icons/bs';
 import Button from './shared/Button';
 import { JobsWithCols } from '@/app/(dashboard)/getJobs';
 
@@ -36,7 +32,7 @@ export default function BasicTable({
         {
             header: 'check',
             accessorKey: 'checked',
-            footer: 'check',
+            cell: () => <BsSquare size={21} className="mx-auto" />,
         },
         {
             header: 'Job',
@@ -46,32 +42,71 @@ export default function BasicTable({
         {
             header: 'Company',
             accessorKey: 'companyName',
-            footer: 'Company',
         },
         {
             header: 'Location',
             accessorKey: 'location',
-            footer: 'Location',
         },
         {
             header: 'Status',
             accessorKey: 'column',
+            cell: ({ cell }) => {
+                const column = cell.getValue() as {
+                    title: string;
+                    color: string;
+                };
+                return (
+                    <span
+                        style={{ backgroundColor: column.color }}
+                        className="text-cardColors-black py-xxs px-xs rounded-sm font-500"
+                    >
+                        {column.title}
+                    </span>
+                );
+            },
         },
         {
             header: 'Deadline',
             accessorKey: 'deadline',
-            footer: 'Deadline',
+            cell: ({ cell }) => {
+                const formattedDate =
+                    cell.getValue() === null
+                        ? 'no deadline'
+                        : new Date(cell.getValue() as string).toLocaleString(
+                              'en-US',
+                              {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: '2-digit',
+                              }
+                          );
+                return <span>{formattedDate}</span>;
+            },
         },
         {
             header: 'Actions',
             accessorKey: 'actions',
-            footer: 'Actions',
+            cell: () => {
+                return (
+                    <div className="flex gap-s cursor-pointer">
+                        <HiArchive
+                            size={20}
+                            onClick={() => console.log('blupp')}
+                        />{' '}
+                        <HiPencil
+                            size={20}
+                            onClick={() => console.log('foo')}
+                        />{' '}
+                        <HiTrash size={20} onClick={() => console.log('bar')} />{' '}
+                    </div>
+                );
+            },
         },
     ];
-    let sorting: any, setSorting: any;
-    [sorting, setSorting] = useState([]);
+    // let sorting: any, setSorting: any;
+    let [sorting, setSorting] = useState([]);
 
-    const exampleTable = useReactTable({
+    const jobDataTable = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
@@ -92,14 +127,14 @@ export default function BasicTable({
                 <div className="flex gap-s">
                     <Button
                         size="tiny"
-                        onClick={() => exampleTable.setPageIndex(0)}
+                        onClick={() => jobDataTable.setPageIndex(0)}
                     >
                         {' '}
                         First Page
                     </Button>
                     <button
-                        onClick={() => exampleTable.previousPage()}
-                        disabled={!exampleTable.getCanPreviousPage()}
+                        onClick={() => jobDataTable.previousPage()}
+                        disabled={!jobDataTable.getCanPreviousPage()}
                         className=" disabled:hover:bg-transparent disabled:opacity-30"
                     >
                         <BiMinus
@@ -109,8 +144,8 @@ export default function BasicTable({
                     </button>
                     <button
                         className="disabled:hover:bg-transparent disabled:opacity-30  "
-                        onClick={() => exampleTable.nextPage()}
-                        disabled={!exampleTable.getCanNextPage()}
+                        onClick={() => jobDataTable.nextPage()}
+                        disabled={!jobDataTable.getCanNextPage()}
                     >
                         <BiPlus
                             size={26}
@@ -120,8 +155,8 @@ export default function BasicTable({
                     <Button
                         size="tiny"
                         onClick={() =>
-                            exampleTable.setPageIndex(
-                                exampleTable.getPageCount() - 1
+                            jobDataTable.setPageIndex(
+                                jobDataTable.getPageCount() - 1
                             )
                         }
                     >
@@ -132,7 +167,7 @@ export default function BasicTable({
             </div>
             <table className="container">
                 <thead className="">
-                    {exampleTable.getHeaderGroups().map(headerGroup => (
+                    {jobDataTable.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
@@ -140,11 +175,11 @@ export default function BasicTable({
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
-                                    {header.column.columnDef.footer ===
+                                    {header.column.columnDef.header ===
                                     'check' ? (
                                         <BsSquare
                                             size={21}
-                                            className="inline-block"
+                                            className="mx-auto"
                                         />
                                     ) : (
                                         flexRender(
@@ -171,7 +206,7 @@ export default function BasicTable({
                     ))}
                 </thead>
                 <tbody>
-                    {exampleTable.getRowModel().rows.map(row => (
+                    {jobDataTable.getRowModel().rows.map(row => (
                         <tr
                             key={row.id}
                             className="odd:bg-[#f2f2f2] odd:bg-opacity-5 "
@@ -185,47 +220,11 @@ export default function BasicTable({
                                 return (
                                     <td
                                         key={cell.id}
-                                        className="border px-m py-s"
+                                        className="border h-[3.5rem] px-s"
                                     >
-                                        {cell.column.columnDef.header ===
-                                        'Actions' ? (
-                                            <div className="flex gap-s cursor-pointer">
-                                                <HiArchive
-                                                    size={20}
-                                                    onClick={() =>
-                                                        console.log('blupp')
-                                                    }
-                                                />{' '}
-                                                <HiPencil
-                                                    size={20}
-                                                    onClick={() =>
-                                                        console.log('foo')
-                                                    }
-                                                />{' '}
-                                                <HiTrash
-                                                    size={20}
-                                                    onClick={() =>
-                                                        console.log('bar')
-                                                    }
-                                                />{' '}
-                                            </div>
-                                        ) : null}
-
-                                        {cell.column.columnDef.footer ===
-                                        'check' ? (
-                                            <BsSquare size={21} />
-                                        ) : cell.column.columnDef.header ===
-                                          'Status' ? (
-                                            <span
-                                                style={{ color: values.color }}
-                                            >
-                                                {values.title}
-                                            </span>
-                                        ) : (
-                                            flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
                                         )}
                                     </td>
                                 );
