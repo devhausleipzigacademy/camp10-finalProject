@@ -14,3 +14,15 @@ export const PATCH = async (req: NextRequest, { params }: Params) => {
   });
   return NextResponse.json(updatedJob);
 }
+export const GET = async (req: NextRequest, { params }: Params) => {
+  const data = await req.json();
+  const updatedJob = await prisma.job.update({
+      where: {
+          id: params.jobId,
+      },
+      data: data as Partial<Job>,
+  });
+  return NextResponse.json(updatedJob);
+}
+
+
