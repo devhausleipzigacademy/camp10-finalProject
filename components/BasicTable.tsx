@@ -15,9 +15,9 @@ import { BiPlus, BiMinus } from 'react-icons/bi';
 import { BsArrowDownShort, BsArrowUpShort, BsSquare } from 'react-icons/bs';
 import Button from './shared/Button';
 import { JobsWithCols } from '@/app/(dashboard)/getJobs';
-import { useJobsStore } from '@/store/jobs';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Link from 'next/link';
 
 type TableViewProps = {
     jobData: JobsWithCols[];
@@ -179,6 +179,9 @@ export default function BasicTable({
                         Last Page{' '}
                     </Button>
                 </div>
+                <Link href="/new-job">
+                    <Button size="tiny">New Job</Button>
+                </Link>
             </div>
             <table className="container">
                 <thead className="">
