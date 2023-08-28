@@ -107,8 +107,11 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
 
                     <p className="text-xs pt-l">{job.location ?? 'Location'}</p>
                     <p className="text-xs truncate">
-                        {job.description ?? ' description.. '}
+                        {/* {job.description ?? ' description.. '} */}
                     </p>
+                    {/* <p className="text-xs font-600 truncate">
+                        {job.description ?? 'no description'}
+                    </p> */}
                     <a
                         href={job.url}
                         className="text-xs border-b border-b-transparent hover:border-b-hoverColors-hoverMain w-fit"
@@ -116,7 +119,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         Link to job offer
                     </a>
                     <p className="self-end font-400 text-xxs">
-                        {/* {job.deadline ?? 'unknown'} */}
+                        {job.deadline?.toString().split('T')[0] ?? 'unknown'}
                     </p>
                     <BsChevronExpand
                         className="cursor-pointer self-center w-full"
@@ -173,8 +176,8 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     {job.title}
                 </p>
                 <p className="text-xs font-500">{job.companyName} </p>
-                <p className="self-end text-xxs">
-                    {/* {job.deadline ?? 'unknown'} */}
+                <p className="self-end font-[300] leading-s text-xxs">
+                    {job.deadline?.toString().split('T')[0] ?? 'unknown'}
                 </p>
                 <BsChevronExpand
                     className="cursor-pointer self-center w-full"

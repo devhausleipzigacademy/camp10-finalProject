@@ -70,8 +70,8 @@ export default function DropdownMenu({
                                     className="w-s h-s rounded-full bg-cardColors-yellow hover:scale-150"
                                 />
                                 <div
-                                    onClick={() => onChangeColor('#3D3D3D')}
-                                    className="w-s h-s rounded-full bg-cardColors-black hover:scale-150"
+                                    onClick={() => onChangeColor('#99B1ED')}
+                                    className="w-s h-s rounded-full bg-cardColors-darkblue hover:scale-150"
                                 />
                             </div>
                         </li>

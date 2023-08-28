@@ -289,14 +289,6 @@ export default function Board({ columnData }: BoardProps) {
         });
     }
 
-    // const myRef = useRef<HTMLDivElement>(null);
-    // const executeScroll = () => {
-    //     if (myRef.current) {
-    //         console.log("Scroll!")
-    //         myRef.current.scrollIntoView()
-    //     }
-    // };
-
     return (
         <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
@@ -375,7 +367,6 @@ export default function Board({ columnData }: BoardProps) {
                                 children={[]}
                             />
                         </DragOverlay>,
-
                         document.body
                     )}
             </DndContext>

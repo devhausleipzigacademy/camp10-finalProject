@@ -86,6 +86,7 @@ module.exports = {
                     green: '#CBE87E',
                     yellow: '#FDC959',
                     black: '#3D3D3D',
+                    darkblue: '#99B1ED',
                 },
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
