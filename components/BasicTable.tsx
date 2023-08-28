@@ -7,13 +7,17 @@ import {
     getSortedRowModel,
     getFilteredRowModel,
     ColumnDef,
+    SortingState,
 } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 import { BsArrowDownShort, BsArrowUpShort, BsSquare } from 'react-icons/bs';
 import Button from './shared/Button';
 import { JobsWithCols } from '@/app/(dashboard)/getJobs';
+import { useJobsStore } from '@/store/jobs';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 type TableViewProps = {
     jobData: JobsWithCols[];
@@ -26,7 +30,17 @@ export default function BasicTable({
     filter,
     setFilter,
 }: TableViewProps) {
-    const data = useMemo(() => jobData, [jobData]);
+    const { data: jobsData }: { data: JobsWithCols[] } = useQuery({
+        queryKey: ['jobs'],
+        queryFn: () => axios.get('/api/job').then(res => res.data),
+        initialData: jobData,
+    });
+    // const { existingJobs, setJobs } = useJobsStore()
+    // useEffect(() => {
+    //     setJobs(jobsData)
+    // }, [jobsData])
+
+    const data = useMemo(() => jobsData, [jobsData]);
     //define cols
     const columns: ColumnDef<JobsWithCols>[] = [
         {
@@ -51,16 +65,16 @@ export default function BasicTable({
             header: 'Status',
             accessorKey: 'column',
             cell: ({ cell }) => {
-                const column = cell.getValue() as {
+                const columnValues = cell.getValue() as {
                     title: string;
                     color: string;
                 };
                 return (
                     <span
-                        style={{ backgroundColor: column.color }}
+                        style={{ backgroundColor: columnValues.color }}
                         className="text-cardColors-black py-xxs px-xs rounded-sm font-500"
                     >
-                        {column.title}
+                        {columnValues.title}
                     </span>
                 );
             },
@@ -104,7 +118,7 @@ export default function BasicTable({
         },
     ];
     // let sorting: any, setSorting: any;
-    let [sorting, setSorting] = useState([]);
+    let [sorting, setSorting] = useState<SortingState>([]);
 
     const jobDataTable = useReactTable({
         data,
@@ -126,6 +140,7 @@ export default function BasicTable({
             <div className="flex justify-between">
                 <div className="flex gap-s">
                     <Button
+                        variant="primary"
                         size="tiny"
                         onClick={() => jobDataTable.setPageIndex(0)}
                     >

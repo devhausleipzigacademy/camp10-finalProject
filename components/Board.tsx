@@ -89,7 +89,7 @@ export default function Board({ columnData }: BoardProps) {
                 .then(res => res.data),
 
         onSuccess: async res => {
-            await queryClient.invalidateQueries(['columns']);
+            await queryClient.invalidateQueries(['columns', 'jobs']);
             console.log('patched job');
         },
         onError: err => {

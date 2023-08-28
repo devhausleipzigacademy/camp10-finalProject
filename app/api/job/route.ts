@@ -2,6 +2,7 @@ import prisma from '@/utils/prismaClient';
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
+import { authHandler } from '@/lib/authHandler';
 
 export const POST = async (req: NextRequest, { params }: Params) => {
     const data = await req.json();
@@ -24,23 +25,30 @@ export const POST = async (req: NextRequest, { params }: Params) => {
     return NextResponse.json(newJob);
 };
 
-const GET = async (req: NextRequest) => {
-    const { userId } = auth();
-    const res = await prisma.job.findMany({
-        where: {
-            userId: userId as string,
-        },
-        include: {
+export const GET = authHandler(async ({ userId }) => {
+  try {
+      const jobs = await prisma.job.findMany({
+          where: {
+              userId,
+          },
+          include: {
             column: {
-                select: {
-                    title: true,
-                    color: true,
-                },
-            },
-        },
-        orderBy: {
-            createdAt: 'asc',
-        },
-    });
-    return res;
-};
+              select: {
+                title: true,
+                color: true,
+              },
+            }
+          },
+          orderBy: {
+              createdAt: 'asc',
+          },
+      });
+      return NextResponse.json(jobs);
+  } catch (err) {
+      console.log(err);
+      return NextResponse.json(
+          { message: 'Something went wrong in Prisma' },
+          { status: 500 }
+      );
+  }
+});
