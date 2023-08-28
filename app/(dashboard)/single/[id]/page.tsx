@@ -16,5 +16,11 @@ export default async function SingleJob({
 }) {
     const singleJob = await getData(params.id);
 
-    return <div>My Job: {singleJob?.title}</div>;
+    return (
+        <div className="flex gap-xxl">
+            <div className="flex flex-col w-1/2 gap-s text-s">
+                <div>My Job: {singleJob?.title}</div>
+            </div>
+        </div>
+    );
 }
