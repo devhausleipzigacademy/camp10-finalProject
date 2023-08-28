@@ -35,10 +35,6 @@ export default function BasicTable({
         queryFn: () => axios.get('/api/job').then(res => res.data),
         initialData: jobData,
     });
-    // const { existingJobs, setJobs } = useJobsStore()
-    // useEffect(() => {
-    //     setJobs(jobsData)
-    // }, [jobsData])
 
     const data = useMemo(() => jobsData, [jobsData]);
     //define cols

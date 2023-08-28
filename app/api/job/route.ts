@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
 import { authHandler } from '@/lib/authHandler';
 
-export const POST = async (req: NextRequest, { params }: Params) => {
+export const POST = async (req: NextRequest) => {
     const data = await req.json();
     // return NextResponse.json(data)
     const { userId } = auth();
@@ -26,29 +26,29 @@ export const POST = async (req: NextRequest, { params }: Params) => {
 };
 
 export const GET = authHandler(async ({ userId }) => {
-  try {
-      const jobs = await prisma.job.findMany({
-          where: {
-              userId,
-          },
-          include: {
-            column: {
-              select: {
-                title: true,
-                color: true,
-              },
-            }
-          },
-          orderBy: {
-              createdAt: 'asc',
-          },
-      });
-      return NextResponse.json(jobs);
-  } catch (err) {
-      console.log(err);
-      return NextResponse.json(
-          { message: 'Something went wrong in Prisma' },
-          { status: 500 }
-      );
-  }
+    try {
+        const jobs = await prisma.job.findMany({
+            where: {
+                userId,
+            },
+            include: {
+                column: {
+                    select: {
+                        title: true,
+                        color: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'asc',
+            },
+        });
+        return NextResponse.json(jobs);
+    } catch (err) {
+        console.log(err);
+        return NextResponse.json(
+            { message: 'Something went wrong in Prisma' },
+            { status: 500 }
+        );
+    }
 });
