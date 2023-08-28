@@ -14,6 +14,8 @@ export const PATCH = async (req: NextRequest, { params }: Params) => {
   });
   return NextResponse.json(updatedJob);
 }
+
+// is this usefull?
 export const GET = async (req: NextRequest, { params }: Params) => {
   const data = await req.json();
   const updatedJob = await prisma.job.update({

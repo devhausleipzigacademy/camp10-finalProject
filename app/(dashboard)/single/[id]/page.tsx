@@ -1,13 +1,27 @@
-import prisma from "@/utils/prismaClient";
+import prisma from '@/utils/prismaClient';
 
-function getData (jobId:string) {
-    prisma.job.findFirst()
+ async function getData(jobId: string) {
+    
+  const singleJob = await prisma.job.findFirst({
+
+
+        
+            where: {
+
+                id: jobId
+            }
+            
+
+            
+        
+    });
+    return singleJob
 }
 
-export default function SingleJob({ params }: { params: { id: string } }) {
-    const singlePost = getData(params.id)
-    return <div>My Job: {params.id}</div>;
 
+export default async function SingleJob({ params }: { params: { id: string } }) {
+     const singleJob =  await getData(params.id);
+
+    return <div>My Job: {singleJob?.title}</div>;
 }
-
 
