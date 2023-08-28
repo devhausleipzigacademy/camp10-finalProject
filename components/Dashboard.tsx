@@ -28,11 +28,12 @@ function Dashboard({ userColumns, userJobs }: Props) {
                 {toggleViewMode ? (
                     <BoardNoSSR columnData={userColumns} />
                 ) : (
-                    <BasicTable
-                        filter={filter}
-                        setFilter={setFilter}
-                        jobData={userJobs}
-                    />
+                    // <BasicTable
+                    //     filter={filter}
+                    //     setFilter={setFilter}
+                    //     jobData={userJobs}
+                    // />
+                    <></>
                 )}
             </div>
         </div>
