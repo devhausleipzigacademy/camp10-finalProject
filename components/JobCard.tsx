@@ -79,11 +79,11 @@ export default function JobCard({
                     <p className="text-xs font-500">{job.companyName} </p>
 
                     <p className="text-xs pt-l font-500">
-                        {job.location ?? 'Location'}
+                        {job.location ?? 'no location'}
                     </p>
-                    <p className="text-xs font-600 truncate">
-                        {job.description ?? ' description.. '}
-                    </p>
+                    {/* <p className="text-xs font-600 truncate">
+                        {job.description ?? 'no description'}
+                    </p> */}
                     <a
                         href={job.url}
                         className="text-xxs border-b border-b-transparent hover:border-b-hoverColors-hoverMain w-fit font-500"
@@ -91,8 +91,7 @@ export default function JobCard({
                         Link to job offer
                     </a>
                     <p className="self-end font-400 text-xxs">
-                        {' '}
-                        {job.deadline ?? 'unknown'}{' '}
+                        {job.deadline?.toString().split('T')[0] ?? 'unknown'}
                     </p>
                 </div>
             </div>
@@ -130,7 +129,7 @@ export default function JobCard({
                 </p>
                 <p className="text-xs font-500">{job.companyName} </p>
                 <p className="self-end font-[300] leading-s text-xxs">
-                    {job.deadline ?? 'unknown'}
+                    {job.deadline?.toString().split('T')[0] ?? 'unknown'}
                 </p>
             </div>
         </div>
