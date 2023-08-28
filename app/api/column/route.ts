@@ -26,29 +26,35 @@ export const POST = authHandler(async ({ body }) => {
     }
 }, ColumnSchema);
 
-export const GET = authHandler(async ({ userId }) => {
-    try {
-        const columns = await prisma.column.findMany({
-            where: {
-                userId,
-            },
-            include: {
-                jobs: {
-                    orderBy: {
-                        positionInColumn: 'asc',
-                    },
-                },
-            },
-            orderBy: {
-                positionInBoard: 'asc',
-            },
-        });
-        return NextResponse.json(columns);
-    } catch (err) {
-        console.log(err);
-        return NextResponse.json(
-            { message: 'Something went wrong in Prisma' },
-            { status: 500 }
-        );
-    }
-});
+export const GET = () => {
+    return NextResponse.json("Hello")
+}
+
+// export const GET = authHandler(async ({ userId }) => {
+//     console.log("userId", userId)
+//     try {
+//         const columns = await prisma.column.findMany({
+//             where: {
+//                 userId,
+//             },
+//             include: {
+//                 jobs: {
+//                     orderBy: {
+//                         positionInColumn: 'asc',
+//                     },
+//                 },
+//             },
+//             orderBy: {
+//                 positionInBoard: 'asc',
+//             },
+//         });
+//         console.log(columns)
+//         return NextResponse.json(columns);
+//     } catch (err) {
+//         console.log(err);
+//         return NextResponse.json(
+//             { message: 'Something went wrong in Prisma' },
+//             { status: 500 }
+//         );
+//     }
+// });

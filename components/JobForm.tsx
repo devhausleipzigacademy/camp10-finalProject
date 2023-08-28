@@ -10,10 +10,12 @@ import { useForm } from 'react-hook-form';
 import { JobSchema } from '@/schema/job';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useColumnStore } from '@/store/columns';
+import Link from 'next/link';
+import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 
 type Form = {
     title: string;
@@ -30,7 +32,6 @@ type Form = {
 };
 
 function JobForm() {
-    const {existingColumns} = useColumnStore()
     const searchParams = useSearchParams()
     const columnId = searchParams.get('columnId')
     const columnTitle = searchParams.get('name')
@@ -60,10 +61,22 @@ function JobForm() {
         }
     })
 
+    const { data } = useQuery({
+        queryKey: ['columns'],
+        queryFn: () => axios.get<ColumnWithJobs[]>(`/api/column`).then(res => {console.log("response", res)}),
+        // refetchInterval: 3000,
+    });
+
+    if (!data){
+        throw new Error("We cant create a job without a column")
+    }
+
     const onSubmitHandler = async (data: Form) => {
         newJob.mutate(data)
 
     };
+
+    
 
     return (
         <form
@@ -138,7 +151,7 @@ function JobForm() {
                         {...register('remoteType')}
                         error={errors.remoteType}
                     ></Select>
-                    <Select
+                    {/* <Select
                         label="Current Stage"
                         id="currentStage"
                         isRequired={true}
@@ -148,7 +161,7 @@ function JobForm() {
                         })}
                         {...register('currentStage')}
                         error={errors.currentStage}
-                    ></Select>
+                    ></Select> */}
                     <Select
                         label="Priority"
                         id="priority"
@@ -161,14 +174,25 @@ function JobForm() {
                     {/* <TagsInput /> */}
                 </div>
             </div>
-            <Button
-                className="ml-auto"
-                variant="primary"
-                type="submit"
-                size="small"
-            >
-                Create
-            </Button>
+            <div className='flex justify-end gap-m'>
+                <Link href={"/"}>
+                    <Button
+                        variant='primary'
+                        type='button'
+                        size='small'
+                    >
+                        Cancel
+                    </Button>
+                </Link>
+                <Button
+                    className="ml-auto"
+                    variant="primary"
+                    type="submit"
+                    size="small"
+                >
+                    Create
+                </Button>
+            </div>
         </form>
     );
 }
