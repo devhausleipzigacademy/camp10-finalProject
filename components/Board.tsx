@@ -289,14 +289,6 @@ export default function Board({ columnData }: BoardProps) {
         });
     }
 
-    // const myRef = useRef<HTMLDivElement>(null);
-    // const executeScroll = () => {
-    //     if (myRef.current) {
-    //         console.log("Scroll!")
-    //         myRef.current.scrollIntoView()
-    //     }
-    // };
-
     return (
         <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
@@ -315,7 +307,6 @@ export default function Board({ columnData }: BoardProps) {
                                     key={col.id}
                                     column={col}
                                     isNewColumn={col.isNewColumn ?? false}
-                                    dndToggle={dndToggle}
                                 >
                                     <SortableContext
                                         items={col.jobs.map(job => job.id)}
@@ -327,7 +318,6 @@ export default function Board({ columnData }: BoardProps) {
                                                     key={job.id}
                                                     colColor={col.color}
                                                     parent={col.id}
-                                                    setDndToggle={setDndToggle}
                                                 />
                                             );
                                         })}
@@ -361,7 +351,6 @@ export default function Board({ columnData }: BoardProps) {
                             <JobCard
                                 job={activeJob}
                                 colColor={activeJob.color}
-                                setDndToggle={setDndToggle}
                             />
                         </DragOverlay>,
                         document.body
@@ -374,7 +363,6 @@ export default function Board({ columnData }: BoardProps) {
                                 key={activeColumn.id}
                                 column={activeColumn}
                                 isNewColumn={false}
-                                dndToggle={dndToggle}
                                 // eslint-disable-next-line react/no-children-prop
                                 children={[]}
                             />
@@ -382,7 +370,6 @@ export default function Board({ columnData }: BoardProps) {
                         document.body
                     )}
             </DndContext>
-            
         </div>
     );
 }
