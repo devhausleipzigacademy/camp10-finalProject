@@ -5,6 +5,8 @@ import DashboardHeader from '@/components/shared/DashboardHeader';
 import { SetStateAction } from 'react';
 import Button from '@/components/shared/Button';
 import { auth } from '@clerk/nextjs';
+import { HiArrowCircleRight, HiArrowCircleLeft } from 'react-icons/hi';
+import TagsInput from '@/components/TagsInput';
 
 async function getData(jobId: string) {
     const { userId } = auth();
@@ -42,12 +44,19 @@ export default async function SingleJob({
     const singleJob = await getData(params.singleJobId);
     console.log(singleJob);
     if (!singleJob) {
-        return <h1>No jobs found</h1>;
+        return (
+            <div className="flex flex-col items-center border gap-xl px-xxxl py-xl ui-background text-xl font-600 text-basicColors-light">
+                <h1>Sorry, no jobs found!</h1>
+                <div className="font-400 text-s">
+                    <Button variant="primary">Go back</Button>
+                </div>
+            </div>
+        );
     }
 
     return (
         <>
-            <div className="flex flex-col border gap-xl px-xxxl py-xl ui-background">
+            <div className="flex flex-col border gap-xl px-xxxl py-xl ui-background h-[1100px]">
                 <div className="flex gap-xxl">
                     <div className="flex flex-col w-1/2 gap-[50px] text-s">
                         <div className="text-xs gap-xxs">
@@ -75,7 +84,7 @@ export default async function SingleJob({
                             <p>{singleJob?.description}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col justify-around w-1/2 gap-s text-s">
+                    <div className="flex flex-col justify-around w-1/2 gap-xxl text-s">
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Company Website</h4>
                             {singleJob?.companyWebsite}
@@ -92,7 +101,23 @@ export default async function SingleJob({
                             <h4 className="text-l">Priority</h4>
                             {singleJob?.priority}
                         </div>
-                        <div className="flex items-end justify-end flex-1 gap-l">
+                        {singleJob.tag.length !== 0 && (
+                            <div className="flex flex-wrap items-center rounded-[0.3125rem] border border-borderColors-borderLight px-s py-s gap-s">
+                                <HiArrowCircleLeft size={24} />
+                                {singleJob?.tag.map(tag => {
+                                    return (
+                                        <span
+                                            className="flex items-center text-xxs bg-opacity-0 border rounded-full h-m px-s py-xxs my-xs gap-xxs"
+                                            key={tag.id}
+                                        >
+                                            {tag.name}
+                                        </span>
+                                    );
+                                })}{' '}
+                                <HiArrowCircleRight size={24} />
+                            </div>
+                        )}
+                        <div className="flex items-end justify-end flex-1 gap-l my-[-220px]">
                             <Button variant="primary">Go back</Button>
                             <Button variant="primary">Edit</Button>
                         </div>
