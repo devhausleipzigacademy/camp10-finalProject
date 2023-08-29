@@ -20,7 +20,6 @@ type Form = Job & { currentStage: string };
 
 function JobForm() {
     const searchParams = useSearchParams();
-    // const columnId = searchParams.get('columnId')
     const columnTitle = searchParams.get('name');
     const router = useRouter();
 
