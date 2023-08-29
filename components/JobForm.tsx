@@ -4,7 +4,6 @@ import React from 'react';
 import Input from './shared/Input';
 import Select from './shared/Select';
 import Button from './shared/Button';
-import TagsInput from './TagsInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { JobSchema } from '@/schema/job';
@@ -13,28 +12,17 @@ import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { useColumnStore } from '@/store/columns';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import Link from 'next/link';
+import { Job } from '@prisma/client';
 
-type Form = {
-    title: string;
-    companyName: string;
-    url: string;
-    location: string;
-    companyWebsite: string;
-    deadline: Date;
-    remoteType: string[];
-    priority: string[];
-    currentStage: string[];
-    description: string;
-    labels: string[];
-};
+type Form = Job & { currentStage: string };
 
 function JobForm() {
-    const searchParams = useSearchParams()
-    const columnId = searchParams.get('columnId')
-    const columnTitle = searchParams.get('name')
+    const searchParams = useSearchParams();
+    // const columnId = searchParams.get('columnId')
+    const columnTitle = searchParams.get('name');
+    const router = useRouter();
 
     const {
         register,
@@ -45,37 +33,51 @@ function JobForm() {
         resolver: zodResolver(JobSchema),
     });
 
-    const queryClient = useQueryClient()
-
-    const router = useRouter()
-
-    const newJob = useMutation({
-        mutationFn: (data: Form) => axios.post("/api/job", {...data, columnId}).then((res) => res.data),
-        onError: (error) => {
-            toast.error("Something went wrong")
-        },
-        onSuccess: (data) => {
-            queryClient.invalidateQueries(["columns"])
-            toast.success("Job created")
-            router.push("/")
-        }
-    })
-
-    const { data: existingColumns }  = useQuery({
+    const queryClient = useQueryClient();
+    const { data: existingColumns } = useQuery({
         queryKey: ['columns'],
-        queryFn: () => axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
+        queryFn: () =>
+            axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
         // refetchInterval: 3000,
     });
-    console.log(existingColumns)
+    console.log(existingColumns);
 
-    const onSubmitHandler = async (data: Form) => {
-        newJob.mutate(data)
-
-    };
-
-    if (!existingColumns){
+    if (!existingColumns) {
         return null;
     }
+
+    const newJob = useMutation({
+        mutationFn: (
+            data: Omit<Job, 'id' | 'userId' | 'positionInColumn' | 'createdAt'>
+        ) => axios.post('/api/job', data).then(res => res.data),
+        onError: error => {
+            toast.error('Something went wrong');
+        },
+        onSuccess: data => {
+            queryClient.invalidateQueries(['columns']);
+            toast.success('Job created');
+            router.push('/');
+        },
+    });
+
+    const onSubmitHandler = async (data: Form) => {
+        const { id: columnId, jobs } = existingColumns.find(
+            column => column.title === data.currentStage
+        ) as ColumnWithJobs;
+        const { currentStage, ...dataWithoutStage } = data;
+        const newJobData = {
+            ...dataWithoutStage,
+            columnId,
+            positionInColumn: jobs.length,
+        };
+        newJob.mutate(newJobData);
+    };
+
+    const getDeadline = () => {
+        const date = new Date();
+        date.setDate(date.getDate() + 14);
+        return date.toISOString().split('T')[0];
+    };
 
     return (
         <form
@@ -122,6 +124,7 @@ function JobForm() {
                         type="date"
                         isRequired={false}
                         error={errors.deadline}
+                        defaultValue={getDeadline()}
                         {...register('deadline')}
                     ></Input>
                     <label htmlFor="description">Description</label>
@@ -146,7 +149,7 @@ function JobForm() {
                         id="remoteType"
                         isRequired={false}
                         options={['Onsite', 'Remote', 'Hybrid']}
-                        defaultValue={''}
+                        defaultValue={'Onsite'}
                         {...register('remoteType')}
                         error={errors.remoteType}
                     ></Select>
@@ -154,9 +157,9 @@ function JobForm() {
                         label="Current Stage"
                         id="currentStage"
                         isRequired={true}
-                        defaultValue={columnTitle || existingColumns[0].title }
-                        options={existingColumns.map((oneColumn) =>{
-                            return oneColumn.title
+                        defaultValue={columnTitle || existingColumns[0].title}
+                        options={existingColumns.map(oneColumn => {
+                            return oneColumn.title;
                         })}
                         {...register('currentStage')}
                         error={errors.currentStage}
@@ -166,28 +169,20 @@ function JobForm() {
                         id="priority"
                         isRequired={false}
                         options={['Low', 'Medium', 'High']}
-                        defaultValue={''}
+                        defaultValue={'Low'}
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
                     {/* <TagsInput /> */}
                 </div>
             </div>
-            <div className='flex justify-end gap-m'>
-                <Link href={"/"}>
-                    <Button
-                        variant='primary'
-                        type='button'
-                        size='small'
-                    >
+            <div className="flex justify-end gap-m">
+                <Link href={'/'}>
+                    <Button variant="primary" type="button" size="small">
                         Cancel
                     </Button>
                 </Link>
-                <Button
-                    variant="primary"
-                    type="submit"
-                    size="small"
-                >
+                <Button variant="primary" type="submit" size="small">
                     Create
                 </Button>
             </div>
