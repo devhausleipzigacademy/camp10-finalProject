@@ -25,6 +25,11 @@ type TableViewProps = {
     setFilter: Dispatch<SetStateAction<string>>;
 };
 
+type ColumnType = {
+    title: string;
+    color: string;
+}
+
 export default function BasicTable({
     jobData,
     filter,
@@ -43,6 +48,7 @@ export default function BasicTable({
             header: 'check',
             accessorKey: 'checked',
             cell: () => <BsSquare size={21} className="mx-auto" />,
+            enableSorting: false,
         },
         {
             header: 'Job',
@@ -58,13 +64,11 @@ export default function BasicTable({
             accessorKey: 'location',
         },
         {
+            id: 'column',
             header: 'Status',
             accessorKey: 'column',
             cell: ({ cell }) => {
-                const columnValues = cell.getValue() as {
-                    title: string;
-                    color: string;
-                };
+                const columnValues = cell.getValue() as ColumnType;
                 return (
                     <span
                         style={{ backgroundColor: columnValues.color }}
@@ -73,6 +77,11 @@ export default function BasicTable({
                         {columnValues.title}
                     </span>
                 );
+            },
+            sortingFn: (a, b) => {
+                const aValue = a.getValue('column') as ColumnType;
+                const bValue = b.getValue('column') as ColumnType;
+                return aValue.title > bValue.title ? 1 : -1;
             },
         },
         {
