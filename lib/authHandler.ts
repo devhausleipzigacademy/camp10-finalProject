@@ -36,7 +36,7 @@ export function authHandler(cb: CallBackFunct, schema?: Schema) {
                         ...body,
                         userId,
                     });
-                    return cb({ req, body: parsedPostData });
+                    return cb({ req, body: parsedPostData, userId });
                 } catch (err) {
                     if (err instanceof ZodError) {
                         console.log('invalid post data:', err);

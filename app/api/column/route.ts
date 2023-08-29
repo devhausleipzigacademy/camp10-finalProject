@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prismaClient';
 import { ColumnSchema } from '@/schema/column';
 import { ZodError } from 'zod';
-import { auth } from '@clerk/nextjs';
 import { authHandler } from '@/lib/authHandler';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 export const POST = authHandler(async ({ body }) => {
     try {
