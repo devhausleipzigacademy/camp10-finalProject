@@ -15,7 +15,7 @@ type ButtonProps = {
 
 const variantStyles: Record<ButtonVariant, string> = {
     primary:
-        'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
+        'bg-cardColors-black bg-opacity-0 text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
