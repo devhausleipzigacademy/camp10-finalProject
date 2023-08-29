@@ -5,11 +5,9 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import Fuse from 'fuse.js';
-import { cornersOfRectangle } from '@dnd-kit/core/dist/utilities/algorithms/helpers';
-import { object } from 'zod';
 
 type TagProps = {
-    tagData: Tag[];
+    tagData?: Tag[];
 };
 
 function TagsInput({ tagData }: TagProps) {

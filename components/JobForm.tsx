@@ -170,7 +170,7 @@ function JobForm() {
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
-                    {/* <TagsInput /> */}
+                    <TagsInput />
                 </div>
             </div>
             <div className='flex justify-end gap-m'>
