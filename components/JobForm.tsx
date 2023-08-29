@@ -73,7 +73,7 @@ function JobForm() {
         newJob.mutate(newJobData);
     };
 
-    const getDeadline = () => {
+    const getDefaultDeadline = () => {
         const date = new Date();
         date.setDate(date.getDate() + 14);
         return date.toISOString().split('T')[0];
@@ -124,7 +124,7 @@ function JobForm() {
                         type="date"
                         isRequired={false}
                         error={errors.deadline}
-                        defaultValue={getDeadline()}
+                        defaultValue={getDefaultDeadline()}
                         {...register('deadline')}
                     ></Input>
                     <label htmlFor="description">Description</label>
@@ -158,8 +158,8 @@ function JobForm() {
                         id="currentStage"
                         isRequired={true}
                         defaultValue={columnTitle || existingColumns[0].title}
-                        options={existingColumns.map(oneColumn => {
-                            return oneColumn.title;
+                        options={existingColumns.map(col => {
+                            return col.title;
                         })}
                         {...register('currentStage')}
                         error={errors.currentStage}
