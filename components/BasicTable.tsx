@@ -15,9 +15,11 @@ import { BiPlus, BiMinus } from 'react-icons/bi';
 import { BsArrowDownShort, BsArrowUpShort, BsSquare } from 'react-icons/bs';
 import Button from './shared/Button';
 import { JobsWithCols } from '@/app/(dashboard)/getJobs';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { Job } from '@prisma/client';
 
 type TableViewProps = {
     jobData: JobsWithCols[];
@@ -35,6 +37,23 @@ export default function BasicTable({
         queryFn: () => axios.get('/api/job').then(res => res.data),
         initialData: jobData,
     });
+
+    const queryClient = useQueryClient();
+    // delete job
+    const deleteJob = useMutation({
+        mutationFn: (id: string) => axios.delete(`/api/job/${id}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['jobs']);
+            toast.success('Job deleted');
+        },
+    })
+    const archiveJob = useMutation({
+        mutationFn: (id: string) => axios.patch(`/api/job/${id}`, { isArchived: true }),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['jobs']);
+            toast.success('Job archived');
+        },
+    })
 
     const data = useMemo(() => jobsData, [jobsData]);
     //define cols
@@ -96,24 +115,30 @@ export default function BasicTable({
         {
             header: 'Actions',
             accessorKey: 'actions',
-            cell: () => {
+            cell: (cell) => {
+                const jobId = cell.row.original.id;
+                const isArchived = cell.row.original.isArchived;
                 return (
-                    <div className="flex gap-s cursor-pointer">
-                        <HiArchive
-                            size={20}
-                            onClick={() => console.log('blupp')}
-                        />{' '}
+                    <div className="flex justify-around cursor-pointer">
                         <HiPencil
                             size={20}
                             onClick={() => console.log('foo')}
-                        />{' '}
-                        <HiTrash size={20} onClick={() => console.log('bar')} />{' '}
+                        />
+                        <HiArchive
+                            size={20}
+                            onClick={() => isArchived ? null : archiveJob.mutate(jobId)}
+                            className={`${isArchived ? 'text-basicColors-dark' : ''}`}
+                        />
+                        <HiTrash 
+                            size={20}
+                            className="hover:text-cardColors-red"
+                            onClick={() => deleteJob.mutate(jobId)} 
+                        />
                     </div>
                 );
             },
         },
     ];
-    // let sorting: any, setSorting: any;
     let [sorting, setSorting] = useState<SortingState>([]);
 
     const jobDataTable = useReactTable({
@@ -140,7 +165,6 @@ export default function BasicTable({
                         size="tiny"
                         onClick={() => jobDataTable.setPageIndex(0)}
                     >
-                        {' '}
                         First Page
                     </Button>
                     <button
@@ -171,8 +195,7 @@ export default function BasicTable({
                             )
                         }
                     >
-                        {' '}
-                        Last Page{' '}
+                        Last Page
                     </Button>
                 </div>
                 <Link href="/new-job">
