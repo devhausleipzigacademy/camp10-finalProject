@@ -6,27 +6,6 @@ import { authHandler } from '@/lib/authHandler';
 import { JobSchemaAPI } from '@/schema/job';
 import { ZodError } from 'zod';
 
-// export const POST = async (req: NextRequest) => {
-//     const data = await req.json();
-//     // return NextResponse.json(data)
-//     const { userId } = auth();
-
-//     if (!userId) {
-//         return NextResponse.json('unauthorized', { status: 401 });
-//     }
-
-//     const newJob = await prisma.job.create({
-//         data: {
-//             positionInColumn: 0,
-//             userId,
-//             ...data,
-//         },
-//     });
-//     //   console.log(data)
-//     console.log(newJob);
-//     return NextResponse.json(newJob);
-// };
-
 export const POST = authHandler(async ({ userId, body }) => {
     try {
         const newJob = await prisma.job.create({
