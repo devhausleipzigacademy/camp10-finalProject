@@ -21,5 +21,5 @@ export const JobSchema = z.object({
 
 export const JobSchemaAPI = JobSchema.omit({ currentStage: true }).extend({
     columnId: z.string().uuid(),
-    positionInColumn: z.number().int().positive(),
+    positionInColumn: z.number().int().nonnegative(),
 });
