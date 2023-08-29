@@ -43,7 +43,14 @@ export const getColumns = async (
             userId: userId,
         },
         include: {
-            jobs: true,
+            jobs: {
+                where: {
+                    isArchived: false,
+                },
+                orderBy: {
+                    positionInColumn: 'asc',
+                },
+            }
         },
         orderBy: {
             positionInBoard: 'asc',
