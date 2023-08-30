@@ -219,7 +219,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     </button>
                 )}
             </div>
-            <div className="flex flex-col gap-s py-s overflow-x-hidden overflow-y-auto h-full">
+            <div className="flex flex-col gap-s py-s overflow-x-hidden scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark h-full scrollbar-thin">
                 <Link
                     href={`/new-job?columnId=${column.id}&name=${column.title}`}
                 >
