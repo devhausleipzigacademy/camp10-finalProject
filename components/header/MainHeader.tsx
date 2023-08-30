@@ -3,7 +3,6 @@ import NavLink from './NavLink';
 import Link from 'next/link';
 import { HiArrowNarrowRight } from 'react-icons/hi';
 import { auth, UserButton, SignOutButton } from '@clerk/nextjs';
-import Button from '../shared/Button';
 
 export function MainHeader() {
     const { userId } = auth();

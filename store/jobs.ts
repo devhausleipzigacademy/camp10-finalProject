@@ -1,19 +1,19 @@
-import { Job } from '@prisma/client';
+import { JobsWithCols } from '@/app/(dashboard)/getJobs';
 import { create } from 'zustand';
 
 // temporary store for moved jobs in dnd
-type movedJobsStore = {
-    movedJobs: Job[];
-    addJobs: (jobs: Job[]) => void;
+type JobsStore = {
+    existingJobs: JobsWithCols[];
+    setJobs: (jobs: JobsWithCols[]) => void;
     removeJob: (jobId: string) => void;
 };
 
-export const useMovedJobsStore = create<movedJobsStore>()(set => ({
-    movedJobs: [] as Job[],
-    addJobs: (jobs: Job[]) =>
-        set(state => ({ movedJobs: [...state.movedJobs, ...jobs] })),
+export const useJobsStore = create<JobsStore>()(set => ({
+    existingJobs: [] as JobsWithCols[],
+    setJobs: (jobs: JobsWithCols[]) =>
+        set(() => ({ existingJobs: jobs })),
     removeJob: (jobId: string) =>
         set(state => ({
-            movedJobs: state.movedJobs.filter(job => job.id !== jobId),
+            existingJobs: state.existingJobs.filter(job => job.id !== jobId),
         })),
 }));
