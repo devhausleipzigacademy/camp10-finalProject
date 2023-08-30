@@ -3,27 +3,32 @@ import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
 import { authHandler } from '@/lib/authHandler';
+import { JobSchemaAPI } from '@/schema/job';
+import { ZodError } from 'zod';
 
-export const POST = async (req: NextRequest) => {
-    const data = await req.json();
-    // return NextResponse.json(data)
-    const { userId } = auth();
-
-    if (!userId) {
-        return NextResponse.json('unauthorized', { status: 401 });
+export const POST = authHandler(async ({ userId, body }) => {
+    try {
+        const newJob = await prisma.job.create({
+            data: {
+                ...body,
+                userId,
+            },
+        });
+        console.log(newJob);
+        return NextResponse.json(newJob);
+    } catch (err) {
+        if (err instanceof ZodError) {
+            return NextResponse.json(
+                {
+                    statusText: err.issues[0].message,
+                },
+                { status: 422 }
+            );
+        }
+        console.log(err);
+        return NextResponse.error();
     }
-
-    const newJob = await prisma.job.create({
-        data: {
-            positionInColumn: 0,
-            userId,
-            ...data,
-        },
-    });
-    //   console.log(data)
-    console.log(newJob);
-    return NextResponse.json(newJob);
-};
+}, JobSchemaAPI);
 
 export const GET = authHandler(async ({ userId }) => {
     try {
@@ -40,7 +45,7 @@ export const GET = authHandler(async ({ userId }) => {
                 },
             },
             orderBy: {
-                createdAt: 'asc',
+                isArchived: 'asc',
             },
         });
         return NextResponse.json(jobs);
