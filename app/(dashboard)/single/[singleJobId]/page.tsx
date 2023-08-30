@@ -1,12 +1,8 @@
 import prisma from '@/utils/prismaClient';
-import { getJobs } from '../../getJobs';
-import { cn } from '@/lib/utils';
-import DashboardHeader from '@/components/shared/DashboardHeader';
-import { SetStateAction } from 'react';
 import Button from '@/components/shared/Button';
 import { auth } from '@clerk/nextjs';
 import { HiArrowCircleRight, HiArrowCircleLeft } from 'react-icons/hi';
-import TagsInput from '@/components/TagsInput';
+import Link from 'next/link';
 
 async function getData(jobId: string) {
     const { userId } = auth();
@@ -45,7 +41,7 @@ export default async function SingleJob({
     console.log(singleJob);
     if (!singleJob) {
         return (
-            <div className="flex flex-col items-center border gap-xl px-xxxl py-xl ui-background text-xl font-600 text-basicColors-light">
+            <div className="flex flex-col items-center text-xl border gap-xl px-xxxl py-xl ui-background font-600 text-basicColors-light">
                 <h1>Sorry, no jobs found!</h1>
                 <div className="font-400 text-s">
                     <Button variant="primary">Go back</Button>
@@ -56,7 +52,7 @@ export default async function SingleJob({
 
     return (
         <>
-            <div className="flex flex-col border gap-xl px-xxxl py-xl ui-background h-[1100px]">
+            <div className="flex flex-col border gap-xl px-xxxl py-xl ui-background">
                 <div className="flex gap-xxl">
                     <div className="flex flex-col w-1/2 gap-[50px] text-s">
                         <div className="text-xs gap-xxs">
@@ -107,7 +103,7 @@ export default async function SingleJob({
                                 {singleJob?.tag.map(tag => {
                                     return (
                                         <span
-                                            className="flex items-center text-xxs bg-opacity-0 border rounded-full h-m px-s py-xxs my-xs gap-xxs"
+                                            className="flex items-center bg-opacity-0 border rounded-full text-xxs h-m px-s py-xxs my-xs gap-xxs"
                                             key={tag.id}
                                         >
                                             {tag.name}
@@ -117,8 +113,10 @@ export default async function SingleJob({
                                 <HiArrowCircleRight size={24} />
                             </div>
                         )}
-                        <div className="flex items-end justify-end flex-1 gap-l my-[-220px]">
-                            <Button variant="primary">Go back</Button>
+                        <div className="flex items-end justify-end flex-1 mt-xxxl gap-l">
+                            <Link href="/">
+                                <Button variant="primary">Go back</Button>
+                            </Link>
                             <Button variant="primary">Edit</Button>
                         </div>
                     </div>
