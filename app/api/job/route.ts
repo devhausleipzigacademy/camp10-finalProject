@@ -45,7 +45,7 @@ export const GET = authHandler(async ({ userId }) => {
                 },
             },
             orderBy: {
-                createdAt: 'asc',
+                isArchived: 'asc',
             },
         });
         return NextResponse.json(jobs);

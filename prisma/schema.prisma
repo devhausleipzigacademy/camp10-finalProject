@@ -42,6 +42,7 @@ model Job {
   createdAt        DateTime    @default(now())
   column           Column      @relation(fields: [columnId], references: [id])
   tag              Tag[]       @relation("JobToTag")
+  isArchived       Boolean     @default(false)
 }
 
 enum remoteType {
