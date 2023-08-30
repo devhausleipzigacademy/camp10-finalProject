@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, isRequire
     <div className='flex flex-col gap-xs'>
       <label htmlFor={id} className='text-s font-600'>{`${label} ${isRequired ? '*' : ''}`}</label>
       <input
-        className="bg-basicColors-dark bg-opacity-0 border h-xl text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight"
+        className="bg-transparent border h-xl text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight"
         id={id}
         {...props}
         ref={ref}

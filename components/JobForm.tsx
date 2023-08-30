@@ -6,16 +6,16 @@ import Select from './shared/Select';
 import Button from './shared/Button';
 import TagsInput from './TagsInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { Form, useForm } from 'react-hook-form';
 import { JobSchema } from '@/schema/job';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { useColumnStore } from '@/store/columns';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import Link from 'next/link';
+import FormTags from './FormTags';
 
 type Form = {
     title: string;
@@ -171,6 +171,7 @@ function JobForm() {
                         {...register('priority')}
                     ></Select>
                     <TagsInput />
+                    <FormTags />
                 </div>
             </div>
             <div className='flex justify-end gap-m'>

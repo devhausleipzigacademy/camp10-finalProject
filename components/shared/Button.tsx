@@ -19,14 +19,9 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-    small: 'h-[40px]  w-[124px] rounded-[32px] border',
+    small: 'h-[40px]  w-[124px] px-s rounded-[32px] border',
     tiny: 'h-[32px] w-[90px] px-s rounded-[32px] border',
     square: 'w-full h-[45px] rounded-[4px] border',
-};
-
-const textStyles: Record<ButtonText, string> = {
-    default: 'text-s font-600',
-    small: 'text-xxs font-500',
 };
 
 const disabledStyles = 'opacity-50';
