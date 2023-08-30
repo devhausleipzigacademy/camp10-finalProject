@@ -18,6 +18,7 @@ export const POST = authHandler(async ({ userId, body }) => {
         return NextResponse.json(newJob);
     } catch (err) {
         if (err instanceof ZodError) {
+            console.log("yoderror", err.issues)
             return NextResponse.json(
                 {
                     statusText: err.issues[0].message,
@@ -25,7 +26,7 @@ export const POST = authHandler(async ({ userId, body }) => {
                 { status: 422 }
             );
         }
-        console.log(err);
+        console.log("oops",err);
         return NextResponse.error();
     }
 }, JobSchemaAPI);

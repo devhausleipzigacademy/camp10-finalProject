@@ -23,3 +23,5 @@ export const JobSchemaAPI = JobSchema.omit({ currentStage: true }).extend({
     columnId: z.string().uuid(),
     positionInColumn: z.number().int().nonnegative(),
 });
+
+export type JobInputs = z.infer<typeof JobSchema>

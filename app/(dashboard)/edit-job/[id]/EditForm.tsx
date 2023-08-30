@@ -1,19 +1,18 @@
 'use client';
 
 import JobForm from '@/components/JobForm';
-import { ColumnWithJobs } from '../getColumns';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Job, remoteType } from '@prisma/client';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
+import { ColumnWithJobs } from '../../getColumns';
 
-export default function NewJob() {
+export default function EditForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
-    const columnId = searchParams.get('columnId');
 
     const queryClient = useQueryClient();
     const { data: existingColumns } = useQuery({
@@ -24,20 +23,10 @@ export default function NewJob() {
     });
 
     const newJob = useMutation({
-        mutationFn: (data: JobInputs) =>
-            axios
-                .post('/api/job', {
-                    ...data,
-                    columnId,
-                    positionInColumn: 0,
-                })
-                .then(res => {
-                    console.log('realest result', res);
-                    return res;
-                })
-                .then(res => res.data),
+        mutationFn: (
+            data: JobInputs
+        ) => axios.post('/api/job', data).then(res => res.data),
         onError: error => {
-            console.log('Error danger', error);
             toast.error('Something went wrong');
         },
         onSuccess: data => {
@@ -69,11 +58,11 @@ export default function NewJob() {
                     location: '',
                     deadline: new Date(getDefaultDeadline()),
                     description: '',
-                    remoteType: 'Onsite',
+                    remoteType: remoteType.Onsite,
                     companyName: '',
                     companyWebsite: '',
                     currentStage: columnTitle || existingColumns[0].title,
-                    priority: 'Low',
+                    priority:'Low'
                 }}
             />
         </>
