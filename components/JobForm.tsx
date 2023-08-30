@@ -18,7 +18,9 @@ import { Job } from '@prisma/client';
 
 type Form = Job & { currentStage: string };
 
-function JobForm() {
+type Props = { onSubmit: () => void };
+
+function JobForm({ onSubmit }: Props) {
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
     const router = useRouter();
@@ -41,10 +43,6 @@ function JobForm() {
     });
     console.log(existingColumns);
 
-    if (!existingColumns) {
-        return null;
-    }
-
     const newJob = useMutation({
         mutationFn: (
             data: Omit<Job, 'id' | 'userId' | 'positionInColumn' | 'createdAt'>
@@ -60,7 +58,7 @@ function JobForm() {
     });
 
     const onSubmitHandler = async (data: Form) => {
-        const { id: columnId, jobs } = existingColumns.find(
+        const { id: columnId, jobs } = existingColumns?.find(
             column => column.title === data.currentStage
         ) as ColumnWithJobs;
         const { currentStage, ...dataWithoutStage } = data;
@@ -77,11 +75,14 @@ function JobForm() {
         date.setDate(date.getDate() + 14);
         return date.toISOString().split('T')[0];
     };
+    if (!existingColumns) {
+        return null;
+    }
 
     return (
         <form
             className="flex flex-col gap-xl border px-xxxl py-xl ui-background"
-            onSubmit={handleSubmit(onSubmitHandler)}
+            onSubmit={onSubmit}
         >
             <div className="flex gap-xxl">
                 <div className="flex flex-col w-1/2 gap-s text-s">
