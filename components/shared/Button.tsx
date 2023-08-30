@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 type ButtonVariant = 'primary';
-type ButtonSize = 'default' | 'medium' | 'small' | 'tiny' | 'square';
+type ButtonSize = 'small' | 'tiny' | 'square';
 type ButtonText = 'default' | 'small';
 
 type ButtonProps = {
@@ -19,10 +19,8 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-    default: 'h-[56px]  w-[200px] rounded-[32px] border-2',
-    medium: 'h-[48px] w-[140px] rounded-[32px] border-2',
     small: 'h-[40px]  w-[124px] rounded-[32px] border',
-    tiny: 'h-[32px] w-[90px] rounded-[32px] border',
+    tiny: 'h-[32px] w-[90px] px-s rounded-[32px] border',
     square: 'w-full h-[45px] rounded-[4px] border',
 };
 
@@ -35,7 +33,7 @@ const disabledStyles = 'opacity-50';
 
 export default function Button({
     variant = 'primary',
-    size = 'default',
+    size = 'small',
     className,
     disabled = false,
     label = 'Button',
