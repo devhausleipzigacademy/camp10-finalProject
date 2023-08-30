@@ -6,31 +6,6 @@ import { authHandler } from '@/lib/authHandler';
 
 // TODO: add data validation & error handling if needed
 export const PATCH = async (req: NextRequest, { params }: Params) => {
-<<<<<<< HEAD
-  const data = await req.json();
-  const updatedJob = await prisma.job.update({
-      where: {
-          id: params.jobId,
-      },
-      data: data as Partial<Job>,
-  });
-  return NextResponse.json(updatedJob);
-}
-
-// is this usefull?
-export const GET = async (req: NextRequest, { params }: Params) => {
-  const data = await req.json();
-  const updatedJob = await prisma.job.update({
-      where: {
-          id: params.jobId,
-      },
-      data: data as Partial<Job>,
-  });
-  return NextResponse.json(updatedJob);
-}
-
-
-=======
     const data = await req.json();
     const updatedJob = await prisma.job.update({
         where: {
@@ -59,4 +34,3 @@ export const DELETE = authHandler(async ({ params }) => {
         );
     }
 });
->>>>>>> main
