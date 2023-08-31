@@ -19,10 +19,6 @@ type EditProps = {
 
 export default function EditForm({ editSingleJob }: EditProps) {
     const router = useRouter();
-    console.log(
-        'Das hier ist der zu editierende Job im Frontend',
-        editSingleJob
-    );
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
     const columnId = searchParams.get('columnId');
