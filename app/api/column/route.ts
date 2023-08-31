@@ -32,6 +32,9 @@ export const GET = authHandler(async ({ userId }) => {
             },
             include: {
                 jobs: {
+                    where: {
+                        isArchived: false,
+                    },
                     orderBy: {
                         positionInColumn: 'asc',
                     },

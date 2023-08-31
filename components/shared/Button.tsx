@@ -15,13 +15,13 @@ type ButtonProps = {
 
 const variantStyles: Record<ButtonVariant, string> = {
     primary:
-        'bg-cardColors-black text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
+        'bg-cardColors-black bg-opacity-0 text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-    small: 'h-[40px]  w-[124px] px-s rounded-[32px] border',
-    tiny: 'h-[32px] w-[90px] px-s rounded-[32px] border',
-    square: 'w-full h-[45px] rounded-[4px] border',
+    small: 'h-[40px]  min-w-[124px] px-s rounded-[32px] border text-lg',
+    tiny: 'h-[32px] min-w-[90px] px-s rounded-[32px] border text-lg',
+    square: 'min-w-full h-[45px] rounded-[4px] border text-lg',
 };
 
 const disabledStyles = 'opacity-50';

@@ -28,8 +28,6 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-    // const { userId } = useAuth();
-    // console.log(userId)
 
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
@@ -56,7 +54,7 @@ export default function Board({ columnData }: BoardProps) {
         initialData: columnData,
         // refetchInterval: 3000,
     });
-    console.log(columnsData);
+    // console.log(columnsData);
     const { existingColumns, setColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);

@@ -4,9 +4,8 @@ import React from 'react';
 import Input from './shared/Input';
 import Select from './shared/Select';
 import Button from './shared/Button';
-import TagsInput from './TagsInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, set, useForm } from 'react-hook-form';
+import { Form, useForm } from 'react-hook-form';
 import { JobSchema } from '@/schema/job';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
@@ -18,20 +17,9 @@ import Link from 'next/link';
 import FormTags from './FormTags';
 import { TagType, useAddedTagsStore } from '@/store/tags';
 import { JobToTag } from '@prisma/client';
+import { Job } from '@prisma/client';
 
-type Form = {
-    title: string;
-    companyName: string;
-    url: string;
-    location: string;
-    companyWebsite: string;
-    deadline: Date;
-    remoteType: string[];
-    priority: string[];
-    currentStage: string[];
-    description: string;
-    labels: string[];
-};
+type Form = Job & { currentStage: string };
 
 type TagProps = {
     tagsData: TagType[];
@@ -39,9 +27,9 @@ type TagProps = {
 
 function JobForm({ tagsData }: TagProps) {
     const searchParams = useSearchParams();
-    const columnId = searchParams.get('columnId');
     const columnTitle = searchParams.get('name');
     const { addedTags, setAddedTags } = useAddedTagsStore();
+    const router = useRouter();
 
     const {
         register,
@@ -54,11 +42,10 @@ function JobForm({ tagsData }: TagProps) {
 
     const queryClient = useQueryClient();
 
-    const router = useRouter();
-
     const newJob = useMutation({
-        mutationFn: (data: Form) =>
-            axios.post('/api/job', { ...data, columnId }).then(res => res.data),
+        mutationFn: (
+            data: Omit<Job, 'id' | 'userId' | 'positionInColumn' | 'createdAt'>
+        ) => axios.post('/api/job', data).then(res => res.data),
         onError: error => {
             toast.error('Something went wrong');
         },
@@ -88,17 +75,33 @@ function JobForm({ tagsData }: TagProps) {
         // refetchInterval: 3000,
     });
     console.log(existingColumns);
+
     if (!existingColumns) {
         return null;
     }
 
     const onSubmitHandler = async (data: Form) => {
-        const { id: jobId } = await newJob.mutateAsync(data);
+        const { id: columnId, jobs } = existingColumns.find(
+            column => column.title === data.currentStage
+        ) as ColumnWithJobs;
+        const { currentStage, ...dataWithoutStage } = data;
+        const newJobData = {
+            ...dataWithoutStage,
+            columnId,
+            positionInColumn: jobs.length,
+        };
+        const { id: jobId } = await newJob.mutateAsync(newJobData);
         console.log('New job submitted:', jobId);
         const response = await newJobToTag.mutateAsync(
             addedTags.map(tag => ({ jobId, tagId: tag.id }))
         );
         console.log("jobtotags added",response)
+    }
+
+    const getDefaultDeadline = () => {
+        const date = new Date();
+        date.setDate(date.getDate() + 14);
+        return date.toISOString().split('T')[0];
     };
 
     return (
@@ -146,6 +149,7 @@ function JobForm({ tagsData }: TagProps) {
                         type="date"
                         isRequired={false}
                         error={errors.deadline}
+                        defaultValue={getDefaultDeadline()}
                         {...register('deadline')}
                     ></Input>
                     <label htmlFor="description">Description</label>
@@ -170,7 +174,7 @@ function JobForm({ tagsData }: TagProps) {
                         id="remoteType"
                         isRequired={false}
                         options={['Onsite', 'Remote', 'Hybrid']}
-                        defaultValue={''}
+                        defaultValue={'Onsite'}
                         {...register('remoteType')}
                         error={errors.remoteType}
                     ></Select>
@@ -179,8 +183,8 @@ function JobForm({ tagsData }: TagProps) {
                         id="currentStage"
                         isRequired={true}
                         defaultValue={columnTitle || existingColumns[0].title}
-                        options={existingColumns.map(oneColumn => {
-                            return oneColumn.title;
+                        options={existingColumns.map(col => {
+                            return col.title;
                         })}
                         {...register('currentStage')}
                         error={errors.currentStage}
@@ -190,7 +194,7 @@ function JobForm({ tagsData }: TagProps) {
                         id="priority"
                         isRequired={false}
                         options={['Low', 'Medium', 'High']}
-                        defaultValue={''}
+                        defaultValue={'Low'}
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
