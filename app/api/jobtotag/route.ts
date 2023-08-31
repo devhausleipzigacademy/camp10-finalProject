@@ -1,13 +1,24 @@
+import { TagSchema } from '@/schema/tag';
 import prisma from '@/utils/prismaClient';
+import { auth } from '@clerk/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: NextRequest) => {
+    const { userId } = auth();
+    if (!userId) {
+        return NextResponse.json(
+            { message: 'Unauthorized' },
+            { status: 401 }
+        );
+    }
+    
     try {
         const data = await req.json();
-        console.log('Req data:', data);
+        const parsedData = TagSchema.parse(data);
+        console.log('Req data:', parsedData);
 
         const res = await prisma.jobToTag.createMany({
-            data: data,
+            data: parsedData,
             skipDuplicates: true,
         });
 

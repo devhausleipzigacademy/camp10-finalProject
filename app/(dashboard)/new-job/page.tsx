@@ -1,6 +1,6 @@
 import JobForm from '@/components/JobForm';
 import { auth } from '@clerk/nextjs';
-import { getTags } from '../getTags';
+import { getTags } from './getTags';
 
 export default async function NewJob() {
     const { userId } = auth();

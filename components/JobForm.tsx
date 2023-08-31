@@ -92,11 +92,12 @@ function JobForm({ tagsData }: TagProps) {
         };
         const { id: jobId } = await newJob.mutateAsync(newJobData);
         console.log('New job submitted:', jobId);
-        const response = await newJobToTag.mutateAsync(
-            addedTags.map(tag => ({ jobId, tagId: tag.id }))
-        );
-        console.log("jobtotags added",response)
-    }
+        const tagtojobs = addedTags.map(tag => ({ jobId, tagId: tag.id }));
+        console.log('tagtojobs:', tagtojobs);
+        const response = await newJobToTag.mutateAsync(tagtojobs);
+        console.log('jobtotags added', response);
+        // setAddedTags([]);
+    };
 
     const getDefaultDeadline = () => {
         const date = new Date();

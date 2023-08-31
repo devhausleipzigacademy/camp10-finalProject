@@ -5,6 +5,7 @@ import { TagType, useAddedTagsStore } from '@/store/tags';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { RxCross2 } from 'react-icons/rx';
 
 type TagProps = {
     tagsData: TagType[];
@@ -13,7 +14,6 @@ type TagProps = {
 function FormTags({ tagsData }: TagProps) {
     const [selectedTag, setSelectedTag] = useState('');
     const [query, setQuery] = useState('');
-    // const [addedTags, setAddedTags] = useState([] as string[]);
     const { addedTags, setAddedTags } = useAddedTagsStore();
     const queryClient = useQueryClient();
     const { data: existingTags } = useQuery<TagType[]>({
@@ -35,15 +35,32 @@ function FormTags({ tagsData }: TagProps) {
             toast.success('Tag created');
         },
     });
+    // const deleteTag = useMutation({
+    //     mutationFn: (id: string) =>
+    //         axios.delete(`/api/tag/${id}`).then(res => res.data),
+    //     onError: error => {
+    //         console.log(error);
+    //     },
+    //     onSuccess: data => {
+    //         setAddedTags(addedTags.filter(tag => tag.id !== data.id));
+    //         queryClient.invalidateQueries(['tags']);
+    //         toast.success('Tag deleted');
+    //     },
+    // })
 
-    const filteredTags =
-        (query.trim() === ''
+    function removeTag(tag: TagType) {
+        setAddedTags(addedTags.filter(t => t.name !== tag.name));
+    }
+
+    const filteredTags = (
+        query.trim() === ''
             ? existingTags.map(tag => tag.name)
             : existingTags
                   .map(tag => tag.name)
                   .filter(tag => {
                       return tag.toLowerCase().includes(query.toLowerCase());
-                  })).filter(tag => !addedTags.map(tag => tag.name).includes(tag));
+                  })
+    ).filter(tag => !addedTags.map(tag => tag.name).includes(tag));
 
     function createTagHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
@@ -84,9 +101,13 @@ function FormTags({ tagsData }: TagProps) {
                     {addedTags.map(tag => (
                         <div
                             key={tag.id}
-                            className="rounded-full h-[1.5rem] bg-cardColors-blue py-xxxs px-xs text-textColors-textBody"
+                            className="rounded-full flex gap-xxs items-center h-[1.5rem] bg-cardColors-blue py-xxxs px-xs text-textColors-textBody"
                         >
-                            {`${tag.name} x`}
+                            {`${tag.name}`}
+                            <RxCross2
+                                onClick={() => removeTag(tag)}
+                                className="rounded-full text-xs bg-opacity-60 text-cardColors-red hover:cursor-pointer"
+                            />
                         </div>
                     ))}
                     <Combobox.Input

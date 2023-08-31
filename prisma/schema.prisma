@@ -50,8 +50,8 @@ model Job {
 model JobToTag {
   jobId String
   tagId String
-  job   Job    @relation(fields: [jobId], references: [id])
-  tag   Tag    @relation(fields: [tagId], references: [id])
+  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([jobId, tagId])
 }
