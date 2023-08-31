@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
 import { ColumnWithJobs } from '../../getColumns';
 
-type Column = { column: { color: string } };
+type Column = { column: { color: string; title: string } };
 
 type Tag = { tag: Array<{ name: string; id: number }> };
 
@@ -19,7 +19,10 @@ type EditProps = {
 
 export default function EditForm({ editSingleJob }: EditProps) {
     const router = useRouter();
-    console.log(editSingleJob)
+    console.log(
+        'Das hier ist der zu editierende Job im Frontend',
+        editSingleJob
+    );
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
     const columnId = searchParams.get('columnId');
@@ -49,28 +52,29 @@ export default function EditForm({ editSingleJob }: EditProps) {
         editJob.mutate(data);
     };
 
-    if (!existingColumns) {
+    if (!editSingleJob) {
         return null;
     }
 
     return (
         <>
-        <div>Julliaaaan</div>
-            {/* <JobForm
+            <div>Julliaaaan</div>
+            <JobForm
                 onSubmit={onSubmitHandler}
                 initialValues={{
-                    title: '',
-                    url: '',
-                    location: '',
-                    deadline: '',
-                    description: '',
-                    remoteType: remoteType.Onsite,
-                    companyName: '',
-                    companyWebsite: '',
-                    currentStage: columnTitle || existingColumns[0].title,
-                    priority: 'Low',
+                    title: editSingleJob.title,
+                    url: editSingleJob.url,
+                    location: editSingleJob.location,
+                    deadline: editSingleJob.deadline,
+                    description: editSingleJob.description,
+                    remoteType: editSingleJob.remoteType,
+                    companyName: editSingleJob.companyName,
+                    companyWebsite: editSingleJob.companyWebsite,
+                    currentStage: editSingleJob.column.title,
+                    priority: editSingleJob.priority,
+                    tags: editSingleJob.tag,
                 }}
-            /> */}
+            />
         </>
     );
 }
