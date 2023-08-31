@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Combobox } from '@headlessui/react';
-import { set } from 'zod';
+import { useAddedTagsStore } from '@/store/tags';
 
 const tags = [
     'Javascript',
@@ -19,7 +19,8 @@ const tags = [
 function FormTags() {
     const [selectedTag, setSelectedTag] = useState('');
     const [query, setQuery] = useState('');
-    const [addedTags, setAddedTags] = useState([] as string[]);
+    // const [addedTags, setAddedTags] = useState([] as string[]);
+    const { addedTags, setAddedTags } = useAddedTagsStore()
 
     const filteredPeople =
         query.trim() === ''
@@ -33,7 +34,7 @@ function FormTags() {
             e.preventDefault();
             const newTag = e.currentTarget.value.trim();
             if (!newTag) return;
-            !addedTags.includes(newTag) && setAddedTags([...addedTags, newTag]);
+            !addedTags.map(tag => tag.name).includes(newTag) && setAddedTags([...addedTags, { name: newTag, id: "" }]);
             setQuery('');
         }
     }
