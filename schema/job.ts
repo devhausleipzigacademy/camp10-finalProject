@@ -7,7 +7,7 @@ export const JobSchema = z.object({
     location: z.string().optional(),
     companyWebsite: z.string().optional(),
     deadline: z.coerce
-        .date()
+        .string()
         .optional()
         .refine(
             val => {

@@ -69,7 +69,7 @@ export default function EditForm({ editSingleJob }: EditProps) {
                     companyWebsite: editSingleJob.companyWebsite!,
                     currentStage: editSingleJob.column.title,
                     priority: editSingleJob.priority!,
-                    tags: editSingleJob.tag,
+                    // tags: editSingleJob.tag,  ### Tags not done yet
                 }}
             />
         </>
