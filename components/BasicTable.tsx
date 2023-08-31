@@ -235,20 +235,22 @@ export default function BasicTable({
                     >
                         Last Page
                     </Button>
+                </div>
+                <div className='flex gap-s'>
                     {Object.keys(rowSelection).length !== 0 && (
                         <>
-                            <button className="rounded-sm text-textColors-textBody px-s bg-cardColors-blue h-full">
+                            <Button size='tiny' variant='secondary'>
                                 Delete
-                            </button>
-                            <button className="rounded-sm text-textColors-textBody px-s bg-cardColors-blue h-full">
+                            </Button>
+                            <Button size='tiny' variant='secondary'>
                                 Archive
-                            </button>
+                            </Button>
                         </>
                     )}
+                    <Link href="/new-job">
+                        <Button size="tiny">New Job</Button>
+                    </Link>
                 </div>
-                <Link href="/new-job">
-                    <Button size="tiny">New Job</Button>
-                </Link>
             </div>
             <table className="container">
                 <thead className="">
