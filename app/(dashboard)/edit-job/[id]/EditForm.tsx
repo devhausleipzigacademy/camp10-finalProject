@@ -9,10 +9,20 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
 import { ColumnWithJobs } from '../../getColumns';
 
-export default function EditForm() {
+type Column = { column: { color: string } };
+
+type Tag = { tag: Array<{ name: string; id: number }> };
+
+type EditProps = {
+    editSingleJob: Job & Column & Tag;
+};
+
+export default function EditForm({ editSingleJob }: EditProps) {
     const router = useRouter();
+    console.log(editSingleJob)
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
+    const columnId = searchParams.get('columnId');
 
     const queryClient = useQueryClient();
     const { data: existingColumns } = useQuery({
@@ -22,49 +32,45 @@ export default function EditForm() {
         // refetchInterval: 3000,
     });
 
-    const newJob = useMutation({
-        mutationFn: (
-            data: JobInputs
-        ) => axios.post('/api/job', data).then(res => res.data),
+    const editJob = useMutation({
+        mutationFn: (data: JobInputs) =>
+            axios.patch('/api/job', data).then(res => res.data),
         onError: error => {
             toast.error('Something went wrong');
         },
         onSuccess: data => {
             queryClient.invalidateQueries(['columns']);
-            toast.success('Job created');
+            toast.success('Job saved');
             router.push('/');
         },
     });
 
     const onSubmitHandler = async (data: JobInputs) => {
-        newJob.mutate(data);
+        editJob.mutate(data);
     };
-    const getDefaultDeadline = () => {
-        const date = new Date();
-        date.setDate(date.getDate() + 14);
-        return date.toISOString().split('T')[0];
-    };
+
     if (!existingColumns) {
         return null;
     }
 
     return (
         <>
-            <JobForm
+        <div>Julliaaaan</div>
+            {/* <JobForm
                 onSubmit={onSubmitHandler}
                 initialValues={{
                     title: '',
                     url: '',
                     location: '',
-                    deadline: new Date(getDefaultDeadline()),
+                    deadline: '',
                     description: '',
                     remoteType: remoteType.Onsite,
                     companyName: '',
                     companyWebsite: '',
                     currentStage: columnTitle || existingColumns[0].title,
-                    priority:'Low'
+                    priority: 'Low',
                 }}
-            />
+            /> */}
         </>
     );
 }
