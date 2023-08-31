@@ -54,21 +54,22 @@ export default function EditForm({ editSingleJob }: EditProps) {
 
     return (
         <>
-           
             <JobForm
                 onSubmit={onSubmitHandler}
                 initialValues={{
                     title: editSingleJob.title,
                     url: editSingleJob.url,
-                    location: editSingleJob.location,
-                    deadline: editSingleJob.deadline,
-                    description: editSingleJob.description,
-                    remoteType: editSingleJob.remoteType,
+                    location: editSingleJob.location!,
+                    deadline: editSingleJob.deadline
+                        ?.toISOString()
+                        .split('T')[0],
+                    description: editSingleJob.description!,
+                    remoteType: editSingleJob.remoteType!,
                     companyName: editSingleJob.companyName,
-                    companyWebsite: editSingleJob.companyWebsite,
+                    companyWebsite: editSingleJob.companyWebsite!,
                     currentStage: editSingleJob.column.title,
-                    priority: editSingleJob.priority,
-                    tags: editSingleJob.tag,
+                    priority: editSingleJob.priority!,
+                    // tags: editSingleJob.tag,  ### Tags not done yet
                 }}
             />
         </>
