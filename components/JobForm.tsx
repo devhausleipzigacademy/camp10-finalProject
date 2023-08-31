@@ -24,7 +24,9 @@ function JobForm({ onSubmit, initialValues }: Props) {
         formState: { errors },
     } = useForm<JobInputs>({
         mode: 'onSubmit',
-        values: initialValues,
+        defaultValues: {
+            ...initialValues,
+        },
         resolver: zodResolver(JobSchema),
     });
 

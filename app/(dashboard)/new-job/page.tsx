@@ -59,6 +59,7 @@ export default function NewJob() {
         return null;
     }
 
+    console.log(getDefaultDeadline());
     return (
         <>
             <JobForm
@@ -67,7 +68,7 @@ export default function NewJob() {
                     title: '',
                     url: '',
                     location: '',
-                    deadline: new Date(getDefaultDeadline()),
+                    deadline: getDefaultDeadline(),
                     description: '',
                     remoteType: 'Onsite',
                     companyName: '',

@@ -12,7 +12,7 @@ model Tag {
   name      String   @unique
   userId    String
   createdAt DateTime @default(now())
-  job       Job[]    @relation("JobToTag")
+  job       Job[]    
 }
 
 model Column {
@@ -41,7 +41,7 @@ model Job {
   priority         priority?
   createdAt        DateTime    @default(now())
   column           Column      @relation(fields: [columnId], references: [id])
-  tag              Tag[]       @relation("JobToTag")
+  tag              Tag[]       
   isArchived       Boolean     @default(false)
 }
 
