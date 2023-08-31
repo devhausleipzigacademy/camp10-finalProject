@@ -36,14 +36,14 @@ function FormTags({ tagsData }: TagProps) {
         },
     });
 
-    const filteredPeople =
-        query.trim() === ''
+    const filteredTags =
+        (query.trim() === ''
             ? existingTags.map(tag => tag.name)
             : existingTags
                   .map(tag => tag.name)
                   .filter(tag => {
                       return tag.toLowerCase().includes(query.toLowerCase());
-                  });
+                  })).filter(tag => !addedTags.map(tag => tag.name).includes(tag));
 
     function createTagHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
@@ -53,7 +53,7 @@ function FormTags({ tagsData }: TagProps) {
             // check if the tag already exists
             if (!existingTags.map(tag => tag.name).includes(newTag)) {
                 addTag.mutate(newTag);
-            } else {
+            } else if (!addedTags.map(tag => tag.name).includes(newTag)) {
                 setAddedTags([
                     ...addedTags,
                     {
@@ -98,7 +98,7 @@ function FormTags({ tagsData }: TagProps) {
                 </div>
             </div>
             <Combobox.Options className="ui-background">
-                {filteredPeople.map(tag => (
+                {filteredTags.map(tag => (
                     <Combobox.Option
                         key={tag}
                         value={tag}
