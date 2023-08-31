@@ -54,7 +54,7 @@ function FormTags() {
                         </div>
                     ))}
                     <Combobox.Input
-                        // onKeyDown={createTagHandler}
+                        onKeyDown={createTagHandler}
                         onChange={event => setQuery(event.target.value)}
                         className="bg-transparent focus:outline-none"
                     />
