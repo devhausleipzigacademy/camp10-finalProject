@@ -16,12 +16,28 @@ export const GET = async (req: NextRequest) => {
             userId: userId,
         },
         select: {
+            id: true,
             name: true,
         },
     });
-    return NextResponse.json(
-        tags.map(tag => {
-            return tag.name;
-        })
-    );
+    return NextResponse.json(tags);
+};
+
+export const POST = async (req: NextRequest) => {
+    const { userId } = auth();
+
+    if (!userId) {
+        return NextResponse.json('You are not authorized. Are you logged in?', {
+            status: 401,
+        });
+    }
+
+    const data = await req.json();
+    console.log('Req data:', data);
+
+    const tag = await prisma.tag.create({
+        data: { ...data, userId },
+    });
+
+    return NextResponse.json(tag);
 };

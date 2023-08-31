@@ -1,20 +1,22 @@
 import prisma from '@/utils/prismaClient';
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
-import { authHandler } from '@/lib/authHandler';
-import { JobSchemaAPI } from '@/schema/job';
-import { ZodError } from 'zod';
 
-export const POST = authHandler(async ({ userId, body }) => {
+export const POST = async (req: NextRequest) => {
     try {
-        const response = await prisma.jobToTag.createMany({
-            data: body
-        })
-        console.log(response);
-        return NextResponse.json(response);
+        const data = await req.json();
+        console.log('Req data:', data);
+
+        const res = await prisma.jobToTag.createMany({
+            data: data,
+            skipDuplicates: true,
+        });
+
+        return NextResponse.json(res);
     } catch (err) {
-        console.log(err);
-        return NextResponse.error();
+        console.log('Add JobToTag Error:', err);
+        return NextResponse.json(
+            { message: 'Failed to add the jobToTag' },
+            { status: 500 }
+        );
     }
-}, JobSchemaAPI);
+};

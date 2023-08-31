@@ -1,9 +1,13 @@
-import JobForm from "@/components/JobForm";
+import JobForm from '@/components/JobForm';
+import { auth } from '@clerk/nextjs';
+import { getTags } from '../getTags';
 
-export default function NewJob() {
-  return (
-    <>
-      <JobForm />
-    </>
-  );
+export default async function NewJob() {
+    const { userId } = auth();
+    const tags = await getTags(userId as string)
+    return (
+        <>
+            <JobForm tagsData={tags}/>
+        </>
+    );
 }

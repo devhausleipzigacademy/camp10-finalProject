@@ -17,7 +17,7 @@ function NavLink({ children, href }: NavLinkProps) {
             <Button
                 variant="primary"
                 size="tiny"
-                className={pathName.startsWith(href) ? 'bg-basicColors-light text-basicColors-dark' : ''}
+                className={pathName.startsWith(href) ? 'bg-basicColors-light text-basicColors-dark opacity-100' : ''}
             >
                 {children}
             </Button>

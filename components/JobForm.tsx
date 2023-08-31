@@ -6,7 +6,7 @@ import Select from './shared/Select';
 import Button from './shared/Button';
 import TagsInput from './TagsInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, useForm } from 'react-hook-form';
+import { Form, set, useForm } from 'react-hook-form';
 import { JobSchema } from '@/schema/job';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
@@ -16,6 +16,8 @@ import { useRouter } from 'next/navigation';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import Link from 'next/link';
 import FormTags from './FormTags';
+import { TagType, useAddedTagsStore } from '@/store/tags';
+import { JobToTag } from '@prisma/client';
 
 type Form = {
     title: string;
@@ -31,10 +33,15 @@ type Form = {
     labels: string[];
 };
 
-function JobForm() {
-    const searchParams = useSearchParams()
-    const columnId = searchParams.get('columnId')
-    const columnTitle = searchParams.get('name')
+type TagProps = {
+    tagsData: TagType[];
+};
+
+function JobForm({ tagsData }: TagProps) {
+    const searchParams = useSearchParams();
+    const columnId = searchParams.get('columnId');
+    const columnTitle = searchParams.get('name');
+    const { addedTags, setAddedTags } = useAddedTagsStore();
 
     const {
         register,
@@ -45,37 +52,54 @@ function JobForm() {
         resolver: zodResolver(JobSchema),
     });
 
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
 
-    const router = useRouter()
+    const router = useRouter();
 
     const newJob = useMutation({
-        mutationFn: (data: Form) => axios.post("/api/job", {...data, columnId}).then((res) => res.data),
-        onError: (error) => {
-            toast.error("Something went wrong")
+        mutationFn: (data: Form) =>
+            axios.post('/api/job', { ...data, columnId }).then(res => res.data),
+        onError: error => {
+            toast.error('Something went wrong');
         },
-        onSuccess: (data) => {
-            queryClient.invalidateQueries(["columns"])
-            toast.success("Job created")
-            router.push("/")
-        }
-    })
+        onSuccess: data => {
+            queryClient.invalidateQueries(['columns']);
+            toast.success('Job created');
+            router.push('/');
+        },
+    });
 
-    const { data: existingColumns }  = useQuery({
+    const newJobToTag = useMutation({
+        mutationFn: (data: JobToTag[]) =>
+            axios.post('/api/jobtotag', data).then(res => res.data),
+        onError: error => {
+            toast.error('Something went wrong on adding tags to Job.');
+        },
+        onSuccess: data => {
+            setAddedTags([]);
+            console.log('Tags updated.');
+        },
+    });
+
+    const { data: existingColumns } = useQuery({
         queryKey: ['columns'],
-        queryFn: () => axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
+        queryFn: () =>
+            axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
         // refetchInterval: 3000,
     });
-    console.log(existingColumns)
-
-    const onSubmitHandler = async (data: Form) => {
-        newJob.mutate(data)
-
-    };
-
-    if (!existingColumns){
+    console.log(existingColumns);
+    if (!existingColumns) {
         return null;
     }
+
+    const onSubmitHandler = async (data: Form) => {
+        const { id: jobId } = await newJob.mutateAsync(data);
+        console.log('New job submitted:', jobId);
+        const response = await newJobToTag.mutateAsync(
+            addedTags.map(tag => ({ jobId, tagId: tag.id }))
+        );
+        console.log("jobtotags added",response)
+    };
 
     return (
         <form
@@ -154,9 +178,9 @@ function JobForm() {
                         label="Current Stage"
                         id="currentStage"
                         isRequired={true}
-                        defaultValue={columnTitle || existingColumns[0].title }
-                        options={existingColumns.map((oneColumn) =>{
-                            return oneColumn.title
+                        defaultValue={columnTitle || existingColumns[0].title}
+                        options={existingColumns.map(oneColumn => {
+                            return oneColumn.title;
                         })}
                         {...register('currentStage')}
                         error={errors.currentStage}
@@ -170,25 +194,17 @@ function JobForm() {
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
-                    <TagsInput />
-                    <FormTags />
+                    {/* <TagsInput /> */}
+                    <FormTags tagsData={tagsData} />
                 </div>
             </div>
-            <div className='flex justify-end gap-m'>
-                <Link href={"/"}>
-                    <Button
-                        variant='primary'
-                        type='button'
-                        size='small'
-                    >
+            <div className="flex justify-end gap-m">
+                <Link href={'/'}>
+                    <Button variant="primary" type="button" size="small">
                         Cancel
                     </Button>
                 </Link>
-                <Button
-                    variant="primary"
-                    type="submit"
-                    size="small"
-                >
+                <Button variant="primary" type="submit" size="small">
                     Create
                 </Button>
             </div>
