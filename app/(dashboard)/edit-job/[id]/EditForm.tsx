@@ -19,7 +19,7 @@ type EditProps = {
 
 export default function EditForm({ editSingleJob }: EditProps) {
     const router = useRouter();
-    console.log(editSingleJob)
+    console.log(editSingleJob);
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
     const columnId = searchParams.get('columnId');
@@ -55,8 +55,8 @@ export default function EditForm({ editSingleJob }: EditProps) {
 
     return (
         <>
-        <div>Julliaaaan</div>
-            {/* <JobForm
+            <div>hello</div>
+            <JobForm
                 onSubmit={onSubmitHandler}
                 initialValues={{
                     title: '',
@@ -70,7 +70,7 @@ export default function EditForm({ editSingleJob }: EditProps) {
                     currentStage: columnTitle || existingColumns[0].title,
                     priority: 'Low',
                 }}
-            /> */}
+            />
         </>
     );
 }
