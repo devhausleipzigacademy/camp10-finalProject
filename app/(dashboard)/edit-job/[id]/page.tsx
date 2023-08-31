@@ -38,9 +38,7 @@ async function getData(jobId: string) {
 }
 
 export default async function EditPage({ params }: Props) {
-    const jobId = params.id;
-    const singleJobEdit = await getData(jobId);
-    console.log(singleJobEdit);
+    const singleJobEdit = await getData(params.id);
     if (!singleJobEdit) {
         throw new Error('No job found');
     }

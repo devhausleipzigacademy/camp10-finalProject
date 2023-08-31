@@ -13,7 +13,7 @@ import Button from './shared/Button';
 import Input from './shared/Input';
 import Select from './shared/Select';
 
-type Props = { onSubmit: (data:JobInputs) => void; initialValues: JobInputs };
+type Props = { onSubmit: (data: JobInputs) => void; initialValues: JobInputs };
 
 function JobForm({ onSubmit, initialValues }: Props) {
     const router = useRouter();
@@ -55,7 +55,7 @@ function JobForm({ onSubmit, initialValues }: Props) {
 
     return (
         <form
-            className="flex flex-col gap-xl border px-xxxl py-xl ui-background"
+            className="flex flex-col border gap-xl px-xxxl py-xl ui-background"
             onSubmit={handleSubmit(onSubmit)}
         >
             <div className="flex gap-xxl">
@@ -153,7 +153,7 @@ function JobForm({ onSubmit, initialValues }: Props) {
                     </Button>
                 </Link>
                 <Button variant="primary" type="submit" size="small">
-                    Create
+                    Save
                 </Button>
             </div>
         </form>
