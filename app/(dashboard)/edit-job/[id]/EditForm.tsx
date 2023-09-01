@@ -30,9 +30,11 @@ export default function EditForm({ editSingleJob }: EditProps) {
 
     const editJob = useMutation({
         mutationFn: (data: JobInputs) => {
+            const deadline = new Date(data.deadline!);
             return axios
                 .patch(`/api/job/${editSingleJob.id}`, {
                     ...data,
+                    deadline,
                     columnId: existingColumns?.find(
                         col => col.title === data.currentStage
                     )?.id,

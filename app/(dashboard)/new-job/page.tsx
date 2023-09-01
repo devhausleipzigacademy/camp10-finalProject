@@ -26,10 +26,6 @@ export default function NewJob() {
             axios
                 .post('/api/job', {
                     ...data,
-                    columnId: existingColumns?.find(
-                        col => col.title === data.currentStage
-                    )?.id,
-                    positionInColumn: 0,
                 })
                 .then(res => {
                     console.log('realest result', res);
@@ -48,7 +44,16 @@ export default function NewJob() {
     });
 
     const onSubmitHandler = async (data: JobInputs) => {
-        newJob.mutate(data);
+        const mutateData = {
+            ...data,
+            columnId: existingColumns?.find(
+                col => col.title === data.currentStage
+            )?.id,
+            positionInColumn: existingColumns?.find(
+                col => col.title === data.currentStage
+            )?.jobs.length,
+        };
+        newJob.mutate(mutateData);
     };
     const getDefaultDeadline = () => {
         const date = new Date();
