@@ -3,7 +3,6 @@
 import JobForm from '@/components/JobForm';
 import { ColumnWithJobs } from '../getColumns';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Job, remoteType } from '@prisma/client';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -13,7 +12,6 @@ export default function NewJob() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
-    const columnId = searchParams.get('columnId');
 
     const queryClient = useQueryClient();
     const { data: existingColumns } = useQuery({
@@ -28,7 +26,9 @@ export default function NewJob() {
             axios
                 .post('/api/job', {
                     ...data,
-                    columnId,
+                    columnId: existingColumns?.find(
+                        col => col.title === data.currentStage
+                    )?.id,
                     positionInColumn: 0,
                 })
                 .then(res => {
@@ -63,6 +63,7 @@ export default function NewJob() {
     return (
         <>
             <JobForm
+                existingColumns={existingColumns}
                 onSubmit={onSubmitHandler}
                 initialValues={{
                     title: '',

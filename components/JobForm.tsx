@@ -1,23 +1,24 @@
 'use client';
 
-import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import { JobInputs, JobSchema } from '@/schema/job';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+
 import Button from './shared/Button';
 import Input from './shared/Input';
 import Select from './shared/Select';
+import { Column } from '@prisma/client';
 
-type Props = { onSubmit: (data: JobInputs) => void; initialValues: JobInputs };
+type Props = {
+    onSubmit: (data: JobInputs) => void;
+    initialValues: JobInputs;
+    existingColumns: Array<Column>;
+};
 
-function JobForm({ onSubmit, initialValues }: Props) {
-    const router = useRouter();
-
+function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
     const {
         register,
         handleSubmit,
@@ -29,31 +30,6 @@ function JobForm({ onSubmit, initialValues }: Props) {
         },
         resolver: zodResolver(JobSchema),
     });
-
-    const queryClient = useQueryClient();
-    const { data: existingColumns } = useQuery({
-        queryKey: ['columns'],
-        queryFn: () =>
-            axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
-        // refetchInterval: 3000,
-    });
-    console.log(existingColumns);
-
-    const newJob = useMutation({
-        mutationFn: (data: JobInputs) =>
-            axios.post('/api/job', data).then(res => res.data),
-        onError: error => {
-            toast.error('Something went wrong');
-        },
-        onSuccess: data => {
-            queryClient.invalidateQueries(['columns']);
-            toast.success('Job created');
-            router.push('/');
-        },
-    });
-    if (!existingColumns) {
-        return null;
-    }
 
     return (
         <form

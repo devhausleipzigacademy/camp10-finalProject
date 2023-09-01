@@ -7,12 +7,26 @@ import { authHandler } from '@/lib/authHandler';
 // TODO: add data validation & error handling if needed
 export const PATCH = async (req: NextRequest, { params }: Params) => {
     const data = await req.json();
+    console.log('bodydata', data);
+    console.log('params', params);
     const updatedJob = await prisma.job.update({
         where: {
             id: params.jobId,
         },
-        data: data as Partial<Job>,
+        data: {
+            title: data.title,
+            description: data.description,
+            companyName: data.companyName,
+            companyWebsite: data.companyWebsite,
+            url: data.url,
+            remoteType: data.remoteType,
+            priority: data.priority,
+            columnId: data.columnId,
+            deadline: new Date(data.deadline),
+        },
     });
+    console.log(updatedJob);
+
     return NextResponse.json(updatedJob);
 };
 

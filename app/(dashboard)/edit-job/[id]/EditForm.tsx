@@ -19,9 +19,6 @@ type EditProps = {
 
 export default function EditForm({ editSingleJob }: EditProps) {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const columnTitle = searchParams.get('name');
-    const columnId = searchParams.get('columnId');
 
     const queryClient = useQueryClient();
     const { data: existingColumns } = useQuery({
@@ -32,8 +29,16 @@ export default function EditForm({ editSingleJob }: EditProps) {
     });
 
     const editJob = useMutation({
-        mutationFn: (data: JobInputs) =>
-            axios.patch('/api/job', data).then(res => res.data),
+        mutationFn: (data: JobInputs) => {
+            return axios
+                .patch(`/api/job/${editSingleJob.id}`, {
+                    ...data,
+                    columnId: existingColumns?.find(
+                        col => col.title === data.currentStage
+                    )?.id,
+                })
+                .then(res => res.data);
+        },
         onError: error => {
             toast.error('Something went wrong');
         },
@@ -48,13 +53,14 @@ export default function EditForm({ editSingleJob }: EditProps) {
         editJob.mutate(data);
     };
 
-    if (!editSingleJob) {
+    if (!editSingleJob || !existingColumns) {
         return null;
     }
 
     return (
         <>
             <JobForm
+                existingColumns={existingColumns}
                 onSubmit={onSubmitHandler}
                 initialValues={{
                     title: editSingleJob.title,
