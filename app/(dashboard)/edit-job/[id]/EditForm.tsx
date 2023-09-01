@@ -8,10 +8,11 @@ import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
 import { ColumnWithJobs } from '../../getColumns';
+import { TagType } from '@/store/tags';
 
 type Column = { column: { color: string; title: string } };
 
-type Tag = { tag: Array<{ name: string; id: number }> };
+type Tag = { tag: TagType[] };
 
 type EditProps = {
     editSingleJob: Job & Column & Tag;
@@ -77,7 +78,7 @@ export default function EditForm({ editSingleJob }: EditProps) {
                     companyWebsite: editSingleJob.companyWebsite!,
                     currentStage: editSingleJob.column.title,
                     priority: editSingleJob.priority!,
-                    // tags: editSingleJob.tag,  ### Tags not done yet
+                    tag: editSingleJob.tag,  
                 }}
             />
         </>

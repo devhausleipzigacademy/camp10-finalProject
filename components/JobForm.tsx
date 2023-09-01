@@ -11,6 +11,7 @@ import Button from './shared/Button';
 import Input from './shared/Input';
 import Select from './shared/Select';
 import { Column } from '@prisma/client';
+import FormTags from './FormTags';
 
 type Props = {
     onSubmit: (data: JobInputs) => void;
@@ -122,7 +123,7 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
                         {...register('priority')}
                     ></Select>
                     {/* <TagsInput /> */}
-                    {/* <FormTags tagsData={tagsData} /> */}
+                    <FormTags tagsData={initialValues.tag!} />
                 </div>
             </div>
             <div className="flex justify-end gap-m">

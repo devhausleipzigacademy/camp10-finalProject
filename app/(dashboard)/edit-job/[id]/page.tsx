@@ -28,10 +28,10 @@ async function getData(jobId: string) {
             },
             tag: {
                 select: {
-                    name: true,
                     id: true,
-                },
-            },
+                    name: true,
+                }
+            }
         },
     });
     return singleJob;
@@ -43,5 +43,7 @@ export default async function EditPage({ params }: Props) {
         throw new Error('No job found');
     }
 
+    console.log(singleJobEdit)
+    // return <div></div>
     return <EditForm editSingleJob={singleJobEdit} />;
 }

@@ -23,7 +23,7 @@ export const JobSchema = z.object({
     currentStage: z.string().optional(),
     description: z.string().max(500).optional(),
     labels: z.string().array().optional(),
-    tags: z.string().array().optional(),
+    tag: z.array(z.object({ id: z.string().uuid(), name: z.string() })).optional(),
 });
 
 export const JobSchemaAPI = JobSchema.omit({ currentStage: true }).extend({
