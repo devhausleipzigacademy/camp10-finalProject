@@ -220,9 +220,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden scrollbar-track-transparent scrollbar-thumb-basicColors-dark h-full scrollbar-thin">
-                <Link
-                    href={`/new-job?columnId=${column.id}&name=${column.title}`}
-                >
+                <Link href={`/new-job?name=${column.title}`}>
                     <Button size="square" variant="primary">
                         +
                     </Button>
