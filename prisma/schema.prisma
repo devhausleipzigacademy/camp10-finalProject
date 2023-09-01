@@ -11,10 +11,8 @@ model Tag {
   id        String     @id
   name      String
   userId    String
-  createdAt DateTime   @default(now())
-  JobToTag  JobToTag[]
-
-  @@unique([name, userId])
+  createdAt DateTime @default(now())
+  job       JobToTag[]   
 }
 
 model Column {
@@ -42,8 +40,8 @@ model Job {
   remoteType       remoteType?
   priority         priority?
   createdAt        DateTime    @default(now())
+  column           Column      @relation(fields: [columnId], references: [id])    
   isArchived       Boolean     @default(false)
-  column           Column      @relation(fields: [columnId], references: [id])
   JobToTag         JobToTag[]
 }
 

@@ -1,87 +1,40 @@
 'use client';
 
-import React from 'react';
+import { JobInputs, JobSchema } from '@/schema/job';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import Link from 'next/link';
+
+import { useForm } from 'react-hook-form';
+
+import Button from './shared/Button';
 import Input from './shared/Input';
 import Select from './shared/Select';
-import Button from './shared/Button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { JobSchema } from '@/schema/job';
-import { useSearchParams } from 'next/navigation';
-import axios from 'axios';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
-import Link from 'next/link';
-import { Job } from '@prisma/client';
+import { Column } from '@prisma/client';
 
-type Form = Job & { currentStage: string };
+type Props = {
+    onSubmit: (data: JobInputs) => void;
+    initialValues: JobInputs;
+    existingColumns: Array<Column>;
+};
 
-function JobForm() {
-    const searchParams = useSearchParams();
-    const columnTitle = searchParams.get('name');
-    const router = useRouter();
-
+function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<Form>({
+    } = useForm<JobInputs>({
         mode: 'onSubmit',
+        defaultValues: {
+            ...initialValues,
+        },
         resolver: zodResolver(JobSchema),
     });
 
-    const queryClient = useQueryClient();
-    const { data: existingColumns } = useQuery({
-        queryKey: ['columns'],
-        queryFn: () =>
-            axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
-        // refetchInterval: 3000,
-    });
-    console.log(existingColumns);
-
-    if (!existingColumns) {
-        return null;
-    }
-
-    const newJob = useMutation({
-        mutationFn: (
-            data: Omit<Job, 'id' | 'userId' | 'positionInColumn' | 'createdAt'>
-        ) => axios.post('/api/job', data).then(res => res.data),
-        onError: error => {
-            toast.error('Something went wrong');
-        },
-        onSuccess: data => {
-            queryClient.invalidateQueries(['columns']);
-            toast.success('Job created');
-            router.push('/');
-        },
-    });
-
-    const onSubmitHandler = async (data: Form) => {
-        const { id: columnId, jobs } = existingColumns.find(
-            column => column.title === data.currentStage
-        ) as ColumnWithJobs;
-        const { currentStage, ...dataWithoutStage } = data;
-        const newJobData = {
-            ...dataWithoutStage,
-            columnId,
-            positionInColumn: jobs.length,
-        };
-        newJob.mutate(newJobData);
-    };
-
-    const getDefaultDeadline = () => {
-        const date = new Date();
-        date.setDate(date.getDate() + 14);
-        return date.toISOString().split('T')[0];
-    };
-
     return (
         <form
-            className="flex flex-col gap-xl border px-xxxl py-xl ui-background"
-            onSubmit={handleSubmit(onSubmitHandler)}
+            className="flex flex-col border gap-xl px-xxxl py-xl ui-background"
+            onSubmit={handleSubmit(onSubmit)}
         >
             <div className="flex gap-xxl">
                 <div className="flex flex-col w-1/2 gap-s text-s">
@@ -123,7 +76,6 @@ function JobForm() {
                         type="date"
                         isRequired={false}
                         error={errors.deadline}
-                        defaultValue={getDefaultDeadline()}
                         {...register('deadline')}
                     ></Input>
                     <label htmlFor="description">Description</label>
@@ -148,7 +100,6 @@ function JobForm() {
                         id="remoteType"
                         isRequired={false}
                         options={['Onsite', 'Remote', 'Hybrid']}
-                        defaultValue={'Onsite'}
                         {...register('remoteType')}
                         error={errors.remoteType}
                     ></Select>
@@ -156,7 +107,6 @@ function JobForm() {
                         label="Current Stage"
                         id="currentStage"
                         isRequired={true}
-                        defaultValue={columnTitle || existingColumns[0].title}
                         options={existingColumns.map(col => {
                             return col.title;
                         })}
@@ -168,7 +118,6 @@ function JobForm() {
                         id="priority"
                         isRequired={false}
                         options={['Low', 'Medium', 'High']}
-                        defaultValue={'Low'}
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
@@ -182,7 +131,7 @@ function JobForm() {
                     </Button>
                 </Link>
                 <Button variant="primary" type="submit" size="small">
-                    Create
+                    Save
                 </Button>
             </div>
         </form>
