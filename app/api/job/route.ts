@@ -11,15 +11,14 @@ export const POST = authHandler(async ({ userId, body }) => {
         const newJob = await prisma.job.create({
             data: {
                 ...body,
-                deadline: new Date (body.deadline),
+                deadline: new Date(body.deadline),
                 userId,
             },
         });
-        console.log(newJob);
         return NextResponse.json(newJob);
     } catch (err) {
         if (err instanceof ZodError) {
-            console.log("yoderror", err.issues)
+            console.log('yoderror', err.issues);
             return NextResponse.json(
                 {
                     statusText: err.issues[0].message,
@@ -27,7 +26,7 @@ export const POST = authHandler(async ({ userId, body }) => {
                 { status: 422 }
             );
         }
-        console.log("oops",err);
+        console.log('oops', err);
         return NextResponse.error();
     }
 }, JobSchemaAPI);

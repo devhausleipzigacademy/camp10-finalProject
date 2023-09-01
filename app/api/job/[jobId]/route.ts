@@ -13,10 +13,8 @@ export const PATCH = async (req: NextRequest, { params }: Params) => {
         },
         data: {
             ...dataWithoutCol,
-            deadline: new Date(dataWithoutCol.deadline),
         },
     });
-
     return NextResponse.json(updatedJob);
 };
 
