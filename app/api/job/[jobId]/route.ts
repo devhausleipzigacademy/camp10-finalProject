@@ -7,8 +7,6 @@ import { authHandler } from '@/lib/authHandler';
 // TODO: add data validation & error handling if needed
 export const PATCH = async (req: NextRequest, { params }: Params) => {
     const { currentStage, ...dataWithoutCol } = await req.json();
-    console.log('bodydata', dataWithoutCol);
-    console.log('params', params);
     const updatedJob = await prisma.job.update({
         where: {
             id: params.jobId,
@@ -18,7 +16,6 @@ export const PATCH = async (req: NextRequest, { params }: Params) => {
             deadline: new Date(dataWithoutCol.deadline),
         },
     });
-    console.log('updated Job', updatedJob);
 
     return NextResponse.json(updatedJob);
 };
