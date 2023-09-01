@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
+import {} from '@/components/shared/DropDownCompositional'
 
 type JobCardProps = {
     job: Job;
@@ -152,7 +153,8 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     size={15}
                     className=" hover:opacity-100 opacity-80"
                 />
-                {dropDownMenu && (
+                {dropDownMenu && 
+                /* (
                     <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-10">
                         <ul className="w-full">
                             <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
@@ -169,7 +171,10 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                             </li>
                         </ul>
                     </div>
-                )}
+                ) */
+                    ()
+
+                }
             </button>
             <div className="flex flex-col px-xs py-xs w-full h-full">
                 <p className="text-m font-600 leading-m truncate">
