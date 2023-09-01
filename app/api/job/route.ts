@@ -11,6 +11,7 @@ export const POST = authHandler(async ({ userId, body }) => {
         const newJob = await prisma.job.create({
             data: {
                 ...body,
+                deadline: new Date (body.deadline),
                 userId,
             },
         });
