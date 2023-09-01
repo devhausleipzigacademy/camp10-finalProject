@@ -8,11 +8,11 @@ datasource db {
 }
 
 model Tag {
-  id        String     @id
+  id        String   @id
   name      String
   userId    String
   createdAt DateTime @default(now())
-  job       JobToTag[]   
+  Job       Job[]
 }
 
 model Column {
@@ -40,18 +40,9 @@ model Job {
   remoteType       remoteType?
   priority         priority?
   createdAt        DateTime    @default(now())
-  column           Column      @relation(fields: [columnId], references: [id])    
   isArchived       Boolean     @default(false)
-  JobToTag         JobToTag[]
-}
-
-model JobToTag {
-  jobId String
-  tagId String
-  Job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  Tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@id([jobId, tagId])
+  column           Column      @relation(fields: [columnId], references: [id])
+  Tag              Tag[]
 }
 
 enum remoteType {
