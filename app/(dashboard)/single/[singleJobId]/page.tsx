@@ -117,7 +117,9 @@ export default async function SingleJob({
                             <Link href="/">
                                 <Button variant="primary">Go back</Button>
                             </Link>
-                            <Button variant="primary">Edit</Button>
+                            <Link href={`/edit-job/${params.singleJobId}`}>
+                                <Button variant="primary">Edit</Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

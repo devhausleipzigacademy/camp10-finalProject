@@ -6,7 +6,7 @@ export const JobSchema = z.object({
     url: z.string().url(),
     location: z.string().optional(),
     companyWebsite: z.string().optional(),
-    deadline: z.coerce
+    deadline: z
         .string()
         .optional()
         .refine(
@@ -18,12 +18,14 @@ export const JobSchema = z.object({
                 message: 'Deadline must be in the future.',
             }
         ),
-    remoteType: z.enum(['Remote', 'Hybrid', 'Onsite']).default('Onsite'),
-    priority: z.enum(['High', 'Medium', 'Low']).optional(),
+    remoteType: z.enum(['Remote', 'Hybrid', 'Onsite', '']),
+    priority: z.enum(['High', 'Medium', 'Low', '']).optional(),
     currentStage: z.string().optional(),
     description: z.string().max(500).optional(),
     labels: z.string().array().optional(),
-    tag: z.array(z.object({ id: z.string().uuid(), name: z.string() })).optional(),
+    tag: z
+        .array(z.object({ id: z.string().uuid(), name: z.string() }))
+        .optional(),
 });
 
 export const JobSchemaAPI = JobSchema.omit({ currentStage: true }).extend({

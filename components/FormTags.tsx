@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import { TagType, useAddedTagsStore } from '@/store/tags';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -8,10 +8,10 @@ import { toast } from 'react-toastify';
 import { RxCross2 } from 'react-icons/rx';
 
 type TagProps = {
-    tagsData: TagType[];
+    linkedTags: TagType[];
 };
 
-function FormTags({ tagsData }: TagProps) {
+function FormTags({ linkedTags }: TagProps) {
     const [selectedTag, setSelectedTag] = useState('');
     const [query, setQuery] = useState('');
     const { addedTags, setAddedTags } = useAddedTagsStore();
@@ -19,8 +19,11 @@ function FormTags({ tagsData }: TagProps) {
     const { data: existingTags } = useQuery<TagType[]>({
         queryKey: ['tags'],
         queryFn: () => axios.get('/api/tag').then(res => res.data),
-        initialData: tagsData,
     });
+
+    useEffect(() => {
+        setAddedTags(linkedTags);
+    }, [])
     console.log(existingTags);
     const addTag = useMutation({
         mutationFn: (data: string) =>
@@ -52,6 +55,10 @@ function FormTags({ tagsData }: TagProps) {
         setAddedTags(addedTags.filter(t => t.name !== tag.name));
     }
 
+    if (!existingTags) {
+        return null;
+    }
+
     const filteredTags = (
         query.trim() === ''
             ? existingTags.map(tag => tag.name)
@@ -68,7 +75,7 @@ function FormTags({ tagsData }: TagProps) {
             const newTag = e.currentTarget.value.trim();
             if (!newTag) return;
             // check if the tag already exists
-            if (!existingTags.map(tag => tag.name).includes(newTag)) {
+            if (!existingTags?.map(tag => tag.name).includes(newTag)) {
                 addTag.mutate(newTag);
             } else if (!addedTags.map(tag => tag.name).includes(newTag)) {
                 setAddedTags([

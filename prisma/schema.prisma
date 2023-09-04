@@ -8,11 +8,13 @@ datasource db {
 }
 
 model Tag {
-  id        String   @id
+  id        String   @id @default(uuid())
   name      String
   userId    String
   createdAt DateTime @default(now())
   job       Job[]
+  
+  @@unique([name, userId])
 }
 
 model Column {

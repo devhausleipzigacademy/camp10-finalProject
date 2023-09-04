@@ -1,7 +1,6 @@
 import prisma from '@/utils/prismaClient';
 import EditForm from './EditForm';
-import { auth } from '@clerk/nextjs';
-import { error } from 'console';
+import { getJob } from '@/lib/getJob';
 
 type Props = {
     params: {
@@ -9,41 +8,12 @@ type Props = {
     };
 };
 
-async function getData(jobId: string) {
-    const { userId } = auth();
-
-    if (!userId) throw new Error('Unauthorized');
-
-    const singleJob = await prisma.job.findUnique({
-        where: {
-            id: jobId,
-            userId: userId,
-        },
-        include: {
-            column: {
-                select: {
-                    color: true,
-                    title: true,
-                },
-            },
-            tag: {
-                select: {
-                    id: true,
-                    name: true,
-                }
-            }
-        },
-    });
-    return singleJob;
-}
-
 export default async function EditPage({ params }: Props) {
-    const singleJobEdit = await getData(params.id);
+    const singleJobEdit = await getJob(params.id);
     if (!singleJobEdit) {
         throw new Error('No job found');
     }
 
-    console.log(singleJobEdit)
-    // return <div></div>
+    console.log("in edit page:", singleJobEdit)
     return <EditForm editSingleJob={singleJobEdit} />;
 }

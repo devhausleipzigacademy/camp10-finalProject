@@ -87,7 +87,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                                     <Link href={`/`}>view</Link>
                                 </li>
                                 <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                    <Link href={`/`}>edit</Link>
+                                    <Link href={`/edit-job/${job.id}`}>edit</Link>
                                 </li>
                                 <li
                                     className="hover:bg-hoverColors-hover rounded-sm p-xxs"
@@ -106,9 +106,6 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     <p className="text-xs">{job.companyName} </p>
 
                     <p className="text-xs pt-l">{job.location ?? 'Location'}</p>
-                    <p className="text-xs truncate">
-                        {/* {job.description ?? ' description.. '} */}
-                    </p>
                     {/* <p className="text-xs font-600 truncate">
                         {job.description ?? 'no description'}
                     </p> */}
@@ -156,10 +153,10 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-10">
                         <ul className="w-full">
                             <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                <Link href={`/`}> view </Link>
+                                <Link href={`/single/${job.id}`}> view </Link>
                             </li>
                             <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                <Link href={`/`}> edit </Link>
+                                <Link href={`/edit-job/${job.id}`}> edit </Link>
                             </li>
                             <li
                                 className="hover:bg-hoverColors-hover rounded-sm p-xxs"

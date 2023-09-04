@@ -7,11 +7,14 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
+import { TagType, useAddedTagsStore } from '@/store/tags';
+
 
 export default function NewJob() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const columnTitle = searchParams.get('name');
+    const { addedTags } = useAddedTagsStore();
 
     const queryClient = useQueryClient();
     const { data: existingColumns } = useQuery({
@@ -52,7 +55,10 @@ export default function NewJob() {
             positionInColumn: existingColumns?.find(
                 col => col.title === data.currentStage
             )?.jobs.length,
+            tag: addedTags,
         };
+        console.log(mutateData);
+        console.log(addedTags);
         newJob.mutate(mutateData);
     };
     const getDefaultDeadline = () => {
@@ -81,6 +87,7 @@ export default function NewJob() {
                     companyWebsite: '',
                     currentStage: columnTitle || existingColumns[0].title,
                     priority: 'Low',
+                    tag: [],
                 }}
             />
         </>

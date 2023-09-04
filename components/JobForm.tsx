@@ -2,16 +2,14 @@
 
 import { JobInputs, JobSchema } from '@/schema/job';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import Link from 'next/link';
-
 import { useForm } from 'react-hook-form';
-
 import Button from './shared/Button';
 import Input from './shared/Input';
 import Select from './shared/Select';
 import { Column } from '@prisma/client';
 import FormTags from './FormTags';
+
 
 type Props = {
     onSubmit: (data: JobInputs) => void;
@@ -31,6 +29,8 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
         },
         resolver: zodResolver(JobSchema),
     });
+
+    console.log(initialValues)
 
     return (
         <form
@@ -122,8 +122,7 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
                         error={errors.priority}
                         {...register('priority')}
                     ></Select>
-                    {/* <TagsInput /> */}
-                    <FormTags tagsData={initialValues.tag!} />
+                    <FormTags linkedTags={initialValues.tag!} />
                 </div>
             </div>
             <div className="flex justify-end gap-m">
