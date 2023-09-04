@@ -75,23 +75,23 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                 <DropDownFrame>
                     <DropDownTrigger
                         style={{ backgroundColor: colColor }}
-                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none absolute top-[-6px] right-[0]"
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none absolute top-[-6px] right-[0px]"
                     >
                         <HiDotsHorizontal
                             size={15}
-                            className=" hover:opacity-100 opacity-80"
+                            className="hover:opacity-100 opacity-80"
                         />
                     </DropDownTrigger>
 
                     <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark ">
                         <DropDownItems>
-                            <Link href={`/single/${job.id}`}>View</Link>
+                            <Link href={`/single/${job.id}`} className='flex'>View</Link>
                         </DropDownItems>
                         <DropDownItems>
-                            <Link href={`/edit-job/${job.id}`}>Edit</Link>
+                            <Link href={`/edit-job/${job.id}`} className='flex'>Edit</Link>
                         </DropDownItems>
                         <DropDownItems>
-                            <div onClick={() => deleteJob.mutate(job.id)}>
+                            <div onClick={() => deleteJob.mutate(job.id)} className='flex'>
                                 Delete
                             </div>
                         </DropDownItems>

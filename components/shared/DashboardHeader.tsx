@@ -29,7 +29,6 @@ export default function DashboardHeader({
                         )}
                     </div>
                 }
-
                 <div
                     onClick={() => onToggle(!toggleViewMode)}
                     className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m w-[7.5rem] overflow-hidden hover:cursor-pointer"
