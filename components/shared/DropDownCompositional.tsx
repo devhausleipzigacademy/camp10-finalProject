@@ -30,6 +30,11 @@ const TabsContext = React.createContext({
 
 export default function DropDownFrame({ children, className }: DdTabProps) {
     const [value, setValue] = React.useState(false);
+    window.addEventListener('click', e => {
+        if (!(e.target instanceof SVGElement) && value) {
+            setValue(false);
+        }
+    });
 
     return (
         <TabsContext.Provider value={{ value, setValue }}>
@@ -57,7 +62,7 @@ export function DropDownItems({ children, className }: DdContentProps) {
     return (
         <li
             className={cn(
-                'hover:bg-hoverColors-hover text-basicColors-light rounded-sm p-xxs',
+                'hover:bg-hoverColors-hover cursor-pointer text-basicColors-light rounded-sm p-xxs',
                 className
             )}
         >
