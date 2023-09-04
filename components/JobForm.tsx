@@ -10,7 +10,6 @@ import Select from './shared/Select';
 import { Column } from '@prisma/client';
 import FormTags from './FormTags';
 
-
 type Props = {
     onSubmit: (data: JobInputs) => void;
     initialValues: JobInputs;
@@ -30,7 +29,7 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
         resolver: zodResolver(JobSchema),
     });
 
-    console.log(initialValues)
+    console.log(errors.description?.message);
 
     return (
         <form
@@ -86,6 +85,7 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
                         rows={5}
                         {...register('description')}
                     ></textarea>
+                    <small className="text-cardColors-red text-xxxs">{errors.description?.message}</small>
                 </div>
                 <div className="flex flex-col w-1/2 gap-s text-s">
                     <Input

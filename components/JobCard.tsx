@@ -150,13 +150,26 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
 
                 <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark">
                     <DropDownItems>
-                        <Link href={`/single/${job.id}`}>View</Link>
+                        <Link
+                            href={`/single/${job.id}`}
+                            className="hover:bg-hoverColors-hover cursor-pointer text-basicColors-light rounded-sm p-xxs"
+                        >
+                            View
+                        </Link>
                     </DropDownItems>
                     <DropDownItems>
-                        <Link href={`/edit-job/${job.id}`}>Edit</Link>
+                        <Link
+                            href={`/edit-job/${job.id}`}
+                            className="hover:bg-hoverColors-hover cursor-pointer text-basicColors-light rounded-sm p-xxs"
+                        >
+                            Edit
+                        </Link>
                     </DropDownItems>
                     <DropDownItems>
-                        <div onClick={() => deleteJob.mutate(job.id)}>
+                        <div
+                            onClick={() => deleteJob.mutate(job.id)}
+                            className="hover:bg-hoverColors-hover cursor-pointer text-basicColors-light rounded-sm p-xxs"
+                        >
                             Delete
                         </div>
                     </DropDownItems>

@@ -62,7 +62,7 @@ export function DropDownItems({ children, className }: DdContentProps) {
     return (
         <li
             className={cn(
-                'hover:bg-hoverColors-hover cursor-pointer text-basicColors-light rounded-sm p-xxs',
+                
                 className
             )}
         >
