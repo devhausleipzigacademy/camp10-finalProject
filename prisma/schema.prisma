@@ -8,6 +8,7 @@ datasource db {
 }
 
 model Tag {
+<<<<<<< HEAD
   name      String
   userId    String
   createdAt DateTime   @default(now())
@@ -15,6 +16,13 @@ model Tag {
   JobToTag  JobToTag[]
 
   @@unique([name, userId])
+=======
+  id        String   @id
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+  job       Job[]
+>>>>>>> main
 }
 
 model Column {
@@ -44,6 +52,7 @@ model Job {
   createdAt        DateTime    @default(now())
   isArchived       Boolean     @default(false)
   column           Column      @relation(fields: [columnId], references: [id])
+<<<<<<< HEAD
   JobToTag         JobToTag[]
 }
 
@@ -54,6 +63,9 @@ model JobToTag {
   Tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([jobId, tagId])
+=======
+  tag              Tag[]
+>>>>>>> main
 }
 
 enum remoteType {

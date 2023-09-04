@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-type ButtonVariant = 'primary';
+type ButtonVariant = 'primary' | 'secondary';
 type ButtonSize = 'small' | 'tiny' | 'square';
 type ButtonText = 'default' | 'small';
 
@@ -14,13 +14,13 @@ type ButtonProps = {
 >;
 
 const variantStyles: Record<ButtonVariant, string> = {
-    primary:
-        'bg-cardColors-black bg-opacity-0 text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
+    primary: 'bg-cardColors-black bg-opacity-0 text-basicColors-light',
+    secondary: 'bg-basicColors-light text-basicColors-dark',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-    small: 'h-[40px]  min-w-[124px] rounded-[32px] border text-lg',
-    tiny: 'h-[32px] min-w-[90px] rounded-[32px] border text-lg',
+    small: 'h-[40px]  min-w-[124px] px-s rounded-[32px] border text-lg',
+    tiny: 'h-[32px] min-w-[90px] px-s rounded-[32px] border text-lg',
     square: 'min-w-full h-[45px] rounded-[4px] border text-lg',
 };
 
@@ -42,7 +42,7 @@ export default function Button({
     return (
         <button
             className={cn(
-                'leading-m',
+                'leading-m hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
                 sizeStyle,
                 disabledStyle,
                 variantStyle,

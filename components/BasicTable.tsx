@@ -20,6 +20,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { Job } from '@prisma/client';
+import Checkbox from './Checkbox';
 
 type TableViewProps = {
     jobData: JobsWithCols[];
@@ -30,7 +31,7 @@ type TableViewProps = {
 type ColumnType = {
     title: string;
     color: string;
-}
+};
 
 export default function BasicTable({
     jobData,
@@ -42,6 +43,7 @@ export default function BasicTable({
         queryFn: () => axios.get('/api/job').then(res => res.data),
         initialData: jobData,
     });
+    const [rowSelection, setRowSelection] = useState({});
 
     const queryClient = useQueryClient();
     // delete job
@@ -51,22 +53,40 @@ export default function BasicTable({
             queryClient.invalidateQueries(['jobs']);
             toast.success('Job deleted');
         },
-    })
+    });
     const archiveJob = useMutation({
-        mutationFn: (id: string) => axios.patch(`/api/job/${id}`, { isArchived: true }),
+        mutationFn: (id: string) =>
+            axios.patch(`/api/job/${id}`, { isArchived: true }),
         onSuccess: () => {
             queryClient.invalidateQueries(['jobs']);
             toast.success('Job archived');
         },
-    })
+    });
 
     const data = useMemo(() => jobsData, [jobsData]);
     //define cols
     const columns: ColumnDef<JobsWithCols>[] = [
         {
-            header: 'check',
+            header: ({ table }) => (
+                <Checkbox
+                    {...{
+                        checked: table.getIsAllRowsSelected(),
+                        indeterminate: table.getIsSomeRowsSelected(),
+                        onChange: table.getToggleAllRowsSelectedHandler(),
+                    }}
+                />
+            ),
             accessorKey: 'checked',
-            cell: () => <BsSquare size={21} className="mx-auto" />,
+            cell: ({ row }) => (
+                <Checkbox
+                    {...{
+                        checked: row.getIsSelected(),
+                        disabled: !row.getCanSelect(),
+                        indeterminate: row.getIsSomeSelected(),
+                        onChange: row.getToggleSelectedHandler(),
+                    }}
+                />
+            ),
             enableSorting: false,
         },
         {
@@ -124,7 +144,7 @@ export default function BasicTable({
         {
             header: 'Actions',
             accessorKey: 'actions',
-            cell: (cell) => {
+            cell: cell => {
                 const jobId = cell.row.original.id;
                 const isArchived = cell.row.original.isArchived;
                 return (
@@ -135,13 +155,17 @@ export default function BasicTable({
                         />
                         <HiArchive
                             size={20}
-                            onClick={() => isArchived ? null : archiveJob.mutate(jobId)}
-                            className={`${isArchived ? 'text-basicColors-dark' : ''}`}
+                            onClick={() =>
+                                isArchived ? null : archiveJob.mutate(jobId)
+                            }
+                            className={`${
+                                isArchived ? 'text-basicColors-dark' : ''
+                            }`}
                         />
-                        <HiTrash 
+                        <HiTrash
                             size={20}
                             className="hover:text-cardColors-red"
-                            onClick={() => deleteJob.mutate(jobId)} 
+                            onClick={() => deleteJob.mutate(jobId)}
                         />
                     </div>
                 );
@@ -160,10 +184,15 @@ export default function BasicTable({
         state: {
             sorting: sorting,
             globalFilter: filter,
+            rowSelection,
         },
+        enableRowSelection: true,
+        onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
         onGlobalFilterChange: setFilter,
     });
+
+    console.log(rowSelection);
 
     return (
         <div className="ui-background border px-m py-m space-y-s min-h-[550px]">
@@ -207,9 +236,21 @@ export default function BasicTable({
                         Last Page
                     </Button>
                 </div>
-                <Link href="/new-job">
-                    <Button size="tiny">New Job</Button>
-                </Link>
+                <div className='flex gap-s'>
+                    {Object.keys(rowSelection).length !== 0 && (
+                        <>
+                            <Button size='tiny' variant='secondary'>
+                                Delete
+                            </Button>
+                            <Button size='tiny' variant='secondary'>
+                                Archive
+                            </Button>
+                        </>
+                    )}
+                    <Link href="/new-job">
+                        <Button size="tiny">New Job</Button>
+                    </Link>
+                </div>
             </div>
             <table className="container">
                 <thead className="">
@@ -217,7 +258,7 @@ export default function BasicTable({
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => (
                                 <th
-                                    className="border px-m py-s text-left font-600"
+                                    className="border px-s h-[3.5rem] text-left font-600"
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >

@@ -28,7 +28,6 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
