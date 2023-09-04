@@ -114,7 +114,8 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         Link to job offer
                     </a>
                     <p className="self-end font-400 text-xxs">
-                        {job.deadline?.toString().split('T')[0] ?? 'unknown'}
+                        {job.deadline?.toString().split('T')[0] ??
+                            'no deadline'}
                     </p>
                     <BsChevronExpand
                         className="cursor-pointer self-center w-full"
@@ -152,7 +153,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         <Link href={`/single/${job.id}`}>View</Link>
                     </DropDownItems>
                     <DropDownItems>
-                        <Link href={`/new-edit/${job.id}`}>Edit</Link>
+                        <Link href={`/edit-job/${job.id}`}>Edit</Link>
                     </DropDownItems>
                     <DropDownItems>
                         <div onClick={() => deleteJob.mutate(job.id)}>
@@ -168,7 +169,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                 </p>
                 <p className="text-xs font-500">{job.companyName} </p>
                 <p className="self-end font-[300] leading-s text-xxs">
-                    {job.deadline?.toString().split('T')[0] ?? 'unknown'}
+                    {job.deadline?.toString().split('T')[0] ?? 'no deadline'}
                 </p>
                 <BsChevronExpand
                     className="cursor-pointer self-center w-full"

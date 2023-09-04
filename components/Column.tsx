@@ -119,7 +119,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-    const patchColumnTitle = useMutation({
+    const { isLoading, ...patchColumnTitle } = useMutation({
         mutationFn: (column: Partial<ColumnWithJobs>) =>
             axios
                 .patch(`/api/column/${column.id}`, {
@@ -140,6 +140,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         HTMLFormElement
     > = async event => {
         event.preventDefault();
+        if (isLoading) return;
         const data = new FormData(event.target as HTMLFormElement);
         const newTitle = data.get('title') as string;
         const log = existingColumns.filter(col => col.title === newTitle);
@@ -170,7 +171,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s w-[250px] h-[550px] border flex flex-col',
+                'ui-background px-m py-s min-w-[20%] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
