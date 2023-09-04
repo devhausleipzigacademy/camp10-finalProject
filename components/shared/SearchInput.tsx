@@ -22,7 +22,7 @@ export default function SearchInput({ onSearch, value }: SearchProps) {
                 value={value}
                 placeholder={value}
                 onChange={event => onSearch(event.target.value)}
-                className="bg-transparent outline-none px-xs"
+                className="bg-transparent outline-none px-xs border-none focus:ring-0"
             />
         </label>
     );

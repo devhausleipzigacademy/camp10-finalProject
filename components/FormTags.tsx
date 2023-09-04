@@ -101,10 +101,10 @@ function FormTags({ linkedTags }: TagProps) {
             onChange={setSelectedTag}
         >
             <Combobox.Label className="text-s font-600">
-                Tags Headless UI
+                Tags
             </Combobox.Label>
             <div className="bg-transparent border text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
-                <div className="flex w-full flex-wrap gap-xs gap-y-xs">
+                <div className="flex w-full flex-wrap gap-xs gap-y-xs items-center">
                     {addedTags.map(tag => (
                         <div
                             key={tag.id}
@@ -120,7 +120,7 @@ function FormTags({ linkedTags }: TagProps) {
                     <Combobox.Input
                         onKeyDown={createTagHandler}
                         onChange={event => setQuery(event.target.value)}
-                        className="bg-transparent focus:outline-none"
+                        className="bg-transparent focus:outline-none border-none focus:ring-0"
                         value={query}
                     />
                 </div>

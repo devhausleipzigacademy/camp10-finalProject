@@ -75,7 +75,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                 <DropDownFrame>
                     <DropDownTrigger
                         style={{ backgroundColor: colColor }}
-                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none absolute top-[-6px] right-[0]"
                     >
                         <HiDotsHorizontal
                             size={15}

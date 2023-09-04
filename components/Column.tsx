@@ -216,7 +216,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             />
                         </DropDownTrigger>
 
-                        <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-[3.2rem] ui-background-dark">
+                        <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-[3.2rem] ui-background-dark">
                             <DropDownItems>
                                 <div
                                     onClick={() => {
@@ -241,7 +241,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                                     Delete
                                 </div>
                             </DropDownItems>
-                            <DropDownItems className="flex flex-wrap gap-xs p-xxs hover:bg-transparent">
+                            <DropDownItems className="flex flex-wrap justify-around gap-xs p-xxs hover:bg-transparent mt-xs">
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#FE5A35');
