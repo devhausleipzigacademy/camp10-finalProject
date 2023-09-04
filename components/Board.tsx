@@ -28,7 +28,6 @@ type BoardProps = {
 };
 
 export default function Board({ columnData }: BoardProps) {
-
     const [activeColumn, setActiveColumn] = useState<ColumnWithJobs | null>(
         null
     );
@@ -288,15 +287,15 @@ export default function Board({ columnData }: BoardProps) {
     }
 
     return (
-        <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
+        <div className="flex  h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
                 sensors={sensor}
                 onDragOver={onDragOver}
             >
-                <div className="flex gap-4">
-                    <div className="flex gap-2">
+                <div className="flex  gap-4 w-full">
+                    <div className="flex gap-2 min-w-full">
                         <SortableContext
                             items={existingColumns.map(col => col.id)}
                         >
@@ -324,25 +323,24 @@ export default function Board({ columnData }: BoardProps) {
                             ))}
                         </SortableContext>
                     </div>
-                    <button
-                        onClick={() => {
-                            addColumn({
-                                id: '',
-                                title: '',
-                                positionInBoard: existingColumns.length,
-                                color: '#AAAAAA',
-                                userId: '',
-                                createdAt: new Date(),
-                                jobs: [] as Job[],
-                                isNewColumn: true,
-                            } as ColumnWithJobs);
-                        }}
-                        className="ui-background rounded-full flex my-auto mr-xxxl relative -left-s w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
-                    >
-                        <HiPlus size={20} />
-                    </button>
-                    <div className="h-full w-xxxl"></div>
                 </div>
+                <button
+                    onClick={() => {
+                        addColumn({
+                            id: '',
+                            title: '',
+                            positionInBoard: existingColumns.length,
+                            color: '#AAAAAA',
+                            userId: '',
+                            createdAt: new Date(),
+                            jobs: [] as Job[],
+                            isNewColumn: true,
+                        } as ColumnWithJobs);
+                    }}
+                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2   rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
+                >
+                    <HiPlus size={20} />
+                </button>
                 {activeJob &&
                     createPortal(
                         <DragOverlay>

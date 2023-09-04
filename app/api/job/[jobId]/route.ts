@@ -1,23 +1,47 @@
 import prisma from '@/utils/prismaClient';
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { NextRequest, NextResponse } from 'next/server';
-import { Job } from '@prisma/client';
 import { authHandler } from '@/lib/authHandler';
+import { auth } from '@clerk/nextjs';
+import { TagType } from '@/store/tags';
+import { getJob } from '@/lib/getJob';
 
 // TODO: add data validation & error handling if needed
 export const PATCH = async (req: NextRequest, { params }: Params) => {
-    const data = await req.json();
+    const { userId } = auth();
+    if (!userId) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+    const { currentStage, tag: tags, ...dataWithoutCol } = await req.json();
+    if (!tags) {
+        const updatedJob = await prisma.job.update({
+            where: {
+                id: params.jobId,
+            },
+            data: {
+                ...dataWithoutCol,
+            },
+        });
+        return NextResponse.json(updatedJob);
+    }
     const updatedJob = await prisma.job.update({
         where: {
             id: params.jobId,
         },
-        data: data as Partial<Job>,
+        data: {
+            ...dataWithoutCol,
+            tag: {
+                set: tags.map((tag: TagType) => ({
+                    id: tag.id,
+                    name: tag.name,
+                })),
+            },
+        },
     });
     return NextResponse.json(updatedJob);
 };
 
 export const DELETE = authHandler(async ({ params }) => {
-    console.log('in delete', params.jobId);
     try {
         const deletedJob = await prisma.job.delete({
             where: {
@@ -34,3 +58,15 @@ export const DELETE = authHandler(async ({ params }) => {
         );
     }
 });
+
+export const GET = async (req: NextRequest, { params }: Params) => {
+    try {
+        const job = await getJob(params.jobId);
+        return NextResponse.json(job);
+    } catch (err) {
+        return NextResponse.json(
+            { message: 'Failed to get the job' },
+            { status: 500 }
+        );
+    } 
+}

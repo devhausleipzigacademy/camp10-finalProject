@@ -48,9 +48,9 @@ export const getColumns = async (
                     isArchived: false,
                 },
                 orderBy: {
-                    positionInColumn: 'asc',
+                    positionInColumn: 'desc',
                 },
-            }
+            },
         },
         orderBy: {
             positionInBoard: 'asc',

@@ -5,19 +5,33 @@ import { auth } from '@clerk/nextjs';
 import { authHandler } from '@/lib/authHandler';
 import { JobSchemaAPI } from '@/schema/job';
 import { ZodError } from 'zod';
+import { TagType } from '@/store/tags';
 
 export const POST = authHandler(async ({ userId, body }) => {
+    const tags = body.tag as TagType[];
     try {
         const newJob = await prisma.job.create({
             data: {
                 ...body,
+                deadline: new Date(body.deadline),
                 userId,
+                tag: {
+                    connectOrCreate: tags.length >= 0 && tags.map(tag => ({
+                        create: {
+                            name: tag.name,
+                            userId,
+                        },
+                        where: {
+                            id: tag.id,
+                        },
+                    })),
+                },
             },
         });
-        console.log(newJob);
         return NextResponse.json(newJob);
     } catch (err) {
         if (err instanceof ZodError) {
+            console.log('yoderror', err.issues);
             return NextResponse.json(
                 {
                     statusText: err.issues[0].message,
@@ -25,7 +39,7 @@ export const POST = authHandler(async ({ userId, body }) => {
                 { status: 422 }
             );
         }
-        console.log(err);
+        console.log('oops', err);
         return NextResponse.error();
     }
 }, JobSchemaAPI);
