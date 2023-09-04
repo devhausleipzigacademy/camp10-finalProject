@@ -13,7 +13,17 @@ export const PATCH = async (req: NextRequest, { params }: Params) => {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
     const { currentStage, tag: tags, ...dataWithoutCol } = await req.json();
-    console.log('in patch', tags);
+    if (!tags) {
+        const updatedJob = await prisma.job.update({
+            where: {
+                id: params.jobId,
+            },
+            data: {
+                ...dataWithoutCol,
+            },
+        });
+        return NextResponse.json(updatedJob);
+    }
     const updatedJob = await prisma.job.update({
         where: {
             id: params.jobId,
