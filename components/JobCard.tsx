@@ -47,9 +47,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
             axios.delete(`/api/job/${jobId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Job deleted successfully', {
-                toastId: 'succes2',
-            });
+            toast.success('Job deleted successfully');
         },
         onError: err => {
             console.log(err);
