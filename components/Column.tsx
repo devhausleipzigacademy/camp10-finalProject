@@ -143,6 +143,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         if (isLoading) return;
         const data = new FormData(event.target as HTMLFormElement);
         const newTitle = data.get('title') as string;
+        if (newTitle.trim() === column.title) {
+            setIsEditable(false);
+            return;
+        }
         const log = existingColumns.filter(col => col.title === newTitle);
 
         if (column.isNewColumn) {
@@ -190,13 +194,14 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             onSubmit={onSumitHandler}
                         >
                             <input
-                                className="w-4/5 h-[2rem] text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
+                                className="w-4/5 h-[2rem] text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover focus:border-hoverColors-hover rounded-lg form-input"
                                 placeholder="confirm title"
                                 name="title"
                                 autoFocus
                                 required
                                 minLength={3}
                                 maxLength={25}
+                                defaultValue={column.title}
                             />
                             <button
                                 type="submit"
