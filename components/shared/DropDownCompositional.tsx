@@ -1,39 +1,35 @@
 'use client';
-
-import React from 'react';
+import { HiDotsHorizontal } from 'react-icons/hi';
+import React, { useContext } from 'react';
+import { cn } from '@/lib/utils';
 
 type DdTabProps = {
     children: React.ReactNode[];
-    defaultValue: string;
     className?: string;
 };
 
 type DdListProps = {
-    children: React.ReactNode[];
+    children: React.ReactNode[] | React.ReactNode;
     className?: string;
 };
 
 type DdTriggerProps = {
-    children: React.ReactNode[] | React.ReactNode;
-    value: string;
+    children?: React.ReactNode[] | React.ReactNode;
+    className?: string;
+    style?: {};
 };
 type DdContentProps = {
     children: React.ReactNode[] | React.ReactNode;
-    value: string;
     className?: string;
 };
 
 const TabsContext = React.createContext({
-    value: '',
-    setValue: (value: string) => {},
+    value: false,
+    setValue: (value: boolean) => {},
 });
 
-export default function DdTab({
-    children,
-    defaultValue,
-    className,
-}: DdTabProps) {
-    const [value, setValue] = React.useState(defaultValue);
+export default function DropDownFrame({ children, className }: DdTabProps) {
+    const [value, setValue] = React.useState(false);
 
     return (
         <TabsContext.Provider value={{ value, setValue }}>
@@ -42,24 +38,49 @@ export default function DdTab({
     );
 }
 
-export function DdList({ children, className }: DdListProps) {
-    return <ul className={className}>{children}</ul>;
+export function DropDownList({ children, className }: DdListProps) {
+    const { value } = useContext(TabsContext);
+    return (
+        value && (
+            <ul
+                className={cn(
+                    'absolute top-[10px] right-[0px] z-[9999]',
+                    className
+                )}
+            >
+                {children}
+            </ul>
+        )
+    );
 }
-export function DdContent({ children, className }: DdContentProps) {
-    return <li className={className}>{children}</li>;
-}
-
-export function DdTrigger({ children, value }: DdTriggerProps) {
-    const { setValue } = React.useContext(TabsContext);
+export function DropDownItems({ children, className }: DdContentProps) {
     return (
         <li
-            onClick={() => {
-                setValue(value);
-            }}
+            className={cn(
+                'hover:bg-hoverColors-hover rounded-sm p-xxs',
+                className
+            )}
         >
             {children}
         </li>
     );
 }
 
-// copy-pasted Julians boiler, deleted TabContent-Component and Value/setValue
+export function DropDownTrigger({
+    children,
+    className,
+    style,
+}: DdTriggerProps) {
+    const { value, setValue } = React.useContext(TabsContext);
+    return (
+        <li
+            style={style}
+            className={cn('absolute top-[-6px] right-[0px]', className)}
+            onClick={() => {
+                setValue(!value);
+            }}
+        >
+            {children}
+        </li>
+    );
+}
