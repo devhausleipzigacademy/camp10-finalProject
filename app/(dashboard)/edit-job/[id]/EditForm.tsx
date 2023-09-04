@@ -2,19 +2,21 @@
 
 import JobForm from '@/components/JobForm';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Job, remoteType } from '@prisma/client';
+import { Column, Job, remoteType } from '@prisma/client';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
 import { ColumnWithJobs } from '../../getColumns';
+import { TagType, useAddedTagsStore } from '@/store/tags';
 
-type Column = { column: { color: string; title: string } };
 
-type Tag = { tag: Array<{ name: string; id: number }> };
+export type JobType = Job & { column: Pick<Column, 'title' | 'color'> } & {
+    tag: TagType[];
+};
 
 type EditProps = {
-    editSingleJob: Job & Column & Tag;
+    editSingleJob: JobType
 };
 
 export default function EditForm({ editSingleJob }: EditProps) {
@@ -27,9 +29,17 @@ export default function EditForm({ editSingleJob }: EditProps) {
             axios.get<ColumnWithJobs[]>(`/api/column`).then(res => res.data),
         // refetchInterval: 3000,
     });
+    const { data: singleJob } = useQuery({
+        queryKey: ["job", editSingleJob.id],
+        queryFn: () =>
+            axios.get<JobType>(`/api/job/${editSingleJob.id}`).then(res => res.data as JobType),
+        initialData: editSingleJob,
+    })
+
+    const { addedTags } = useAddedTagsStore();
 
     const editJob = useMutation({
-        mutationFn: (data: JobInputs) => {
+        mutationFn: async (data: JobInputs) => {
             const deadline = new Date(data.deadline!);
             return axios
                 .patch(`/api/job/${editSingleJob.id}`, {
@@ -45,17 +55,21 @@ export default function EditForm({ editSingleJob }: EditProps) {
             toast.error('Something went wrong');
         },
         onSuccess: data => {
-            queryClient.invalidateQueries(['columns']);
+            queryClient.invalidateQueries(["columns"]);
+            queryClient.invalidateQueries(["job", editSingleJob.id]);
             toast.success('Job saved');
             router.push('/');
         },
     });
 
     const onSubmitHandler = async (data: JobInputs) => {
-        editJob.mutate(data);
+        editJob.mutate({
+            ...data,
+            tag: addedTags,
+        });
     };
 
-    if (!editSingleJob || !existingColumns) {
+    if (!existingColumns) {
         return null;
     }
 
@@ -65,19 +79,17 @@ export default function EditForm({ editSingleJob }: EditProps) {
                 existingColumns={existingColumns}
                 onSubmit={onSubmitHandler}
                 initialValues={{
-                    title: editSingleJob.title,
-                    url: editSingleJob.url,
-                    location: editSingleJob.location!,
-                    deadline: editSingleJob.deadline
-                        ?.toISOString()
-                        .split('T')[0],
-                    description: editSingleJob.description!,
-                    remoteType: editSingleJob.remoteType!,
-                    companyName: editSingleJob.companyName,
-                    companyWebsite: editSingleJob.companyWebsite!,
-                    currentStage: editSingleJob.column.title,
-                    priority: editSingleJob.priority!,
-                    // tags: editSingleJob.tag,  ### Tags not done yet
+                    title: singleJob.title,
+                    url: singleJob.url,
+                    location: singleJob.location!,
+                    deadline: new Date(singleJob.deadline!).toISOString().split('T')[0],
+                    description: singleJob.description!,
+                    remoteType: singleJob.remoteType!,
+                    companyName: singleJob.companyName,
+                    companyWebsite: singleJob.companyWebsite!,
+                    currentStage: singleJob.column.title,
+                    priority: singleJob.priority!,
+                    tag: singleJob.tag,
                 }}
             />
         </>

@@ -1,38 +1,42 @@
 'use client';
 
-import { Tag } from '@prisma/client';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import Fuse from 'fuse.js';
-import { cornersOfRectangle } from '@dnd-kit/core/dist/utilities/algorithms/helpers';
-import { object } from 'zod';
+import { set } from 'zod';
 
-type TagProps = {
-    tagData: Tag[];
-};
+const tags = [
+    'Javascript',
+    'React',
+    'Node',
+    'Typescript',
+    'Next',
+    'Express',
+    'MongoDB',
+    'GraphQL',
+    'PostgreSQL',
+    'Python',
+];
 
-function TagsInput({ tagData }: TagProps) {
+function TagsInput() {
     // using useState Hook for now. Should probably be written into API endpoints later.
-    const [existingTags, setExistingTags] = useState<string[]>([]);
+    const [existingTags, setExistingTags] = useState(tags);
     const [newTags, setNewTags] = useState<string[]>([]);
     const [query, setQuery] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    useEffect(() => {
-        axios.get(`/api/tag`).then(({ data: userTags }) => {
-            setExistingTags(userTags);
-            console.log('Existing user tags', userTags);
-        });
-    }, []);
+    // useEffect(() => {
+    //     axios.get(`/api/tag`).then(({ data: userTags }) => {
+    //         setExistingTags(userTags);
+    //         console.log('Existing user tags', userTags);
+    //     });
+    // }, []);
 
-    const fuse = new Fuse(existingTags); // Fuzzy search lib
-    const fuzzyResults = fuse.search(query);
-    const filteredResults: string[] = fuzzyResults
-        .map(el => el.item)
-        .filter(el => newTags.indexOf(el) < 0);
-
-    console.log(fuzzyResults, newTags);
+    const filteredResults = query.trim() === '' ? [] : existingTags.filter(tag => {
+        return tag.toLowerCase().includes(query.toLowerCase());
+    })
+    
 
     function createTagHandler(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key !== 'Enter') return;
@@ -52,8 +56,9 @@ function TagsInput({ tagData }: TagProps) {
         inputRef.current?.focus();
     }
 
-    function removeTag(index: number) {
-        setNewTags(newTags.filter((_, idx) => idx !== index));
+    function removeTag(tag: string) {
+        setNewTags(newTags.filter(t => t !== tag));
+        setExistingTags([...existingTags, tag])
     }
 
     return (
@@ -69,7 +74,7 @@ function TagsInput({ tagData }: TagProps) {
                     >
                         <span>{tag}</span>
                         <RxCross2
-                            onClick={() => removeTag(index)}
+                            onClick={() => removeTag(tag)}
                             className="rounded-full text-xxs bg-opacity-60 bg-cardColors-red"
                         />
                     </div>
@@ -78,6 +83,7 @@ function TagsInput({ tagData }: TagProps) {
                     onKeyDown={createTagHandler}
                     onChange={e => {
                         setQuery(e.target.value);
+                        setExistingTags(existingTags.filter(tag => !newTags.includes(tag)))
                     }}
                     ref={inputRef}
                     value={query}
