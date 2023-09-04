@@ -73,7 +73,7 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Deadline</h4>
-                            {singleJob?.title}
+                            {singleJob?.deadline?.toISOString()}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Description</h4>
