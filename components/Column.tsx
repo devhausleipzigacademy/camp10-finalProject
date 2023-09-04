@@ -1,6 +1,6 @@
 'use client';
 
-import { HiCube } from 'react-icons/hi';
+import { HiCube, HiDotsHorizontal } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
@@ -12,12 +12,15 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useColumnStore } from '@/store/columns';
-import DropdownMenu from './shared/DropdownMenu';
 import { ColumnWithJobs } from '@/app/(dashboard)/getColumns';
 import Button from './shared/Button';
 import Link from 'next/link';
 import { HiCheck } from 'react-icons/hi';
-import { useParams } from 'next/navigation';
+import DropDownFrame, {
+    DropDownItems,
+    DropDownList,
+    DropDownTrigger,
+} from '@/components/shared/DropDownCompositional';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -43,7 +46,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-    const { addColumn, removeColumn, setColumnColor } = useColumnStore();
+    const { addColumn, removeColumn, setColumnColor, existingColumns } =
+        useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
 
@@ -138,6 +142,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
         const newTitle = data.get('title') as string;
+        const log = existingColumns.filter(col => col.title === newTitle);
+
         if (column.isNewColumn) {
             const { id, jobs, isNewColumn, ...newColumn } = column;
             newColumn.title = newTitle;
@@ -147,6 +153,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             const newCol = createNewColumn.mutate(newColumn);
             console.log(newCol);
         } else {
+            if (log[0]) {
+                toast.info('Title is existing, please chose another one');
+                return;
+            }
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
             setIsEditable(false);
@@ -197,26 +207,85 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 {!isEditable && (
-                    <button className="rounded overflow-visible">
-                        <DropdownMenu
-                            onDelete={() => {
-                                if (column.jobs.length === 0) {
-                                    deleteColumn.mutate(column.id);
-                                    return;
-                                }
-                                toast.info(
-                                    "You can't delete a column that has a job inside."
-                                );
-                            }}
-                            onEdit={() => {
-                                setIsEditable(true);
-                            }}
-                            onChangeColor={color => {
-                                updateColor.mutate(color);
-                                setColumnColor(column.id, color);
-                            }}
-                        />
-                    </button>
+                    <DropDownFrame>
+                        <DropDownTrigger className="cursor-pointer flex justify-center rounded-xl rounded-bl-none text-mainBG">
+                            <HiDotsHorizontal
+                                size={15}
+                                className=" hover:opacity-100 opacity-80"
+                            />
+                        </DropDownTrigger>
+
+                        <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-[3.2rem] ui-background-dark">
+                            <DropDownItems>
+                                <div
+                                    onClick={() => {
+                                        setIsEditable(true);
+                                    }}
+                                >
+                                    Edit
+                                </div>
+                            </DropDownItems>
+                            <DropDownItems>
+                                <div
+                                    onClick={() => {
+                                        if (column.jobs.length === 0) {
+                                            deleteColumn.mutate(column.id);
+                                            return;
+                                        }
+                                        toast.info(
+                                            "You can't delete a column that has a job inside."
+                                        );
+                                    }}
+                                >
+                                    Delete
+                                </div>
+                            </DropDownItems>
+                            <DropDownItems className="flex flex-wrap gap-xs p-xxs hover:bg-transparent">
+                                <div
+                                    onClick={() => {
+                                        updateColor.mutate('#FE5A35');
+                                        setColumnColor(column.id, '#FE5A35');
+                                    }}
+                                    className="w-s h-s rounded-full bg-cardColors-red hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => {
+                                        updateColor.mutate('#CBE87E');
+                                        setColumnColor(column.id, '#CBE87E');
+                                    }}
+                                    className="w-s h-s rounded-full bg-cardColors-green hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => {
+                                        updateColor.mutate('#DAEDEB');
+                                        setColumnColor(column.id, '#DAEDEB');
+                                    }}
+                                    className="w-s h-s rounded-full bg-cardColors-blue hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => {
+                                        updateColor.mutate('#B4A0D1');
+                                        setColumnColor(column.id, '#B4A0D1');
+                                    }}
+                                    className="w-s h-s rounded-full bg-cardColors-purple hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => {
+                                        updateColor.mutate('#FDC959');
+                                        setColumnColor(column.id, '#FDC959');
+                                    }}
+                                    className="w-s h-s rounded-full bg-cardColors-yellow hover:scale-150"
+                                />
+                                <div
+                                    onClick={() => {
+                                        updateColor.mutate('#99B1ED');
+                                        setColumnColor(column.id, '#99B1ED');
+                                    }}
+                                    className="w-s h-s rounded-full bg-cardColors-darkblue hover:scale-150"
+                                />
+                            </DropDownItems>
+                        </DropDownList>
+                    </DropDownFrame>
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden scrollbar-track-transparent scrollbar-thumb-basicColors-dark h-full scrollbar-thin">

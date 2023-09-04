@@ -9,6 +9,11 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
+import DropDownFrame, {
+    DropDownItems,
+    DropDownList,
+    DropDownTrigger,
+} from '@/components/shared/DropDownCompositional';
 
 type JobCardProps = {
     job: Job;
@@ -18,8 +23,6 @@ type JobCardProps = {
 
 export default function JobCard({ job, colColor, parent }: JobCardProps) {
     const [cardSize, setCardSize] = useState<boolean>(true);
-    const [mouseHover, setMouseHover] = useState<boolean>(false);
-    const [dropDownMenu, setdropDownMenu] = useState<boolean>(false);
 
     const queryClient = useQueryClient();
 
@@ -66,49 +69,46 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                 ref={setNodeRef}
                 {...attributes}
                 {...listeners}
-                onMouseOver={() => setMouseHover(true)}
-                onMouseLeave={() => setMouseHover(false)}
                 className="text-left text-textColors-textBody cursor-pointer rounded-xl rounded-tr-none relative"
                 style={style}
             >
-                <button
-                    style={{ backgroundColor: colColor }}
-                    className="absolute right-[0px] flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none top-[-6px] "
-                    onClick={() => setdropDownMenu(!dropDownMenu)}
-                >
-                    <HiDotsHorizontal
-                        size={15}
-                        className=" hover:opacity-100 opacity-80"
-                    />
-                    {dropDownMenu && (
-                        <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-10">
-                            <ul className="w-full">
-                                <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                    <Link href={`/`}>view</Link>
-                                </li>
-                                <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                    <Link href={`/edit-job/${job.id}`}>edit</Link>
-                                </li>
-                                <li
-                                    className="hover:bg-hoverColors-hover rounded-sm p-xxs"
-                                    onClick={() => deleteJob.mutate(job.id)}
-                                >
-                                    delete
-                                </li>
-                            </ul>
-                        </div>
-                    )}
-                </button>
+                <DropDownFrame>
+                    <DropDownTrigger
+                        style={{ backgroundColor: colColor }}
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
+                    >
+                        <HiDotsHorizontal
+                            size={15}
+                            className=" hover:opacity-100 opacity-80"
+                        />
+                    </DropDownTrigger>
+
+                    <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark ">
+                        <DropDownItems>
+                            {' '}
+                            <Link href="/">View</Link>{' '}
+                        </DropDownItems>
+                        <DropDownItems>
+                            {' '}
+                            <Link href="/">Edit</Link>{' '}
+                        </DropDownItems>
+                        <DropDownItems>
+                            <div onClick={() => deleteJob.mutate(job.id)}>
+                                Delete
+                            </div>
+                        </DropDownItems>
+                    </DropDownList>
+                </DropDownFrame>
                 <div className="flex flex-col px-xs py-xs h-full font-500">
-                    <p className="text-m font-600 leading-m truncate">
+                    <p className="text-m font-600 leading-l truncate">
                         {job.title}
                     </p>
                     <p className="text-xs">{job.companyName} </p>
 
                     <p className="text-xs pt-l">{job.location ?? 'Location'}</p>
-                    {/* <p className="text-xs font-600 truncate">
-                        {job.description ?? 'no description'}
-                    </p> */}
+                    <p className="text-xs truncate">
+                        {job.description ?? ' description.. '}
+                    </p>
                     <a
                         href={job.url}
                         className="text-xs border-b border-b-transparent hover:border-b-hoverColors-hoverMain w-fit"
@@ -132,44 +132,40 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
             ref={setNodeRef}
             {...attributes}
             {...listeners}
-            onMouseOver={() => setMouseHover(true)}
-            onMouseLeave={() => setMouseHover(false)}
             style={style}
             className={cn(
                 'text-left text-textColors-textBody cursor-grab rounded-xl rounded-tr-none relative',
                 isDragging && 'opacity-25'
             )}
         >
-            <button
-                style={{ backgroundColor: colColor }}
-                className="absolute right-[0px] flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none top-[-6px] text-mainBG"
-                onClick={() => setdropDownMenu(!dropDownMenu)}
-            >
-                <HiDotsHorizontal
-                    size={15}
-                    className=" hover:opacity-100 opacity-80"
-                />
-                {dropDownMenu && (
-                    <div className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs absolute top-m ui-background-dark right-[0] z-10">
-                        <ul className="w-full">
-                            <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                <Link href={`/single/${job.id}`}> view </Link>
-                            </li>
-                            <li className="hover:bg-hoverColors-hover rounded-sm p-xxs">
-                                <Link href={`/edit-job/${job.id}`}> edit </Link>
-                            </li>
-                            <li
-                                className="hover:bg-hoverColors-hover rounded-sm p-xxs"
-                                onClick={() => deleteJob.mutate(job.id)}
-                            >
-                                delete
-                            </li>
-                        </ul>
-                    </div>
-                )}
-            </button>
+            <DropDownFrame>
+                <DropDownTrigger
+                    className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
+                    style={{ backgroundColor: colColor }}
+                >
+                    <HiDotsHorizontal
+                        size={15}
+                        className=" hover:opacity-100 opacity-80"
+                    />
+                </DropDownTrigger>
+
+                <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark">
+                    <DropDownItems>
+                        <Link href={`/single/${job.id}`}>View</Link>
+                    </DropDownItems>
+                    <DropDownItems>
+                        <Link href={`/new-edit/${job.id}`}>Edit</Link>
+                    </DropDownItems>
+                    <DropDownItems>
+                        <div onClick={() => deleteJob.mutate(job.id)}>
+                            Delete
+                        </div>
+                    </DropDownItems>
+                </DropDownList>
+            </DropDownFrame>
+
             <div className="flex flex-col px-xs py-xs w-full h-full">
-                <p className="text-m font-600 leading-m truncate">
+                <p className="text-m font-600 leading-l truncate">
                     {job.title}
                 </p>
                 <p className="text-xs font-500">{job.companyName} </p>
