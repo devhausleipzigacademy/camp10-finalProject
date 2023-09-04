@@ -43,7 +43,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         },
     });
 
-    const { addColumn, removeColumn, setColumnColor } = useColumnStore();
+    const { addColumn, removeColumn, setColumnColor, existingColumns } =
+        useColumnStore();
 
     const [isEditable, setIsEditable] = useState(isNewColumn);
 
@@ -138,6 +139,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
         const newTitle = data.get('title') as string;
+        const log = existingColumns.filter(col => col.title === newTitle);
+
         if (column.isNewColumn) {
             const { id, jobs, isNewColumn, ...newColumn } = column;
             newColumn.title = newTitle;
@@ -147,6 +150,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             const newCol = createNewColumn.mutate(newColumn);
             console.log(newCol);
         } else {
+            if (log[0]) {
+                toast.info('Title is existing, please chose another one');
+                return;
+            }
             await patchColumnTitle.mutateAsync({ ...column, title: newTitle });
             column.title = newTitle;
             setIsEditable(false);
