@@ -22,7 +22,13 @@ export default function DashboardHeader({
     return (
         <div className="">
             <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
-                <SearchInput onSearch={setFilter} value={filter} />
+                {
+                    <div>
+                        {!toggleViewMode && (
+                            <SearchInput onSearch={setFilter} value={filter} />
+                        )}
+                    </div>
+                }
 
                 <div
                     onClick={() => onToggle(!toggleViewMode)}
