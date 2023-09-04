@@ -179,18 +179,18 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 style={{ borderColor: column.color }}
                 className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
-                <div className="">
+
                     <HiCube size={24} />
-                </div>
-                <div className="text-basicColors-light">
-                    {!isEditable && <h4> {column.title} </h4>}
+
+                <div className="text-basicColors-light w-4/5">
+                    {!isEditable && <h4 className='text-center truncate mx-xxs'> {column.title} </h4>}
                     {isEditable && (
                         <form
                             className="flex justify-around"
                             onSubmit={onSumitHandler}
                         >
                             <input
-                                className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
+                                className="w-4/5 h-[2rem] text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
                                 placeholder="confirm title"
                                 name="title"
                                 autoFocus
