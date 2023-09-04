@@ -85,12 +85,10 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
 
                     <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark ">
                         <DropDownItems>
-                            {' '}
-                            <Link href="/">View</Link>{' '}
+                            <Link href={`/single/${job.id}`}>View</Link>
                         </DropDownItems>
                         <DropDownItems>
-                            {' '}
-                            <Link href="/">Edit</Link>{' '}
+                            <Link href={`/edit-job/${job.id}`}>Edit</Link>
                         </DropDownItems>
                         <DropDownItems>
                             <div onClick={() => deleteJob.mutate(job.id)}>
