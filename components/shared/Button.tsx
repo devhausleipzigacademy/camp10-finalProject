@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-type ButtonVariant = 'primary';
+type ButtonVariant = 'primary' | 'secondary';
 type ButtonSize = 'small' | 'tiny' | 'square';
 type ButtonText = 'default' | 'small';
 
@@ -14,8 +14,8 @@ type ButtonProps = {
 >;
 
 const variantStyles: Record<ButtonVariant, string> = {
-    primary:
-        'bg-cardColors-black bg-opacity-0 text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
+    primary: 'bg-cardColors-black bg-opacity-0 text-basicColors-light',
+    secondary: 'bg-basicColors-light text-basicColors-dark',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -42,7 +42,7 @@ export default function Button({
     return (
         <button
             className={cn(
-                'leading-m',
+                'leading-m hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain',
                 sizeStyle,
                 disabledStyle,
                 variantStyle,
