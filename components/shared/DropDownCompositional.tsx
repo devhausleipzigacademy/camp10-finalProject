@@ -57,7 +57,7 @@ export function DropDownItems({ children, className }: DdContentProps) {
     return (
         <li
             className={cn(
-                'hover:bg-hoverColors-hover rounded-sm p-xxs',
+                'hover:bg-hoverColors-hover text-basicColors-light rounded-sm p-xxs',
                 className
             )}
         >
@@ -75,7 +75,7 @@ export function DropDownTrigger({
     return (
         <li
             style={style}
-            className={cn('absolute top-[-6px] right-[0px]', className)}
+            className={cn('', className)}
             onClick={() => {
                 setValue(!value);
             }}

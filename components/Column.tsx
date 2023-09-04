@@ -1,6 +1,6 @@
 'use client';
 
-import { HiCube } from 'react-icons/hi';
+import { HiCube, HiDotsHorizontal } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
@@ -18,6 +18,11 @@ import Button from './shared/Button';
 import Link from 'next/link';
 import { HiCheck } from 'react-icons/hi';
 import { useParams } from 'next/navigation';
+import DropDownFrame, {
+    DropDownItems,
+    DropDownList,
+    DropDownTrigger,
+} from '@/components/shared/DropDownCompositional';
 
 type ColumnProps = {
     column: ColumnWithJobs;
@@ -197,26 +202,32 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                     )}
                 </div>
                 {!isEditable && (
-                    <button className="rounded overflow-visible">
-                        <DropdownMenu
-                            onDelete={() => {
-                                if (column.jobs.length === 0) {
-                                    deleteColumn.mutate(column.id);
-                                    return;
-                                }
-                                toast.info(
-                                    "You can't delete a column that has a job inside."
-                                );
-                            }}
-                            onEdit={() => {
-                                setIsEditable(true);
-                            }}
-                            onChangeColor={color => {
-                                updateColor.mutate(color);
-                                setColumnColor(column.id, color);
-                            }}
+                <DropDownFrame>
+                    <DropDownTrigger
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-l rounded-xl rounded-bl-none text-mainBG border"
+                    >
+                        <HiDotsHorizontal
+                            size={15}
+                            className=" hover:opacity-100 opacity-80"
                         />
-                    </button>
+                    </DropDownTrigger>
+
+                    <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark">
+                        <DropDownItems>
+                            {' '}
+                            <Link href="/">View</Link>{' '}
+                        </DropDownItems>
+                        <DropDownItems>
+                            {' '}
+                            <Link href="/">Edit</Link>{' '}
+                        </DropDownItems>
+                        <DropDownItems>
+                            <div onClick={() => {null}}>
+                                Delete
+                            </div>
+                        </DropDownItems>
+                    </DropDownList>
+                </DropDownFrame>
                 )}
             </div>
             <div className="flex flex-col gap-s py-s overflow-x-hidden scrollbar-track-transparent scrollbar-thumb-basicColors-dark h-full scrollbar-thin">

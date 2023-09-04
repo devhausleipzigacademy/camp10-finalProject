@@ -74,8 +74,8 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
             >
                 <DropDownFrame>
                     <DropDownTrigger
-                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG"
                         style={{ backgroundColor: colColor }}
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
                     >
                         <HiDotsHorizontal
                             size={15}
@@ -83,7 +83,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         />
                     </DropDownTrigger>
 
-                    <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark">
+                    <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark ">
                         <DropDownItems>
                             {' '}
                             <Link href="/">View</Link>{' '}
@@ -140,7 +140,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
         >
             <DropDownFrame>
                 <DropDownTrigger
-                    className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG"
+                    className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
                     style={{ backgroundColor: colColor }}
                 >
                     <HiDotsHorizontal
@@ -163,7 +163,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                             Delete
                         </div>
                     </DropDownItems>
-                </DropDownList>
+                </DropDownList>s
             </DropDownFrame>
 
             <div className="flex flex-col px-xs py-xs w-full h-full">
