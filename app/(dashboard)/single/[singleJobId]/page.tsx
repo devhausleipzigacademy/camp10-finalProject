@@ -1,7 +1,11 @@
 import prisma from '@/utils/prismaClient';
 import Button from '@/components/shared/Button';
 import { auth } from '@clerk/nextjs';
-import { HiArrowCircleRight, HiArrowCircleLeft } from 'react-icons/hi';
+import {
+    HiArrowCircleRight,
+    HiArrowCircleLeft,
+    HiOutlineExternalLink,
+} from 'react-icons/hi';
 import Link from 'next/link';
 
 async function getData(jobId: string) {
@@ -61,7 +65,13 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Job URL</h4>
-                            {singleJob?.url}
+                            <Link
+                                href={singleJob?.url}
+                                className="flex gap-x-xs items-center"
+                            >
+                                {singleJob?.url}
+                                <HiOutlineExternalLink />
+                            </Link>
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Company</h4>
@@ -88,7 +98,15 @@ export default async function SingleJob({
                     <div className="flex flex-col justify-around w-1/2 gap-xxl text-s">
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Company Website</h4>
-                            {singleJob?.companyWebsite}
+                            {singleJob.companyWebsite && (
+                                <Link
+                                    href={singleJob?.companyWebsite}
+                                    className="flex gap-x-xs items-center"
+                                >
+                                    {singleJob?.companyWebsite}
+                                    <HiOutlineExternalLink />
+                                </Link>
+                            )}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Type</h4>
