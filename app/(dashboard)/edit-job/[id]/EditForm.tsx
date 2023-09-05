@@ -10,13 +10,12 @@ import { JobInputs } from '@/schema/job';
 import { ColumnWithJobs } from '../../getColumns';
 import { TagType, useAddedTagsStore } from '@/store/tags';
 
-
 export type JobType = Job & { column: Pick<Column, 'title' | 'color'> } & {
     tag: TagType[];
 };
 
 type EditProps = {
-    editSingleJob: JobType
+    editSingleJob: JobType;
 };
 
 export default function EditForm({ editSingleJob }: EditProps) {
@@ -30,11 +29,13 @@ export default function EditForm({ editSingleJob }: EditProps) {
         // refetchInterval: 3000,
     });
     const { data: singleJob } = useQuery({
-        queryKey: ["job", editSingleJob.id],
+        queryKey: ['job', editSingleJob.id],
         queryFn: () =>
-            axios.get<JobType>(`/api/job/${editSingleJob.id}`).then(res => res.data as JobType),
+            axios
+                .get<JobType>(`/api/job/${editSingleJob.id}`)
+                .then(res => res.data as JobType),
         initialData: editSingleJob,
-    })
+    });
 
     const { addedTags } = useAddedTagsStore();
 
@@ -55,8 +56,8 @@ export default function EditForm({ editSingleJob }: EditProps) {
             toast.error('Something went wrong');
         },
         onSuccess: data => {
-            queryClient.invalidateQueries(["columns"]);
-            queryClient.invalidateQueries(["job", editSingleJob.id]);
+            queryClient.invalidateQueries(['columns']);
+            queryClient.invalidateQueries(['job', editSingleJob.id]);
             toast.success('Job saved');
             router.push('/');
         },
@@ -82,7 +83,9 @@ export default function EditForm({ editSingleJob }: EditProps) {
                     title: singleJob.title,
                     url: singleJob.url,
                     location: singleJob.location!,
-                    deadline: new Date(singleJob.deadline!).toISOString().split('T')[0],
+                    deadline: new Date(singleJob.deadline!)
+                        .toISOString()
+                        .split('T')[0],
                     description: singleJob.description!,
                     remoteType: singleJob.remoteType!,
                     companyName: singleJob.companyName,

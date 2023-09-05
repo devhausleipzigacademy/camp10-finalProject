@@ -21,7 +21,7 @@ export const JobSchema = z.object({
     remoteType: z.enum(['Remote', 'Hybrid', 'Onsite', '']),
     priority: z.enum(['High', 'Medium', 'Low', '']).optional(),
     currentStage: z.string().optional(),
-    description: z.string().max(500).optional(),
+    description: z.string().max(2500).optional(),
     labels: z.string().array().optional(),
     tag: z
         .array(z.object({ id: z.string().uuid(), name: z.string() }))
