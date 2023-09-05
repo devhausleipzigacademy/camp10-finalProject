@@ -143,6 +143,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         if (isLoading) return;
         const data = new FormData(event.target as HTMLFormElement);
         const newTitle = data.get('title') as string;
+        if (newTitle.trim() === column.title) {
+            setIsEditable(false);
+            return;
+        }
         const log = existingColumns.filter(col => col.title === newTitle);
 
         if (column.isNewColumn) {
@@ -171,7 +175,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s min-w-[20%] h-[550px] border flex flex-col',
+                'ui-background px-m py-s w-[256px] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -179,28 +183,29 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 style={{ borderColor: column.color }}
                 className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
-                <div className="">
+
                     <HiCube size={24} />
-                </div>
-                <div className="text-basicColors-light">
-                    {!isEditable && <h4> {column.title} </h4>}
+
+                <div className="text-basicColors-light w-4/5">
+                    {!isEditable && <h4 className='text-center truncate mx-xxs'> {column.title} </h4>}
                     {isEditable && (
                         <form
                             className="flex justify-around"
                             onSubmit={onSumitHandler}
                         >
                             <input
-                                className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
+                                className="w-4/5 h-[2rem] text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover focus:border-hoverColors-hover rounded-lg form-input"
                                 placeholder="confirm title"
                                 name="title"
                                 autoFocus
                                 required
                                 minLength={3}
                                 maxLength={25}
+                                defaultValue={column.title}
                             />
                             <button
                                 type="submit"
-                                className="aspect-square w-m flex justify-center items-center rounded-full hover:bg-basicColors-light hover:text-textColors-textBody"
+                                className="flex items-center justify-center rounded-full aspect-square w-m hover:bg-basicColors-light hover:text-textColors-textBody"
                             >
                                 <HiCheck size={16} />
                             </button>
@@ -209,16 +214,17 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 </div>
                 {!isEditable && (
                     <DropDownFrame>
-                        <DropDownTrigger className="cursor-pointer flex justify-center rounded-xl rounded-bl-none text-mainBG">
+                        <DropDownTrigger className="flex justify-center rounded-bl-none cursor-pointer rounded-xl text-mainBG">
                             <HiDotsHorizontal
                                 size={15}
                                 className=" hover:opacity-100 opacity-80"
                             />
                         </DropDownTrigger>
 
-                        <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-[3.2rem] ui-background-dark">
+                        <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-[3.2rem] ui-background-dark">
                             <DropDownItems>
                                 <div
+                                    className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
                                     onClick={() => {
                                         setIsEditable(true);
                                     }}
@@ -228,6 +234,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             </DropDownItems>
                             <DropDownItems>
                                 <div
+                                    className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
                                     onClick={() => {
                                         if (column.jobs.length === 0) {
                                             deleteColumn.mutate(column.id);
@@ -241,55 +248,55 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                                     Delete
                                 </div>
                             </DropDownItems>
-                            <DropDownItems className="flex flex-wrap gap-xs p-xxs hover:bg-transparent">
+                            <DropDownItems className="flex flex-wrap justify-around gap-xs p-xxs hover:bg-transparent mt-xs">
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#FE5A35');
                                         setColumnColor(column.id, '#FE5A35');
                                     }}
-                                    className="w-s h-s rounded-full bg-cardColors-red hover:scale-150"
+                                    className="rounded-full w-s h-s bg-cardColors-red hover:scale-150"
                                 />
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#CBE87E');
                                         setColumnColor(column.id, '#CBE87E');
                                     }}
-                                    className="w-s h-s rounded-full bg-cardColors-green hover:scale-150"
+                                    className="rounded-full w-s h-s bg-cardColors-green hover:scale-150"
                                 />
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#DAEDEB');
                                         setColumnColor(column.id, '#DAEDEB');
                                     }}
-                                    className="w-s h-s rounded-full bg-cardColors-blue hover:scale-150"
+                                    className="rounded-full w-s h-s bg-cardColors-blue hover:scale-150"
                                 />
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#B4A0D1');
                                         setColumnColor(column.id, '#B4A0D1');
                                     }}
-                                    className="w-s h-s rounded-full bg-cardColors-purple hover:scale-150"
+                                    className="rounded-full w-s h-s bg-cardColors-purple hover:scale-150"
                                 />
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#FDC959');
                                         setColumnColor(column.id, '#FDC959');
                                     }}
-                                    className="w-s h-s rounded-full bg-cardColors-yellow hover:scale-150"
+                                    className="rounded-full w-s h-s bg-cardColors-yellow hover:scale-150"
                                 />
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#99B1ED');
                                         setColumnColor(column.id, '#99B1ED');
                                     }}
-                                    className="w-s h-s rounded-full bg-cardColors-darkblue hover:scale-150"
+                                    className="rounded-full w-s h-s bg-cardColors-darkblue hover:scale-150"
                                 />
                             </DropDownItems>
                         </DropDownList>
                     </DropDownFrame>
                 )}
             </div>
-            <div className="flex flex-col gap-s py-s overflow-x-hidden scrollbar-track-transparent scrollbar-thumb-basicColors-dark h-full scrollbar-thin">
+            <div className="flex flex-col h-full overflow-x-hidden gap-s py-s scrollbar-track-transparent scrollbar-thumb-basicColors-dark scrollbar-thin">
                 <Link href={`/new-job?name=${column.title}`}>
                     <Button size="square" variant="primary">
                         +

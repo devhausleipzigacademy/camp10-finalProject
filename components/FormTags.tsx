@@ -23,7 +23,7 @@ function FormTags({ linkedTags }: TagProps) {
 
     useEffect(() => {
         setAddedTags(linkedTags);
-    }, [])
+    }, []);
     console.log(existingTags);
     const addTag = useMutation({
         mutationFn: (data: string) =>
@@ -100,27 +100,25 @@ function FormTags({ linkedTags }: TagProps) {
             value={selectedTag}
             onChange={setSelectedTag}
         >
-            <Combobox.Label className="text-s font-600">
-                Tags Headless UI
-            </Combobox.Label>
+            <Combobox.Label className="text-s font-600">Tags</Combobox.Label>
             <div className="bg-transparent border text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
-                <div className="flex w-full flex-wrap gap-xs gap-y-xs">
+                <div className="flex flex-wrap w-full border-none gap-xs gap-y-xs">
                     {addedTags.map(tag => (
                         <div
                             key={tag.id}
-                            className="rounded-full flex gap-xxs items-center h-[1.5rem] bg-cardColors-blue py-xxxs px-xs text-textColors-textBody"
+                            className="flex items-center justify-around rounded-full text-xxs gap-xxs h-m bg-cardColors-blue py-xxs px-s text-textColors-textBody"
                         >
-                            {`${tag.name}`}
+                            <span className="mb-[2px]">{tag.name}</span>
                             <RxCross2
                                 onClick={() => removeTag(tag)}
-                                className="rounded-full text-xs bg-opacity-60 text-cardColors-red hover:cursor-pointer"
+                                className="align-bottom bg-opacity-0 rounded-full text-xxs text-cardColors-red hover:cursor-pointer"
                             />
                         </div>
                     ))}
                     <Combobox.Input
                         onKeyDown={createTagHandler}
                         onChange={event => setQuery(event.target.value)}
-                        className="bg-transparent focus:outline-none"
+                        className="bg-transparent border-none focus:ring-0 focus:outline-none"
                         value={query}
                     />
                 </div>

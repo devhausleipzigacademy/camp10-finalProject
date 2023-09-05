@@ -16,7 +16,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ id, label, is
     <div className='flex flex-col gap-xs'>
       <label htmlFor={id} className='text-s font-600'>{`${label} ${isRequired ? '*' : ''}`}</label>
       <select
-        className="bg-basicColors-dark bg-opacity-0 h-xl p-xs border rounded-[0.3125rem] border-borderColors-borderLight focus:outline focus:outline-2 focus:outline-basicColors-light"
+        className="bg-basicColors-dark bg-opacity-0 h-xl p-xs rounded-[0.3125rem] border focus:ring-2 focus:ring-borderColors-borderLight focus:outline-0 focus:border-basicColors-light border-basicColors-light"
         id={id}
         {...props}
         ref={ref}

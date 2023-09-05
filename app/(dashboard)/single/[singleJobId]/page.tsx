@@ -21,12 +21,12 @@ async function getData(jobId: string) {
                     title: true,
                 },
             },
-            /*             tag: {
+            tag: {
                 select: {
                     name: true,
                     id: true,
                 },
-            }, */
+            },
         },
     });
     return singleJob;
@@ -73,7 +73,12 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Deadline</h4>
-                            {singleJob?.deadline?.toISOString()}
+                            {singleJob?.deadline?.toLocaleDateString('de-DE', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Description</h4>
@@ -97,7 +102,7 @@ export default async function SingleJob({
                             <h4 className="text-l">Priority</h4>
                             {singleJob?.priority}
                         </div>
-                        {/* {singleJob.tag.length !== 0 && (
+                        {singleJob.tag.length !== 0 && (
                             <div className="flex flex-wrap items-center rounded-[0.3125rem] border border-borderColors-borderLight px-s py-s gap-s">
                                 <HiArrowCircleLeft size={24} />
                                 {singleJob?.tag.map(tag => {
@@ -112,7 +117,7 @@ export default async function SingleJob({
                                 })}{' '}
                                 <HiArrowCircleRight size={24} />
                             </div>
-                        )} */}
+                        )}
                         <div className="flex items-end justify-end flex-1 mt-xxxl gap-l">
                             <Link href="/">
                                 <Button variant="primary">Go back</Button>

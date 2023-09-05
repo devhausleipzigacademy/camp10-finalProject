@@ -7,8 +7,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
-    title: 'there will be a name',
-    description: 'A job search organizer...',
+    title: 'EMPLEO',
+    description: 'Your job search organizer...',
 };
 
 export default function RootLayout({

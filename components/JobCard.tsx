@@ -47,9 +47,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
             axios.delete(`/api/job/${jobId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Job deleted successfully', {
-                toastId: 'succes2',
-            });
+            toast.success('Job deleted successfully');
         },
         onError: err => {
             console.log(err);
@@ -69,36 +67,49 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                 ref={setNodeRef}
                 {...attributes}
                 {...listeners}
-                className="text-left text-textColors-textBody cursor-pointer rounded-xl rounded-tr-none relative"
+                className="relative text-left rounded-tr-none cursor-pointer text-textColors-textBody rounded-xl"
                 style={style}
             >
                 <DropDownFrame>
                     <DropDownTrigger
                         style={{ backgroundColor: colColor }}
-                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none absolute top-[-6px] right-[0px]"
                     >
                         <HiDotsHorizontal
                             size={15}
-                            className=" hover:opacity-100 opacity-80"
+                            className="hover:opacity-100 opacity-80"
                         />
                     </DropDownTrigger>
 
-                    <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark ">
+                    <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-s ui-background-dark ">
                         <DropDownItems>
-                            <Link href={`/single/${job.id}`}>View</Link>
+                            <Link
+                                href={`/single/${job.id}`}
+                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
+                            >
+                                View
+                            </Link>
                         </DropDownItems>
                         <DropDownItems>
-                            <Link href={`/edit-job/${job.id}`}>Edit</Link>
+                            <Link
+                                href={`/edit-job/${job.id}`}
+                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
+                            >
+                                Edit
+                            </Link>
                         </DropDownItems>
                         <DropDownItems>
-                            <div onClick={() => deleteJob.mutate(job.id)}>
+                            <div
+                                onClick={() => deleteJob.mutate(job.id)}
+                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
+                            >
                                 Delete
                             </div>
                         </DropDownItems>
                     </DropDownList>
                 </DropDownFrame>
-                <div className="flex flex-col px-xs py-xs h-full font-500">
-                    <p className="text-m font-600 leading-l truncate">
+                <div className="flex flex-col h-full px-xs py-xs font-500">
+                    <p className="truncate text-m font-600 leading-l">
                         {job.title}
                     </p>
                     <p className="text-xs">{job.companyName} </p>
@@ -118,7 +129,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                             'no deadline'}
                     </p>
                     <BsChevronExpand
-                        className="cursor-pointer self-center w-full"
+                        className="self-center w-full cursor-pointer"
                         onClick={() => setCardSize(true)}
                     />
                 </div>
@@ -148,23 +159,36 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     />
                 </DropDownTrigger>
 
-                <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark">
+                <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-s ui-background-dark">
                     <DropDownItems>
-                        <Link href={`/single/${job.id}`}>View</Link>
+                        <Link
+                            href={`/single/${job.id}`}
+                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light "
+                        >
+                            View
+                        </Link>
                     </DropDownItems>
                     <DropDownItems>
-                        <Link href={`/edit-job/${job.id}`}>Edit</Link>
+                        <Link
+                            href={`/edit-job/${job.id}`}
+                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light "
+                        >
+                            Edit
+                        </Link>
                     </DropDownItems>
                     <DropDownItems>
-                        <div onClick={() => deleteJob.mutate(job.id)}>
+                        <div
+                            onClick={() => deleteJob.mutate(job.id)}
+                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light "
+                        >
                             Delete
                         </div>
                     </DropDownItems>
                 </DropDownList>
             </DropDownFrame>
 
-            <div className="flex flex-col px-xs py-xs w-full h-full">
-                <p className="text-m font-600 leading-l truncate">
+            <div className="flex flex-col w-full h-full px-xs py-xs">
+                <p className="truncate text-m font-600 leading-l">
                     {job.title}
                 </p>
                 <p className="text-xs font-500">{job.companyName} </p>
@@ -172,7 +196,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     {job.deadline?.toString().split('T')[0] ?? 'no deadline'}
                 </p>
                 <BsChevronExpand
-                    className="cursor-pointer self-center w-full"
+                    className="self-center w-full cursor-pointer"
                     onClick={() => setCardSize(false)}
                 />
             </div>

@@ -21,6 +21,7 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { Job } from '@prisma/client';
 import Checkbox from './Checkbox';
+import { AiOutlineEye } from 'react-icons/ai';
 
 type TableViewProps = {
     jobData: JobsWithCols[];
@@ -149,10 +150,13 @@ export default function BasicTable({
                 const isArchived = cell.row.original.isArchived;
                 return (
                     <div className="flex justify-around cursor-pointer">
-                        <HiPencil
-                            size={20}
-                            onClick={() => console.log('foo')}
-                        />
+                        <Link href={`/single/${jobId}`}>
+                            <AiOutlineEye size={20} />
+                        </Link>
+                        <Link href={`/edit-job/${jobId}`}>
+                            <HiPencil size={20} />
+                        </Link>
+
                         <HiArchive
                             size={20}
                             onClick={() =>
@@ -202,6 +206,8 @@ export default function BasicTable({
                         variant="primary"
                         size="tiny"
                         onClick={() => jobDataTable.setPageIndex(0)}
+                        disabled={!jobDataTable.getCanPreviousPage()}
+                        className=" disabled:hover:bg-transparent disabled:opacity-30"
                     >
                         First Page
                     </Button>
@@ -222,11 +228,13 @@ export default function BasicTable({
                     >
                         <BiPlus
                             size={26}
-                            className="border transition-colors ease-in-out bg-transparent rounded-full  text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain"
+                            className="border transition-colors ease-in-out bg-transparent rounded-full  text-basicColors-light hover:bg-hoverColors-hover hover:text-hoverColors-hoverMain d"
                         />
                     </button>
                     <Button
                         size="tiny"
+                        disabled={!jobDataTable.getCanPreviousPage()}
+                        className=" disabled:hover:bg-transparent disabled:opacity-30"
                         onClick={() =>
                             jobDataTable.setPageIndex(
                                 jobDataTable.getPageCount() - 1
@@ -236,13 +244,13 @@ export default function BasicTable({
                         Last Page
                     </Button>
                 </div>
-                <div className='flex gap-s'>
+                <div className="flex gap-s">
                     {Object.keys(rowSelection).length !== 0 && (
                         <>
-                            <Button size='tiny' variant='secondary'>
+                            <Button size="tiny" variant="secondary">
                                 Delete
                             </Button>
-                            <Button size='tiny' variant='secondary'>
+                            <Button size="tiny" variant="secondary">
                                 Archive
                             </Button>
                         </>
