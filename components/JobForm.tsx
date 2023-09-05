@@ -29,8 +29,6 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
         resolver: zodResolver(JobSchema),
     });
 
-    console.log(errors.description?.message);
-
     return (
         <form
             className="flex flex-col border gap-xl px-xxxl py-xl ui-background"
@@ -85,7 +83,9 @@ function JobForm({ onSubmit, initialValues, existingColumns }: Props) {
                         rows={5}
                         {...register('description')}
                     ></textarea>
-                    <small className="text-cardColors-red text-xxxs">{errors.description?.message}</small>
+                    <small className="text-cardColors-red text-xxxs">
+                        {errors.description?.message}
+                    </small>
                 </div>
                 <div className="flex flex-col w-1/2 gap-s text-s">
                     <Input

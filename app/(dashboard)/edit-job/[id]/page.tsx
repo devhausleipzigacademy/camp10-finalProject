@@ -14,6 +14,5 @@ export default async function EditPage({ params }: Props) {
         throw new Error('No job found');
     }
 
-    console.log("in edit page:", singleJobEdit)
     return <EditForm editSingleJob={singleJobEdit} />;
 }

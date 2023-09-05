@@ -53,7 +53,6 @@ export default function Board({ columnData }: BoardProps) {
         initialData: columnData,
         // refetchInterval: 3000,
     });
-    // console.log(columnsData);
     const { existingColumns, setColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
@@ -68,10 +67,8 @@ export default function Board({ columnData }: BoardProps) {
                 .then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            console.log('patched column');
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, refresh the page!');
         },
     });
@@ -87,10 +84,8 @@ export default function Board({ columnData }: BoardProps) {
 
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns', 'jobs']);
-            console.log('patched job');
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, refresh the page!');
         },
     });
@@ -181,7 +176,6 @@ export default function Board({ columnData }: BoardProps) {
                             positonInColumn: idx,
                         };
                     });
-                    console.log(movedJobs);
                     return {
                         ...column,
                         jobs: movedJobs,
@@ -198,7 +192,6 @@ export default function Board({ columnData }: BoardProps) {
                                 positonInColumn: idx,
                             };
                         });
-                    console.log(movedJobs);
                     return {
                         ...column,
                         jobs: movedJobs,
@@ -232,7 +225,6 @@ export default function Board({ columnData }: BoardProps) {
                                 positionInColumn: idx,
                             };
                         });
-                    console.log('Switch column?', newJobs, column.id);
                     newJobs.forEach(job => {
                         patchJob.mutate(job);
                     });
@@ -287,7 +279,7 @@ export default function Board({ columnData }: BoardProps) {
     }
 
     return (
-        <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
+        <div className="flex min-h-[550px] h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}

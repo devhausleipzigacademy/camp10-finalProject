@@ -9,7 +9,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
 import { TagType, useAddedTagsStore } from '@/store/tags';
 
-
 export default function NewJob() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -31,12 +30,10 @@ export default function NewJob() {
                     ...data,
                 })
                 .then(res => {
-                    console.log('realest result', res);
                     return res;
                 })
                 .then(res => res.data),
         onError: error => {
-            console.log('Error danger', error);
             toast.error('Something went wrong');
         },
         onSuccess: data => {
@@ -57,8 +54,7 @@ export default function NewJob() {
             )?.jobs.length,
             tag: addedTags,
         };
-        console.log(mutateData);
-        console.log(addedTags);
+
         newJob.mutate(mutateData);
     };
     const getDefaultDeadline = () => {
@@ -70,7 +66,6 @@ export default function NewJob() {
         return null;
     }
 
-    console.log(getDefaultDeadline());
     return (
         <>
             <JobForm

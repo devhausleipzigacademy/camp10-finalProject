@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils';
 import React, { useContext } from 'react';
 import Button from './Button';
+import SearchInput from './SearchInput';
 
 type DashboardProps = {
     children: React.ReactNode;
@@ -13,6 +14,8 @@ type DashboardProps = {
 type DashboardHeaderProps = {
     children: React.ReactNode | React.ReactNode[];
     className?: string;
+    filter: string;
+    setFilter: (filter: string) => void;
 };
 
 type DashboardTriggerProps = {
@@ -46,8 +49,23 @@ export default function DashboardFrame({
     );
 }
 
-export function DashboardHeader({ children, className }: DashboardHeaderProps) {
-    return <div className={className}> {children} </div>;
+export function DashboardHeader({
+    children,
+    className,
+    filter,
+    setFilter,
+}: DashboardHeaderProps) {
+    const { value } = React.useContext(contextType);
+    return (
+        <div className={className}>
+            {value === 'table' ? (
+                <SearchInput onSearch={setFilter} value={filter} />
+            ) : (
+                <div> </div>
+            )}
+            {children}
+        </div>
+    );
 }
 
 export function DashboardTrigger({ children, value }: DashboardTriggerProps) {

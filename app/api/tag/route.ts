@@ -33,7 +33,6 @@ export const POST = async (req: NextRequest) => {
     }
 
     const data = await req.json();
-    console.log('Req data:', data);
 
     const tag = await prisma.tag.create({
         data: { ...data, userId },

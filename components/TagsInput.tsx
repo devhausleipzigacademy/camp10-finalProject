@@ -29,7 +29,6 @@ function TagsInput() {
     // useEffect(() => {
     //     axios.get(`/api/tag`).then(({ data: userTags }) => {
     //         setExistingTags(userTags);
-    //         console.log('Existing user tags', userTags);
     //     });
     // }, []);
 
@@ -41,7 +40,6 @@ function TagsInput() {
               });
 
     function createTagHandler(e: React.KeyboardEvent<HTMLInputElement>) {
-        console.log(e.key);
         if (e.key !== 'Enter') return;
         e.preventDefault();
         const newTag = e.currentTarget.value.trim();

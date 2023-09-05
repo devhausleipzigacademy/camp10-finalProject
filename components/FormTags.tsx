@@ -24,13 +24,10 @@ function FormTags({ linkedTags }: TagProps) {
     useEffect(() => {
         setAddedTags(linkedTags);
     }, []);
-    console.log(existingTags);
     const addTag = useMutation({
         mutationFn: (data: string) =>
             axios.post('/api/tag', { name: data }).then(res => res.data),
-        onError: error => {
-            console.log(error);
-        },
+        onError: error => {},
         onSuccess: data => {
             !addedTags.map(tag => tag.name).includes(data.name) &&
                 setAddedTags([...addedTags, { name: data.name, id: data.id }]);
@@ -42,7 +39,6 @@ function FormTags({ linkedTags }: TagProps) {
     //     mutationFn: (id: string) =>
     //         axios.delete(`/api/tag/${id}`).then(res => res.data),
     //     onError: error => {
-    //         console.log(error);
     //     },
     //     onSuccess: data => {
     //         setAddedTags(addedTags.filter(tag => tag.id !== data.id));

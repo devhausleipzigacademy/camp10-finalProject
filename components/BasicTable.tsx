@@ -19,7 +19,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { Job } from '@prisma/client';
 import Checkbox from './Checkbox';
 import { AiOutlineEye } from 'react-icons/ai';
 
@@ -195,8 +194,6 @@ export default function BasicTable({
         onSortingChange: setSorting,
         onGlobalFilterChange: setFilter,
     });
-
-    console.log(rowSelection);
 
     return (
         <div className="ui-background border px-m py-m space-y-s min-h-[550px]">
