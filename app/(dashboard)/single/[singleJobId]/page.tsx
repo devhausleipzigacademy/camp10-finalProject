@@ -1,46 +1,16 @@
 'use client'
 
-import prisma from '@/utils/prismaClient';
 import Button from '@/components/shared/Button';
-import { auth } from '@clerk/nextjs';
 import {
     HiArrowCircleRight,
     HiArrowCircleLeft,
     HiOutlineExternalLink,
 } from 'react-icons/hi';
 import Link from 'next/link';
-import { getJob } from '@/lib/getJob';
 import { JobType } from '../../edit-job/[id]/EditForm';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-// async function getData(jobId: string) {
-//     const { userId } = auth();
-
-//     if (!userId) throw new Error('Unauthorized');
-
-//     const singleJob = await prisma.job.findFirst({
-//         where: {
-//             id: jobId,
-//             userId: userId,
-//         },
-//         include: {
-//             column: {
-//                 select: {
-//                     color: true,
-//                     title: true,
-//                 },
-//             },
-//             tag: {
-//                 select: {
-//                     name: true,
-//                     id: true,
-//                 },
-//             },
-//         },
-//     });
-//     return singleJob;
-// }
 
 export default async function SingleJob({
     params,
