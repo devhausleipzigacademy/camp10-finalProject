@@ -33,12 +33,15 @@ function TagsInput() {
     //     });
     // }, []);
 
-    const filteredResults = query.trim() === '' ? [] : existingTags.filter(tag => {
-        return tag.toLowerCase().includes(query.toLowerCase());
-    })
-    
+    const filteredResults =
+        query.trim() === ''
+            ? []
+            : existingTags.filter(tag => {
+                  return tag.toLowerCase().includes(query.toLowerCase());
+              });
 
     function createTagHandler(e: React.KeyboardEvent<HTMLInputElement>) {
+        console.log(e.key);
         if (e.key !== 'Enter') return;
         e.preventDefault();
         const newTag = e.currentTarget.value.trim();
@@ -58,7 +61,7 @@ function TagsInput() {
 
     function removeTag(tag: string) {
         setNewTags(newTags.filter(t => t !== tag));
-        setExistingTags([...existingTags, tag])
+        setExistingTags([...existingTags, tag]);
     }
 
     return (
@@ -83,7 +86,9 @@ function TagsInput() {
                     onKeyDown={createTagHandler}
                     onChange={e => {
                         setQuery(e.target.value);
-                        setExistingTags(existingTags.filter(tag => !newTags.includes(tag)))
+                        setExistingTags(
+                            existingTags.filter(tag => !newTags.includes(tag))
+                        );
                     }}
                     ref={inputRef}
                     value={query}
