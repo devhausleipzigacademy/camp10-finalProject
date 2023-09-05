@@ -73,7 +73,12 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Deadline</h4>
-                            {singleJob?.deadline?.toISOString()}
+                            {singleJob?.deadline?.toLocaleDateString('de-DE', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Description</h4>
