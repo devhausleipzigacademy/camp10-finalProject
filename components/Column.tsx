@@ -4,7 +4,7 @@ import { HiCube, HiDotsHorizontal } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';

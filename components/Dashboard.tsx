@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import { ColumnWithJobs } from '../app/(dashboard)/getColumns';
 import { JobsWithCols } from '../app/(dashboard)/getJobs';
-import dynamic from 'next/dynamic';
 import BasicTable from '@/components/BasicTable';
-import DropDownFrame, { DropDownTrigger } from './shared/DropDownCompositional';
 import DashboardFrame, {
     DashboardContent,
     DashboardHeader,

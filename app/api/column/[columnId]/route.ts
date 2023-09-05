@@ -1,8 +1,6 @@
 import prisma from '@/utils/prismaClient';
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { Column } from '@prisma/client';
-import { auth } from '@clerk/nextjs';
 import { authHandler } from '@/lib/authHandler';
 import { ColumnSchemaPartial } from '@/schema/column';
 

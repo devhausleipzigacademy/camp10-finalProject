@@ -1,4 +1,3 @@
-import prisma from '@/utils/prismaClient';
 import EditForm from './EditForm';
 import { getJob } from '@/lib/getJob';
 

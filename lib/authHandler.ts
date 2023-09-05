@@ -39,7 +39,6 @@ export function authHandler(cb: CallBackFunct, schema?: Schema) {
                     return cb({ req, body: parsedPostData, userId });
                 } catch (err) {
                     if (err instanceof ZodError) {
-                        console.log('invalid post data:', err);
                         return NextResponse.json(
                             {
                                 message: 'Invalid data.',
@@ -58,7 +57,6 @@ export function authHandler(cb: CallBackFunct, schema?: Schema) {
                     return cb({ req, params, body: parsedPatchData });
                 } catch (err) {
                     if (err instanceof ZodError) {
-                        console.log('invalid data:', err);
                         return NextResponse.json(
                             {
                                 message: 'Invalid patch data.',

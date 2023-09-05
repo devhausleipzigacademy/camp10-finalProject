@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import prisma from '@/utils/prismaClient';
 import { ColumnSchema } from '@/schema/column';
 import { ZodError } from 'zod';

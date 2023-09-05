@@ -1,8 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import React, { useContext } from 'react';
-import Button from './Button';
+import React from 'react';
 import SearchInput from './SearchInput';
 
 type DashboardProps = {

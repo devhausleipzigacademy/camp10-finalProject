@@ -1,10 +1,7 @@
 'use client';
 
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
-import Fuse from 'fuse.js';
-import { set } from 'zod';
 
 const tags = [
     'Javascript',

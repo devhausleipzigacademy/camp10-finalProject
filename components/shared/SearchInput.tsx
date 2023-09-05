@@ -1,8 +1,7 @@
 'use client';
 
-import { HiInformationCircle, HiOutlineViewGrid } from 'react-icons/hi';
 import { AiFillInfoCircle } from 'react-icons/ai';
-import React, { ChangeEvent, useState } from 'react';
+import React from 'react';
 
 export type SearchProps = {
     onSearch: (value: string) => void;

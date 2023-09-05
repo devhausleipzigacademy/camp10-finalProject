@@ -7,7 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
-import { TagType, useAddedTagsStore } from '@/store/tags';
+import { useAddedTagsStore } from '@/store/tags';
 
 export default function NewJob() {
     const router = useRouter();

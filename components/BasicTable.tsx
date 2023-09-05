@@ -9,7 +9,7 @@ import {
     ColumnDef,
     SortingState,
 } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 import { BsArrowDownShort, BsArrowUpShort, BsSquare } from 'react-icons/bs';

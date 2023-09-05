@@ -10,13 +10,12 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiPlus } from 'react-icons/hi';
 import JobCard from './JobCard';
 import Column from './Column';
 import { Job, Column as ColumnType } from '@prisma/client';
-import { useAuth } from '@clerk/nextjs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
