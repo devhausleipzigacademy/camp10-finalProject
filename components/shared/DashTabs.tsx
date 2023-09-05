@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import React, { useContext } from 'react';
 
 type DashboardProps = {
@@ -29,7 +30,7 @@ const contextType = React.createContext({
     setValue: (value: string) => {},
 });
 
-export default function Dashboard({
+export default function DashboardFrame({
     children,
     defaultValue,
     className,
@@ -50,7 +51,11 @@ export function DashboardHeader({ children, className }: DashboardHeaderProps) {
 export function DashboardTrigger({ children, value }: DashboardTriggerProps) {
     const { setValue } = React.useContext(contextType);
 
-    return <div onClick={() => setValue(value)}>{children}</div>;
+    return (
+        <div onClick={() => setValue(value)} className='flex items-center justify-center'>
+            {children}
+        </div>
+    );
 }
 
 export function DashboardContent({
