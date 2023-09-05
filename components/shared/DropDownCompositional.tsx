@@ -49,7 +49,7 @@ export function DropDownList({ children, className }: DdListProps) {
         value && (
             <ul
                 className={cn(
-                    'absolute top-[10px] right-[0px] z-[9999]',
+                    'absolute top-[10px] right-[0px] z-[9999] border border-borderColors-borderLight rounded-lg',
                     className
                 )}
             >
