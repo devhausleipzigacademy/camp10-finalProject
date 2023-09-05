@@ -87,7 +87,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         <DropDownItems>
                             <Link
                                 href={`/single/${job.id}`}
-                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light p-xxs"
+                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
                             >
                                 View
                             </Link>
@@ -95,7 +95,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         <DropDownItems>
                             <Link
                                 href={`/edit-job/${job.id}`}
-                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light p-xxs"
+                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
                             >
                                 Edit
                             </Link>
@@ -103,7 +103,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         <DropDownItems>
                             <div
                                 onClick={() => deleteJob.mutate(job.id)}
-                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light p-xxs"
+                                className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
                             >
                                 Delete
                             </div>
@@ -165,7 +165,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     <DropDownItems>
                         <Link
                             href={`/single/${job.id}`}
-                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light p-xxs"
+                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light "
                         >
                             View
                         </Link>
@@ -173,7 +173,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     <DropDownItems>
                         <Link
                             href={`/edit-job/${job.id}`}
-                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light p-xxs"
+                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light "
                         >
                             Edit
                         </Link>
@@ -181,7 +181,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     <DropDownItems>
                         <div
                             onClick={() => deleteJob.mutate(job.id)}
-                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light p-xxs"
+                            className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light "
                         >
                             Delete
                         </div>
