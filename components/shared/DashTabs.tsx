@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import React, { useContext } from 'react';
+import Button from './Button';
 
 type DashboardProps = {
     children: React.ReactNode;
@@ -17,6 +18,7 @@ type DashboardHeaderProps = {
 type DashboardTriggerProps = {
     children: React.ReactNode | React.ReactNode[];
     value: string;
+    className?: string;
 };
 
 type DashboardContentProps = {
@@ -26,7 +28,7 @@ type DashboardContentProps = {
 };
 
 const contextType = React.createContext({
-    value: '',
+    value: ' ',
     setValue: (value: string) => {},
 });
 
@@ -49,10 +51,18 @@ export function DashboardHeader({ children, className }: DashboardHeaderProps) {
 }
 
 export function DashboardTrigger({ children, value }: DashboardTriggerProps) {
-    const { setValue } = React.useContext(contextType);
+    const { setValue, value: contextValue } = React.useContext(contextType);
 
     return (
-        <div onClick={() => setValue(value)} className='flex items-center justify-center'>
+        <div
+            onClick={() => setValue(value)}
+            className={cn(
+                'flex items-center justify-center w-full',
+                value == contextValue
+                    ? 'bg-hoverColors-hoverMain text-basicColors-dark'
+                    : null
+            )}
+        >
             {children}
         </div>
     );
