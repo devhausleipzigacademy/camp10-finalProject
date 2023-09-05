@@ -325,6 +325,10 @@ export default function Board({ columnData }: BoardProps) {
                     </div>
                 </div>
                 <button
+                    disabled={
+                        existingColumns.find(col => col.isNewColumn)
+                            ?.isNewColumn
+                    }
                     onClick={() => {
                         addColumn({
                             id: '',
@@ -337,7 +341,7 @@ export default function Board({ columnData }: BoardProps) {
                             isNewColumn: true,
                         } as ColumnWithJobs);
                     }}
-                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2   rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
+                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2   rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody disabled:bg-transparent"
                 >
                     <HiPlus size={20} />
                 </button>
