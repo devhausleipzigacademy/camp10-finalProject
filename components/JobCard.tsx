@@ -81,7 +81,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                         />
                     </DropDownTrigger>
 
-                    <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark ">
+                    <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-s ui-background-dark ">
                         <DropDownItems>
                             <Link
                                 href={`/single/${job.id}`}
@@ -159,7 +159,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                     />
                 </DropDownTrigger>
 
-                <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-s ui-background-dark">
+                <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-s ui-background-dark">
                     <DropDownItems>
                         <Link
                             href={`/single/${job.id}`}
