@@ -1,3 +1,5 @@
+'use client'
+
 import prisma from '@/utils/prismaClient';
 import Button from '@/components/shared/Button';
 import { auth } from '@clerk/nextjs';
@@ -7,41 +9,52 @@ import {
     HiOutlineExternalLink,
 } from 'react-icons/hi';
 import Link from 'next/link';
+import { getJob } from '@/lib/getJob';
+import { JobType } from '../../edit-job/[id]/EditForm';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-async function getData(jobId: string) {
-    const { userId } = auth();
+// async function getData(jobId: string) {
+//     const { userId } = auth();
 
-    if (!userId) throw new Error('Unauthorized');
+//     if (!userId) throw new Error('Unauthorized');
 
-    const singleJob = await prisma.job.findFirst({
-        where: {
-            id: jobId,
-            userId: userId,
-        },
-        include: {
-            column: {
-                select: {
-                    color: true,
-                    title: true,
-                },
-            },
-            tag: {
-                select: {
-                    name: true,
-                    id: true,
-                },
-            },
-        },
-    });
-    return singleJob;
-}
+//     const singleJob = await prisma.job.findFirst({
+//         where: {
+//             id: jobId,
+//             userId: userId,
+//         },
+//         include: {
+//             column: {
+//                 select: {
+//                     color: true,
+//                     title: true,
+//                 },
+//             },
+//             tag: {
+//                 select: {
+//                     name: true,
+//                     id: true,
+//                 },
+//             },
+//         },
+//     });
+//     return singleJob;
+// }
 
 export default async function SingleJob({
     params,
 }: {
     params: { singleJobId: string };
 }) {
-    const singleJob = await getData(params.singleJobId);
+    // const singleJob = await getJob(params.singleJobId);
+    const { data: singleJob } = useQuery({
+        queryKey: ['job', params.singleJobId],
+        queryFn: () =>
+            axios
+                .get<JobType>(`/api/job/${params.singleJobId}`)
+                .then(res => res.data as JobType),
+    });
     console.log(singleJob);
     if (!singleJob) {
         return (
@@ -53,6 +66,8 @@ export default async function SingleJob({
             </div>
         );
     }
+
+    const newDate = new Date(singleJob.deadline!);
 
     return (
         <>
@@ -83,7 +98,7 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Deadline</h4>
-                            {singleJob?.deadline?.toLocaleDateString('de-DE', {
+                            {new Date(singleJob.deadline!).toLocaleDateString('en-GB', {
                                 weekday: 'long',
                                 year: 'numeric',
                                 month: 'long',
