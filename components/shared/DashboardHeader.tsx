@@ -22,11 +22,16 @@ export default function DashboardHeader({
     return (
         <div className="">
             <header className="ui-background  container h-xxxl flex flex-row justify-between py-s px-m border">
-                <SearchInput onSearch={setFilter} value={filter} />
-
+                {
+                    <div>
+                        {!toggleViewMode && (
+                            <SearchInput onSearch={setFilter} value={filter} />
+                        )}
+                    </div>
+                }
                 <div
                     onClick={() => onToggle(!toggleViewMode)}
-                    className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m  w-[7.5rem] overflow-hidden"
+                    className="flex items-center justify-center border-2 rounded-xl border-basicColors-light mr-m w-[7.5rem] overflow-hidden hover:cursor-pointer"
                 >
                     <div
                         className={cn(

@@ -47,9 +47,7 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
             axios.delete(`/api/job/${jobId}`).then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            toast.success('Job deleted successfully', {
-                toastId: 'succes2',
-            });
+            toast.success('Job deleted successfully');
         },
         onError: err => {
             console.log(err);
@@ -75,11 +73,11 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
                 <DropDownFrame>
                     <DropDownTrigger
                         style={{ backgroundColor: colColor }}
-                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none text-mainBG absolute top-[-6px] right-[0px] "
+                        className="cursor-pointer flex justify-center w-[4.5rem] h-s rounded-xl rounded-bl-none absolute top-[-6px] right-[0px]"
                     >
                         <HiDotsHorizontal
                             size={15}
-                            className=" hover:opacity-100 opacity-80"
+                            className="hover:opacity-100 opacity-80"
                         />
                     </DropDownTrigger>
 

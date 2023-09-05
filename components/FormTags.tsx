@@ -100,9 +100,7 @@ function FormTags({ linkedTags }: TagProps) {
             value={selectedTag}
             onChange={setSelectedTag}
         >
-            <Combobox.Label className="text-s font-600">
-                Tags Headless UI
-            </Combobox.Label>
+            <Combobox.Label className="text-s font-600">Tags</Combobox.Label>
             <div className="bg-transparent border text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
                 <div className="flex flex-wrap w-full border-none gap-xs gap-y-xs">
                     {addedTags.map(tag => (

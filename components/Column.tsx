@@ -143,6 +143,10 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
         if (isLoading) return;
         const data = new FormData(event.target as HTMLFormElement);
         const newTitle = data.get('title') as string;
+        if (newTitle.trim() === column.title) {
+            setIsEditable(false);
+            return;
+        }
         const log = existingColumns.filter(col => col.title === newTitle);
 
         if (column.isNewColumn) {
@@ -171,7 +175,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             {...attributes}
             {...listeners}
             className={cn(
-                'ui-background px-m py-s min-w-[20%] h-[550px] border flex flex-col',
+                'ui-background px-m py-s w-[256px] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
         >
@@ -179,24 +183,25 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 style={{ borderColor: column.color }}
                 className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
-                <div className="">
+
                     <HiCube size={24} />
-                </div>
-                <div className="text-basicColors-light">
-                    {!isEditable && <h4> {column.title} </h4>}
+
+                <div className="text-basicColors-light w-4/5">
+                    {!isEditable && <h4 className='text-center truncate mx-xxs'> {column.title} </h4>}
                     {isEditable && (
                         <form
                             className="flex justify-around"
                             onSubmit={onSumitHandler}
                         >
                             <input
-                                className="w-4/5 px-xs text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover"
+                                className="w-4/5 h-[2rem] text-basicColors-dark focus:outline-none focus:ring-1 focus:ring-hoverColors-hover focus:border-hoverColors-hover rounded-lg form-input"
                                 placeholder="confirm title"
                                 name="title"
                                 autoFocus
                                 required
                                 minLength={3}
                                 maxLength={25}
+                                defaultValue={column.title}
                             />
                             <button
                                 type="submit"
@@ -216,7 +221,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                             />
                         </DropDownTrigger>
 
-                        <DropDownList className="w-[7rem] border text-basicColors-light rounded-lg text-s text-left p-xs top-[3.2rem] ui-background-dark">
+                        <DropDownList className="w-[7rem] border text-basicColors-light text-s text-left p-xs top-[3.2rem] ui-background-dark">
                             <DropDownItems>
                                 <div
                                     className="inline-block w-full rounded-sm cursor-pointer hover:bg-hoverColors-hover text-basicColors-light"
@@ -243,7 +248,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                                     Delete
                                 </div>
                             </DropDownItems>
-                            <DropDownItems className="flex flex-wrap gap-xs p-xxs hover:bg-transparent">
+                            <DropDownItems className="flex flex-wrap justify-around gap-xs p-xxs hover:bg-transparent mt-xs">
                                 <div
                                     onClick={() => {
                                         updateColor.mutate('#FE5A35');
