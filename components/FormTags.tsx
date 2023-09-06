@@ -98,7 +98,7 @@ function FormTags({ linkedTags }: TagProps) {
         >
             <Combobox.Label className="text-s font-600">Tags</Combobox.Label>
             <div className="bg-transparent border text-xs p-xs focus:outline focus:outline-2 focus:outline-basicColors-light rounded-[0.3125rem] border-borderColors-borderLight">
-                <div className="flex flex-wrap w-full border-none gap-xs gap-y-xs">
+                <div className="flex flex-wrap items-center w-full border-none gap-xs gap-y-xs">
                     {addedTags.map(tag => (
                         <div
                             key={tag.id}
@@ -114,7 +114,7 @@ function FormTags({ linkedTags }: TagProps) {
                     <Combobox.Input
                         onKeyDown={createTagHandler}
                         onChange={event => setQuery(event.target.value)}
-                        className="bg-transparent border-none focus:ring-0 focus:outline-none"
+                        className="bg-transparent border-none focus:ring-0 focus:outline-none p-xxs"
                         value={query}
                     />
                 </div>
@@ -125,7 +125,7 @@ function FormTags({ linkedTags }: TagProps) {
                         key={tag}
                         value={tag}
                         className={({ active }) =>
-                            `${active ? 'bg-hoverColors-hover' : ''}`
+                            `${active ? 'bg-hoverColors-hover' : ''} px-xs leading-xl hover:cursor-pointer`
                         }
                         onClick={() => setQuery(tag)}
                     >

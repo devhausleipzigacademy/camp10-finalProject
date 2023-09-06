@@ -1,43 +1,30 @@
-import prisma from '@/utils/prismaClient';
+'use client';
+
 import Button from '@/components/shared/Button';
-import { auth } from '@clerk/nextjs';
-import { HiArrowCircleRight, HiArrowCircleLeft } from 'react-icons/hi';
+import {
+    HiArrowCircleRight,
+    HiArrowCircleLeft,
+    HiOutlineExternalLink,
+} from 'react-icons/hi';
 import Link from 'next/link';
-
-async function getData(jobId: string) {
-    const { userId } = auth();
-
-    if (!userId) throw new Error('Unauthorized');
-
-    const singleJob = await prisma.job.findFirst({
-        where: {
-            id: jobId,
-            userId: userId,
-        },
-        include: {
-            column: {
-                select: {
-                    color: true,
-                    title: true,
-                },
-            },
-            tag: {
-                select: {
-                    name: true,
-                    id: true,
-                },
-            },
-        },
-    });
-    return singleJob;
-}
+import { JobType } from '../../edit-job/[id]/EditForm';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default async function SingleJob({
     params,
 }: {
     params: { singleJobId: string };
 }) {
-    const singleJob = await getData(params.singleJobId);
+    // const singleJob = await getJob(params.singleJobId);
+    const { data: singleJob } = useQuery({
+        queryKey: ['job', params.singleJobId],
+        queryFn: () =>
+            axios
+                .get<JobType>(`/api/job/${params.singleJobId}`)
+                .then(res => res.data as JobType),
+    });
+    console.log(singleJob);
     if (!singleJob) {
         return (
             <div className="flex flex-col items-center text-xl border gap-xl px-xxxl py-xl ui-background font-600 text-basicColors-light">
@@ -48,6 +35,8 @@ export default async function SingleJob({
             </div>
         );
     }
+
+    const newDate = new Date(singleJob.deadline!);
 
     return (
         <>
@@ -60,7 +49,13 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Job URL</h4>
-                            {singleJob?.url}
+                            <Link
+                                href={singleJob?.url}
+                                className="flex gap-x-xs items-center"
+                            >
+                                {singleJob?.url}
+                                <HiOutlineExternalLink />
+                            </Link>
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Company</h4>
@@ -72,12 +67,15 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Deadline</h4>
-                            {singleJob?.deadline?.toLocaleDateString('de-DE', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                            })}
+                            {new Date(singleJob.deadline!).toLocaleDateString(
+                                'en-GB',
+                                {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                }
+                            )}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Description</h4>
@@ -87,7 +85,15 @@ export default async function SingleJob({
                     <div className="flex flex-col justify-around w-1/2 gap-xxl text-s">
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Company Website</h4>
-                            {singleJob?.companyWebsite}
+                            {singleJob.companyWebsite && (
+                                <Link
+                                    href={singleJob?.companyWebsite}
+                                    className="flex gap-x-xs items-center"
+                                >
+                                    {singleJob?.companyWebsite}
+                                    <HiOutlineExternalLink />
+                                </Link>
+                            )}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Type</h4>
