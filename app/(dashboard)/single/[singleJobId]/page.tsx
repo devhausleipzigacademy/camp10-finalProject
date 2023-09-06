@@ -38,7 +38,6 @@ export default async function SingleJob({
     params: { singleJobId: string };
 }) {
     const singleJob = await getData(params.singleJobId);
-    console.log(singleJob);
     if (!singleJob) {
         return (
             <div className="flex flex-col items-center text-xl border gap-xl px-xxxl py-xl ui-background font-600 text-basicColors-light">

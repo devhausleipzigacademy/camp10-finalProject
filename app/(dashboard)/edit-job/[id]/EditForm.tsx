@@ -2,10 +2,10 @@
 
 import JobForm from '@/components/JobForm';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Column, Job, remoteType } from '@prisma/client';
+import { Column, Job } from '@prisma/client';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { JobInputs } from '@/schema/job';
 import { ColumnWithJobs } from '../../getColumns';
 import { TagType, useAddedTagsStore } from '@/store/tags';

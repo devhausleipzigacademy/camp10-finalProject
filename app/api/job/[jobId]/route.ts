@@ -51,7 +51,6 @@ export const DELETE = authHandler(async ({ params }) => {
 
         return NextResponse.json(deletedJob);
     } catch (err) {
-        console.log('Delete Job Error:', err);
         return NextResponse.json(
             { message: 'Failed to delete the job' },
             { status: 500 }
@@ -68,5 +67,5 @@ export const GET = async (req: NextRequest, { params }: Params) => {
             { message: 'Failed to get the job' },
             { status: 500 }
         );
-    } 
-}
+    }
+};

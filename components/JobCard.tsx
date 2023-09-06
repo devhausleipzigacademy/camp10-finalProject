@@ -50,7 +50,6 @@ export default function JobCard({ job, colColor, parent }: JobCardProps) {
             toast.success('Job deleted successfully');
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, try again!');
         },
     });

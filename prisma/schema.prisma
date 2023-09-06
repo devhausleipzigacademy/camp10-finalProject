@@ -12,8 +12,8 @@ model Tag {
   name      String
   userId    String
   createdAt DateTime @default(now())
-  job       Job[]
-  
+  job       Job[]    @relation("JobToTag")
+
   @@unique([name, userId])
 }
 
@@ -44,7 +44,7 @@ model Job {
   createdAt        DateTime    @default(now())
   isArchived       Boolean     @default(false)
   column           Column      @relation(fields: [columnId], references: [id])
-  tag              Tag[]
+  tag              Tag[]       @relation("JobToTag")
 }
 
 enum remoteType {
