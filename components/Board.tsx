@@ -278,7 +278,7 @@ export default function Board({ columnData }: BoardProps) {
         });
     }
 
-    document.addEventListener('keydown', e => {
+    /*   document.addEventListener('keydown', e => {
         if (
             e.key === 'Escape' &&
             existingColumns.find(col => col.isNewColumn)?.isNewColumn
@@ -286,7 +286,7 @@ export default function Board({ columnData }: BoardProps) {
             removeColumn(existingColumns.findIndex(col => col.isNewColumn));
         }
         return
-    });
+    }); */
 
     return (
         <div className="flex min-h-[550px] h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
