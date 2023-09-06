@@ -68,6 +68,9 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             queryClient.invalidateQueries(['columns']);
         },
     });
+    //  if (isEditable) {
+    //      return;
+    //  }
 
     const createNewColumn = useMutation({
         mutationFn: (col: Partial<ColumnWithJobs>) =>
@@ -183,11 +186,15 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 style={{ borderColor: column.color }}
                 className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
-
-                    <HiCube size={24} />
+                <HiCube size={24} />
 
                 <div className="text-basicColors-light w-4/5">
-                    {!isEditable && <h4 className='text-center truncate mx-xxs'> {column.title} </h4>}
+                    {!isEditable && (
+                        <h4 className="text-center truncate mx-xxs">
+                            {' '}
+                            {column.title}{' '}
+                        </h4>
+                    )}
                     {isEditable && (
                         <form
                             className="flex justify-around"
