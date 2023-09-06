@@ -36,7 +36,7 @@ function Dashboard({ userColumns, userJobs }: Props) {
                     </DashboardTrigger>
                 </div>
             </DashboardHeader>
-            <DashboardContent value="kanban">
+            <DashboardContent value="kanban" className='relative'>
                 <Board columnData={userColumns} />
             </DashboardContent>
             <DashboardContent value="table">

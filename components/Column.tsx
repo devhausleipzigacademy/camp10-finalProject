@@ -68,9 +68,6 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             queryClient.invalidateQueries(['columns']);
         },
     });
-    //  if (isEditable) {
-    //      return;
-    //  }
 
     const createNewColumn = useMutation({
         mutationFn: (col: Partial<ColumnWithJobs>) =>
@@ -176,6 +173,7 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 'ui-background px-m py-s w-[256px] h-[550px] border flex flex-col',
                 isDragging && 'opacity-50 border-2 border-red-700'
             )}
+            id={column.isNewColumn ? 'newColumn' : undefined}
         >
             <div
                 style={{ borderColor: column.color }}
