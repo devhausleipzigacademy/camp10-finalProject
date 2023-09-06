@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ColumnWithJobs } from '../app/(dashboard)/getColumns';
 import { JobsWithCols } from '../app/(dashboard)/getJobs';
 import BasicTable from '@/components/BasicTable';
@@ -20,6 +20,9 @@ type Props = {
 
 function Dashboard({ userColumns, userJobs }: Props) {
     const [filter, setFilter] = useState('');
+    useEffect(() => {
+        console.log('I run once!', userColumns);
+    }, []);
     return (
         <DashboardFrame defaultValue="kanban">
             <DashboardHeader
@@ -36,7 +39,7 @@ function Dashboard({ userColumns, userJobs }: Props) {
                     </DashboardTrigger>
                 </div>
             </DashboardHeader>
-            <DashboardContent value="kanban" className='relative'>
+            <DashboardContent value="kanban" className="relative">
                 <Board columnData={userColumns} />
             </DashboardContent>
             <DashboardContent value="table">

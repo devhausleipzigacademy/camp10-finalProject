@@ -34,6 +34,19 @@ export default function Board({ columnData }: BoardProps) {
         (Job & { color: string }) | null
     >(null);
 
+    useEffect(() => {
+        if (!window) return;
+        window.addEventListener('keydown', e => {
+            if (
+                e.key === 'Escape' &&
+                existingColumns.find(col => col.isNewColumn)?.isNewColumn
+            ) {
+                removeColumn(existingColumns.findIndex(col => col.isNewColumn));
+            }
+            return;
+        });
+    });
+
     const [dndToggle, setDndToggle] = useState<boolean>(true);
 
     const sensor = useSensors(
@@ -277,16 +290,6 @@ export default function Board({ columnData }: BoardProps) {
             });
         });
     }
-
-    document.addEventListener('keydown', e => {
-        if (
-            e.key === 'Escape' &&
-            existingColumns.find(col => col.isNewColumn)?.isNewColumn
-        ) {
-            removeColumn(existingColumns.findIndex(col => col.isNewColumn));
-        }
-        return
-    });
 
     return (
         <div className="flex min-h-[550px] h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">

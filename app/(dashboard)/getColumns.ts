@@ -57,40 +57,27 @@ export const getColumns = async (
         },
     });
 
-    // if response if null, create new columns and job for the user.
+    // If no columns are found for the user, create new columns based on initColumns
     if (res.length === 0 && userId) {
-        const res = await prisma.column.createMany({
-            data: initColumns.map(col => {
-                return {
-                    ...col,
-                    userId,
-                };
-            }),
-        });
+        console.log('called twice');
+        const newColumns = await Promise.all(
+            initColumns.map((column, index) =>
+                prisma.column.create({
+                    data: {
+                        ...column,
+                        userId: userId,
+                        positionInBoard: index,
+                    },
+                })
+            )
+        );
 
-        const column = await prisma.column.findFirst({
-            where: {
-                userId,
-            },
-            select: {
-                id: true,
-            },
-        });
-
-        if (column) {
-            const resNewJob = await prisma.job.create({
-                data: {
-                    title: 'Frontend Developer',
-                    companyName: 'Google',
-                    userId,
-                    columnId: column.id,
-                    positionInColumn: 0,
-                    url: 'https://example.com/careers',
-                    deadline: new Date(),
-                },
-            });
-        }
-        return await getColumns(userId);
+        // Return the newly created columns with an empty jobs array for each
+        return newColumns.map(column => ({
+            ...column,
+            jobs: [],
+        }));
     }
+
     return res;
 };
