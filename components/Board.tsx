@@ -52,7 +52,8 @@ export default function Board({ columnData }: BoardProps) {
         initialData: columnData,
         // refetchInterval: 3000,
     });
-    const { existingColumns, setColumns, addColumn } = useColumnStore();
+    const { existingColumns, setColumns, addColumn, removeColumn } =
+        useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
     }, [columnsData]);
@@ -277,6 +278,16 @@ export default function Board({ columnData }: BoardProps) {
         });
     }
 
+    document.addEventListener('keydown', e => {
+        if (
+            e.key === 'Escape' &&
+            existingColumns.find(col => col.isNewColumn)?.isNewColumn
+        ) {
+            removeColumn(existingColumns.findIndex(col => col.isNewColumn));
+        }
+        return
+    });
+
     return (
         <div className="flex min-h-[550px] h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
@@ -285,7 +296,7 @@ export default function Board({ columnData }: BoardProps) {
                 sensors={sensor}
                 onDragOver={onDragOver}
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4" id="board">
                     <div className="flex gap-2">
                         <SortableContext
                             items={existingColumns.map(col => col.id)}
@@ -316,11 +327,17 @@ export default function Board({ columnData }: BoardProps) {
                     </div>
                 </div>
                 <button
-                    disabled={
-                        existingColumns.find(col => col.isNewColumn)
-                            ?.isNewColumn
-                    }
                     onClick={() => {
+                        if (
+                            existingColumns.find(col => col.isNewColumn)
+                                ?.isNewColumn
+                        ) {
+                            const titleInput = document
+                                .getElementById('newColumn')
+                                ?.querySelector('input');
+                            titleInput?.focus();
+                            return;
+                        }
                         addColumn({
                             id: '',
                             title: '',
@@ -332,7 +349,7 @@ export default function Board({ columnData }: BoardProps) {
                             isNewColumn: true,
                         } as ColumnWithJobs);
                     }}
-                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2   rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody disabled:bg-transparent"
+                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody disabled:bg-transparent"
                 >
                     <HiPlus size={20} />
                 </button>
