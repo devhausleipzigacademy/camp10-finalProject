@@ -44,6 +44,8 @@ export default function BasicTable({
         initialData: jobData,
     });
     const [rowSelection, setRowSelection] = useState({});
+    const [columnVisibility, setColumnVisibility] = useState({});
+    const [isSelectorVisible, setIsSelectorVisible] = useState(false);
 
     const queryClient = useQueryClient();
     // delete job
@@ -90,20 +92,23 @@ export default function BasicTable({
             enableSorting: false,
         },
         {
+            id: 'Job',
             header: 'Job',
             accessorKey: 'title',
             footer: 'Job',
         },
         {
+            id: 'Company',
             header: 'Company',
             accessorKey: 'companyName',
         },
         {
+            id: 'Location',
             header: 'Location',
             accessorKey: 'location',
         },
         {
-            id: 'column',
+            id: 'Status',
             header: 'Status',
             accessorKey: 'column',
             cell: ({ cell }) => {
@@ -118,12 +123,13 @@ export default function BasicTable({
                 );
             },
             sortingFn: (a, b) => {
-                const aValue = a.getValue('column') as ColumnType;
-                const bValue = b.getValue('column') as ColumnType;
+                const aValue = a.getValue('Status') as ColumnType;
+                const bValue = b.getValue('Status') as ColumnType;
                 return aValue.title > bValue.title ? 1 : -1;
             },
         },
         {
+            id: 'Deadline',
             header: 'Deadline',
             accessorKey: 'deadline',
             cell: ({ cell }) => {
@@ -142,6 +148,12 @@ export default function BasicTable({
             },
         },
         {
+            id: 'Remote',
+            header: 'Remote',
+            accessorKey: 'remoteType',
+        },
+        {
+            id: 'Actions',
             header: 'Actions',
             accessorKey: 'actions',
             cell: cell => {
@@ -180,6 +192,7 @@ export default function BasicTable({
     const jobDataTable = useReactTable({
         data,
         columns,
+        onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -188,6 +201,7 @@ export default function BasicTable({
             sorting: sorting,
             globalFilter: filter,
             rowSelection,
+            columnVisibility,
         },
         enableRowSelection: true,
         onRowSelectionChange: setRowSelection,
@@ -241,7 +255,7 @@ export default function BasicTable({
                         Last Page
                     </Button>
                 </div>
-                <div className="flex gap-s">
+                <div className="flex gap-s relative">
                     {Object.keys(rowSelection).length !== 0 && (
                         <>
                             <Button size="tiny" variant="secondary">
@@ -251,6 +265,46 @@ export default function BasicTable({
                                 Archive
                             </Button>
                         </>
+                    )}
+                    <Button
+                        onClick={() => setIsSelectorVisible(!isSelectorVisible)}
+                        size="tiny"
+                    >
+                        Customize
+                    </Button>
+                    {isSelectorVisible && (
+                        <div className="flex flex-col absolute ui-background border top-xl px-s py-xs rounded-xl">
+                            <label className='flex gap-xs'>
+                                <input
+                                    {...{
+                                        type: 'checkbox',
+                                        checked:
+                                            jobDataTable.getIsAllColumnsVisible(),
+                                        onChange:
+                                            jobDataTable.getToggleAllColumnsVisibilityHandler(),
+                                    }}
+                                />
+                                Toggle All
+                            </label>
+                            {jobDataTable.getAllLeafColumns().map(column => {
+                                return (
+                                    <div key={column.id} className="px-1">
+                                        <label className='flex gap-xs'>
+                                            <input
+                                                {...{
+                                                    type: 'checkbox',
+                                                    checked:
+                                                        column.getIsVisible(),
+                                                    onChange:
+                                                        column.getToggleVisibilityHandler(),
+                                                }}
+                                            />
+                                            {column.id}
+                                        </label>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     )}
                     <Link href="/new-job">
                         <Button size="tiny">New Job</Button>
