@@ -230,7 +230,7 @@ export default function BasicTable({
                     </button>
                     <Button
                         size="tiny"
-                        disabled={!jobDataTable.getCanPreviousPage()}
+                        disabled={!jobDataTable.getCanNextPage()}
                         className=" disabled:hover:bg-transparent disabled:opacity-30"
                         onClick={() =>
                             jobDataTable.setPageIndex(
