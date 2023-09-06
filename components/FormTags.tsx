@@ -114,7 +114,8 @@ function FormTags({ linkedTags }: TagProps) {
                     <Combobox.Input
                         onKeyDown={createTagHandler}
                         onChange={event => setQuery(event.target.value)}
-                        className="bg-transparent border-none focus:ring-0 focus:outline-none p-xxs"
+                        placeholder="Add/search tags"
+                        className="bg-transparent border-none placeholder-basicColors-light placeholder-opacity-60 focus:ring-0 focus:outline-none p-xxs"
                         value={query}
                     />
                 </div>
@@ -125,7 +126,9 @@ function FormTags({ linkedTags }: TagProps) {
                         key={tag}
                         value={tag}
                         className={({ active }) =>
-                            `${active ? 'bg-hoverColors-hover' : ''} px-xs leading-xl hover:cursor-pointer`
+                            `${
+                                active ? 'bg-hoverColors-hover' : ''
+                            } px-xs leading-xl hover:cursor-pointer`
                         }
                         onClick={() => setQuery(tag)}
                     >
