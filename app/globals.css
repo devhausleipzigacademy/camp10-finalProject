@@ -42,3 +42,8 @@
     @apply text-textColors-textBody rounded-xl;
     
 }
+
+.cl-formFieldInputShowPasswordButton {
+    @apply text-cardColors-black hover:text-hoverColors-hover focus:shadow-none;
+}
+
