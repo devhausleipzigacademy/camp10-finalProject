@@ -37,3 +37,8 @@
         @apply bg-background text-foreground;
     }
 }
+
+.cl-formFieldInput, .cl-otpCodeFieldInput {
+    @apply text-textColors-textBody rounded-xl;
+    
+}
