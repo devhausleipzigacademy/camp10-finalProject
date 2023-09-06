@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Button from '@/components/shared/Button';
 import {
@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { JobType } from '../../edit-job/[id]/EditForm';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-
 
 export default async function SingleJob({
     params,
@@ -68,12 +67,15 @@ export default async function SingleJob({
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Deadline</h4>
-                            {new Date(singleJob.deadline!).toLocaleDateString('en-GB', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                            })}
+                            {new Date(singleJob.deadline!).toLocaleDateString(
+                                'en-GB',
+                                {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                }
+                            )}
                         </div>
                         <div className="text-xs gap-xxs">
                             <h4 className="text-l">Description</h4>

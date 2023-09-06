@@ -4,7 +4,7 @@ import { HiCube, HiDotsHorizontal } from 'react-icons/hi';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/utils/cn';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
@@ -68,6 +68,9 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             queryClient.invalidateQueries(['columns']);
         },
     });
+    //  if (isEditable) {
+    //      return;
+    //  }
 
     const createNewColumn = useMutation({
         mutationFn: (col: Partial<ColumnWithJobs>) =>
@@ -91,10 +94,8 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             toast.success('Created a new column successfully.');
         },
         onError: error => {
-            console.log(error);
             if (error instanceof AxiosError) {
                 if (error.response?.status === 422) {
-                    console.log(422);
                     toast.error('The title needs at least 3 characters.');
                     return;
                 }
@@ -114,7 +115,6 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             });
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, try again!');
         },
     });
@@ -131,7 +131,6 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             toast.success('Title is updated successfully');
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, refresh the page!');
         },
     });
@@ -156,7 +155,6 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
             newColumn.color =
                 colorSet[column.positionInBoard % colorSet.length];
             const newCol = createNewColumn.mutate(newColumn);
-            console.log(newCol);
         } else {
             if (log[0]) {
                 toast.info('Title is existing, please chose another one');
@@ -183,11 +181,15 @@ export default function Column({ column, children, isNewColumn }: ColumnProps) {
                 style={{ borderColor: column.color }}
                 className="h-[50px] cursor-grab border-b-8 flex justify-between items-center"
             >
-
-                    <HiCube size={24} />
+                <HiCube size={24} />
 
                 <div className="text-basicColors-light w-4/5">
-                    {!isEditable && <h4 className='text-center truncate mx-xxs'> {column.title} </h4>}
+                    {!isEditable && (
+                        <h4 className="text-center truncate mx-xxs">
+                            {' '}
+                            {column.title}{' '}
+                        </h4>
+                    )}
                     {isEditable && (
                         <form
                             className="flex justify-around"

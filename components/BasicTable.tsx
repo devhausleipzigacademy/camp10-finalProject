@@ -9,7 +9,7 @@ import {
     ColumnDef,
     SortingState,
 } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { HiArchive, HiPencil, HiTrash } from 'react-icons/hi';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 import { BsArrowDownShort, BsArrowUpShort, BsSquare } from 'react-icons/bs';
@@ -19,7 +19,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { Job } from '@prisma/client';
 import Checkbox from './Checkbox';
 import { AiOutlineEye } from 'react-icons/ai';
 
@@ -195,8 +194,6 @@ export default function BasicTable({
         onSortingChange: setSorting,
         onGlobalFilterChange: setFilter,
     });
-
-    console.log(rowSelection);
 
     return (
         <div className="ui-background border px-m py-m space-y-s min-h-[550px]">

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import prisma from '@/utils/prismaClient';
 import { ColumnSchema } from '@/schema/column';
 import { ZodError } from 'zod';
@@ -19,7 +19,7 @@ export const POST = authHandler(async ({ body }) => {
                 { status: 422 }
             );
         }
-        console.log(err);
+
         return NextResponse.error();
     }
 }, ColumnSchema);
@@ -46,7 +46,6 @@ export const GET = authHandler(async ({ userId }) => {
         });
         return NextResponse.json(columns);
     } catch (err) {
-        console.log(err);
         return NextResponse.json(
             { message: 'Something went wrong in Prisma' },
             { status: 500 }

@@ -10,13 +10,12 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HiPlus } from 'react-icons/hi';
 import JobCard from './JobCard';
 import Column from './Column';
 import { Job, Column as ColumnType } from '@prisma/client';
-import { useAuth } from '@clerk/nextjs';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -53,7 +52,6 @@ export default function Board({ columnData }: BoardProps) {
         initialData: columnData,
         // refetchInterval: 3000,
     });
-    // console.log(columnsData);
     const { existingColumns, setColumns, addColumn } = useColumnStore();
     useEffect(() => {
         setColumns(columnsData);
@@ -68,10 +66,8 @@ export default function Board({ columnData }: BoardProps) {
                 .then(res => res.data),
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns']);
-            console.log('patched column');
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, refresh the page!');
         },
     });
@@ -87,10 +83,8 @@ export default function Board({ columnData }: BoardProps) {
 
         onSuccess: async res => {
             await queryClient.invalidateQueries(['columns', 'jobs']);
-            console.log('patched job');
         },
         onError: err => {
-            console.log(err);
             toast.error('Something went wrong, refresh the page!');
         },
     });
@@ -181,7 +175,6 @@ export default function Board({ columnData }: BoardProps) {
                             positonInColumn: idx,
                         };
                     });
-                    console.log(movedJobs);
                     return {
                         ...column,
                         jobs: movedJobs,
@@ -198,7 +191,6 @@ export default function Board({ columnData }: BoardProps) {
                                 positonInColumn: idx,
                             };
                         });
-                    console.log(movedJobs);
                     return {
                         ...column,
                         jobs: movedJobs,
@@ -232,7 +224,6 @@ export default function Board({ columnData }: BoardProps) {
                                 positionInColumn: idx,
                             };
                         });
-                    console.log('Switch column?', newJobs, column.id);
                     newJobs.forEach(job => {
                         patchJob.mutate(job);
                     });
@@ -287,7 +278,7 @@ export default function Board({ columnData }: BoardProps) {
     }
 
     return (
-        <div className="flex h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
+        <div className="flex min-h-[550px] h-full w-full overflow-x-scroll scrollbar scrollbar-track-transparent scrollbar-thumb-basicColors-dark ">
             <DndContext
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
@@ -325,6 +316,10 @@ export default function Board({ columnData }: BoardProps) {
                     </div>
                 </div>
                 <button
+                    disabled={
+                        existingColumns.find(col => col.isNewColumn)
+                            ?.isNewColumn
+                    }
                     onClick={() => {
                         addColumn({
                             id: '',
@@ -337,7 +332,7 @@ export default function Board({ columnData }: BoardProps) {
                             isNewColumn: true,
                         } as ColumnWithJobs);
                     }}
-                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2   rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody"
+                    className="ui-background absolute right-[0] translate-x-1/2 top-1/2 -translate-y-1/2   rounded-full flex my-auto    w-l h-[7.5rem] cursor-pointer items-center justify-center border hover:bg-basicColors-light hover:text-textColors-textBody disabled:bg-transparent"
                 >
                     <HiPlus size={20} />
                 </button>

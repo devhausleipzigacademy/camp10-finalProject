@@ -88,7 +88,6 @@ export const getColumns = async (
                     url: 'https://example.com/careers',
                 },
             });
-            console.log('new job:', resNewJob);
         }
         return await getColumns(userId);
     }

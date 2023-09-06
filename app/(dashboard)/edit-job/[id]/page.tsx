@@ -1,4 +1,3 @@
-import prisma from '@/utils/prismaClient';
 import EditForm from './EditForm';
 import { getJob } from '@/lib/getJob';
 
@@ -14,6 +13,5 @@ export default async function EditPage({ params }: Props) {
         throw new Error('No job found');
     }
 
-    console.log("in edit page:", singleJobEdit)
     return <EditForm editSingleJob={singleJobEdit} />;
 }
