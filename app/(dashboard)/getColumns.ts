@@ -86,6 +86,7 @@ export const getColumns = async (
                     columnId: column.id,
                     positionInColumn: 0,
                     url: 'https://example.com/careers',
+                    deadline: new Date(),
                 },
             });
         }
