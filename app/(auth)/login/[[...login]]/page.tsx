@@ -6,7 +6,12 @@ export default function LoginForm() {
         <SignIn
             appearance={{
                 baseTheme: dark,
-            }}
+                elements: {
+                    formButtonPrimary:
+                        "bg-slate-500 hover:bg-slate-400 text-sm normal-case text-slate-500",
+                    },
+                }}
+        
         />
         </div>
     );

@@ -9,13 +9,11 @@ function Testimonial() {
           alt="profile picture"
         />
       </div>
-      <div className="text-basicColors-light flex-1">
+      <div className="text-basicColors-light flex-1 text-l items-center">
         <p>
-          I used to be a rich kid computer freak. Then I founded a company and
-          screwed over my partner while he was sick and now I’m a billionaire. I
-          have no clue what EMPLEO is though.
+          "Empleo helped me keep an overview of my job applications and made finding a job not just easier but also more efficient"
         </p>
-        <p className="text-right"> - Billy</p>
+        <p className="text-right"> - Christina </p>
       </div>
     </div>
   );
