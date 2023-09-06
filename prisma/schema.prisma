@@ -25,6 +25,8 @@ model Column {
   title           String
   createdAt       DateTime @default(now())
   jobs            Job[]
+
+  @@unique([userId, title])
 }
 
 model Job {
