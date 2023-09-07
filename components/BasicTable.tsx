@@ -270,7 +270,7 @@ export default function BasicTable({
                         onClick={() => setIsSelectorVisible(!isSelectorVisible)}
                         size="tiny"
                     >
-                        Customize
+                        Select Columns
                     </Button>
                     {isSelectorVisible && (
                         <div className="flex flex-col absolute ui-background border top-xl px-s py-xs rounded-xl">
